@@ -87,9 +87,6 @@ MAN3 = \
 MAN5 = \
 	data/dbformat.txt
 
-MANALL = \
-	data/mainpage.txt ${MAN3} ${MAN1} ${MAN5}
-
 SRCALL = \
 	data/mainpage.txt ${MAN3} data/m17n-config.txt data/example.txt ${MAN5}
 
@@ -193,7 +190,8 @@ doxyfile-man%.usr: doxyfile-man%
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
 	  < $< >$@
 
-data/mainpage.txt:
+data/mainpage.txt: data-usr/mainpage.txt
+	cp $< $@
 
 data/dbformat.txt:
 

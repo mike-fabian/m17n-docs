@@ -10,7 +10,7 @@ EOF
 
 sed -n -e '/\/\*\*\*/,/\*\// p' | \
 sed -e 's/@section/@subsection/' \
-    -e 's/@page/@section/'
+    -e 's/@page \([^ ]*\)/@section \1 \1 --/'
 
 cat <<EOF
 ////
