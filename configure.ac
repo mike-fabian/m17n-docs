@@ -27,25 +27,34 @@ AC_SUBST(M17NLIB)
 
 AC_CHECK_PROG(DOXYGEN, doxygen, yes, no)
 AC_CHECK_PROG(RUBY, ruby, yes, no)
+AC_CHECK_PROG(LATEX, platex, yes, no)
 AC_CHECK_PROG(PLATEX, platex, yes, no)
+
+OK=yes
+if test "$DOXYGEN" = "no"; then
+  echo "Can't find a program \"doxygen\"!"
+  OK=no
+fi
+if test "$RUBY" = "no"; then
+  echo "Can't find a program \"ruby\"!"
+  OK=no
+fi
+if test "$LATEX" = "no"; then
+  echo "Can't find a program \"latex\"!"
+  OK=no
+fi
+if test "$PLATEX" = "no"; then
+  echo "Can't find a program \"platex\"!"
+  OK=no
+fi
+if test "$OK" = "no; then
+  exit 1
+fi
 
 AC_CONFIG_FILES([Makefile doxyfile])
 AC_OUTPUT
 
 # Print configuration message.
-if test "$DOXYGEN" = "no"; then
-  echo "Can't find a program \"doxygen\"!"
-  exit 1
-fi
-if test "$RUBY" = "no"; then
-  echo "Can't find a program \"ruby\"!"
-  exit 1
-fi
-if test "$PLATEX" = "no"; then
-  echo "Can't find a program \"platex\"!"
-  exit 1
-fi
-
 echo "-------------------------------------------------------------"
 echo "Configure to make documentations from the source files under:"
 echo "  $M17NLIB/src/"
