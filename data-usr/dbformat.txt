@@ -185,13 +185,19 @@ as follows:
 
 @verbatim
 FONTSET ::=
-    PER-SCRIPT +
+    PER-SCRIPT * PER-CHARSET * FALLBACK *
 
 PER-SCRIPT ::=
     '(' SCRIPT PER-LANGUAGE + ')'
 
 PER-LANGUAGE ::=
     '(' LANGUAGE FONT-SPEC-ELEMENT + ')'
+
+PER-CHARSET ::=
+    '(' CHARSET FONT-SPEC-ELEMENT + ')'
+
+FALLBACK ::=
+    FONT-SPEC-ELEMENT
 
 FONT-SPEC-ELEMENT ::=
     '(' FONT-SPEC [ FLT-NAME ] ')'

@@ -316,6 +316,7 @@ INPUT		       += "@M17NLIB@/src/m17n-X.h"
 INPUT		       += "@M17NLIB@/src/m17n-err.h"
 INPUT		       += "@M17NLIB@/src/"
 INPUT		       += "data-%USR_JA_DEV%/dbformat.txt"
+INPUT		       += "@M17NLIB@/example/README.txt"
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 

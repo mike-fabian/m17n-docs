@@ -3,7 +3,7 @@
 
 if MAINTAINER_MODE
 
-SRCFILES = $(shell echo @M17NLIB@/src/*.[ch])
+SRCFILES = $(shell echo @M17NLIB@/src/*.[ch] @M17NLIB@/example/README.txt)
 
 PROJECT_NAME_EN = "The M17N Library"
 PROJECT_NAME_JA = "M17N 多言語ライブラリ"
