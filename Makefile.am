@@ -170,6 +170,8 @@ man/ja/man3m/m17nIntro.3m: ja/man/man3/m17nIntro.3m doxyhead.txt ${UTILPATH}/mkm
 
 .PRECIOUS: %/latex/refman.tex
 
+DISTFILES = man
+
 CLEANFILES = doxyfile doxyfile-*.* m17n.tag warning \
 	*/html/index.html */latex/refman.*
 
