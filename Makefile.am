@@ -126,9 +126,11 @@ doxyfile-man.usr: doxyfile
 	  < $< >$@
 
 %/html/index.html: doxyfile-html.% ${SRCFILES} m17nlib.css
+	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
 %/latex/refman.tex: doxyfile-latex.% ${UTILPATH}/refman-filter.awk ${SRCFILES}
+	rm -rf `dirname $@`
 	${DOXYGEN} $<; \
 	awk -f ${UTILPATH}/refman-filter.awk < $@ > temp; \
 	mv temp $@
@@ -146,6 +148,12 @@ dev/latex/refman.ps: dev/latex/refman.tex ${UTILPATH}/run-latex.sh ${LATEX_DEV}
 	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji dev
 
 doxyhead.txt: sample.c ${UTILPATH}/mkheaderlist.rb
+
+%/man/man3/m17nIntro.3m: doxyfile-man.% ${SRCFILES}
+	rm -rf `dirname $@`
+	${DOXYGEN} $<
+
+man/man3m/m17nIntro.3m: usr/man/man3/m17nIntro.3m sample.c ${UTILPATH}/mkman.rb 
 	-${DOXYGEN} -g doxytemp
 	echo "INPUT = sample.c" >> doxytemp
 	echo "GENERATE_LATEX = NO" >> doxytemp
@@ -154,15 +162,9 @@ doxyhead.txt: sample.c ${UTILPATH}/mkheaderlist.rb
 	echo "MAN_OUTPUT = sample" >> doxytemp
 	echo "OPTIMIZE_OUTPUT_FOR_C  = yes" >> doxytemp
 	${DOXYGEN} doxytemp
-	(cd sample/man3; ruby ${UTILPATH}/mkheaderlist.rb) > $@
-	rm -rf doxytemp sample
-
-%/man/man3/m17nIntro.3m: doxyfile-man.% ${SRCFILES}
-	${DOXYGEN} $<
-
-man/man3m/m17nIntro.3m: usr/man/man3/m17nIntro.3m doxyhead.txt ${UTILPATH}/mkman.rb 
 	[ -d "man/man3m" ] || mkdir -p man/man3m
 	ruby ${UTILPATH}/mkman.rb usr
+	rm -rf doxytemp sample
 
 man/ja/man3m/m17nIntro.3m: ja/man/man3/m17nIntro.3m doxyhead.txt ${UTILPATH}/mkman.rb 
 	[ -d "man/ja/man3m" ] || mkdir -p man/ja/man3m

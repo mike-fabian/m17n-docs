@@ -11,7 +11,7 @@ if [ "$2" = "ja" ] ; then
   LATEX=platex
   PAPER='-t a4'
 else
-  LATEX=latex
+  LATEX=platex
 fi
 ${LATEX} refman.tex
 if [ "$2" = "ja" ] ; then

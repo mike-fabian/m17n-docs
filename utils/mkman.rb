@@ -5,21 +5,56 @@
 
 usr_or_ja=$*[0]
 
-currentdir = Dir.pwd+"/"
-$doxywork = currentdir+"doxywork/"
-$srcman3 = currentdir+usr_or_ja+"/man/man3/"
-if usr_or_ja == "usr"
-  $dstman3m = currentdir+"/man/man3m/"
-else
-  $dstman3m = currentdir+"/man/ja/man3m/"
-end
+#
+# Setting up directory names.
+#
 
-headertexts = open("doxyhead.txt","r").readlines
- $fdheader = headertexts[0]
- $flheader = headertexts[1]
- $ddheader = headertexts[2]
- $fielddheader = headertexts[3]
- $fieldlheader = headertexts[4]
+$currentdir = Dir.pwd+"/"
+$doxywork = $currentdir+"doxywork/"
+$srcman3 = $currentdir+usr_or_ja+"/man/man3/"
+if usr_or_ja == "usr"
+  $dstman3m = $currentdir+"/man/man3m/"
+else
+  $dstman3m = $currentdir+"/man/ja/man3m/"
+end
+$sampledir="sample/man3/"
+
+#
+# Extra information about header strings Doxygen generates in a man file.
+#
+
+def nextheader(text,index)
+  header = text[index+1..text.size].find{|i| i =~ /\.S(S|H)/} 
+  return header
+  end
+
+grouptext = open($sampledir+"SampleGroup.3","r").readlines.reverse
+
+fd = grouptext.index(grouptext.find{|i| i =~ /SampleFunction/})
+$fdheader = nextheader(grouptext,fd)
+
+restofthetext =  grouptext[fd+1..grouptext.size]
+
+fl = restofthetext.index(restofthetext.find{|i| i =~ /SampleFunction/})
+$flheader = nextheader(restofthetext,fl)
+
+dd = grouptext.index(grouptext.find{|i| i =~ /long group document/})
+$ddheader = nextheader(grouptext,dd)
+
+####
+structext = open($sampledir+"SampleStructure.3","r").readlines.reverse
+
+fieldd = structext.index(structext.find{|i| i =~ /SampleField/})
+$fielddheader = nextheader(structext,fieldd)
+
+restofstructext =  structext[fieldd+1..structext.size]
+
+fieldl = restofstructext.index(restofstructext.find{|i| i =~ /SampleField/})
+$fieldlheader = nextheader(restofstructext, fieldl)
+
+#
+# Main work
+#
 
 ####  to find data structure documentation files and rewriting them 
 
@@ -419,7 +454,3 @@ unless FileTest.directory? filename
 
 end
 }
-
-Dir.chdir($doxywork)
-
-Dir.open(".").each{|f|  File.delete(f) if FileTest.file?(f)}
