@@ -9,9 +9,7 @@ their brief descriptions.  */
 /***ja @page m17nDBMIM M17N データベースが提供する入力メソッド
 
 M17N データベースが提供する入力メソッドのリストとそれぞれの簡単な説明。 */
-////
-/***
-<ul>
+/*** <ul> */
 EOF
 
 for file in $*; do
@@ -19,8 +17,7 @@ for file in $*; do
 done
 
 cat <<EOF
-</ul>
-*/
+/*** </ul> */
 EOF
 
 # Local Variables:

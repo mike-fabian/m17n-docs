@@ -1,15 +1,16 @@
 #!/bin/sh
 
 cat <<EOF
-/***en @page m17nDBFLT Input methods provided by the m17n databasse
+/***en @page m17nDBFLT Font Layout Tables provided by the m17n databasse
 
-Here's a list of input methods provided by the m17n databasse and
+Here's a list of font layout tables provided by the m17n databasse and
 their brief descriptions.  */
 
-/***ja @page m17nDBFLT M17N データベースが提供する入力メソッド
+/***ja @page m17nDBFLT M17N データベースが提供する FLT
 
-M17N データベースが提供する入力メソッドのリストとそれぞれの簡単な説明。 */
-////
+M17N データベースが提供する FLT (Font Layout Table) のリストとそれぞれ
+の簡単な説明。 */
+
 /*** <ul> */
 EOF
 
