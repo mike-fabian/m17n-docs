@@ -198,7 +198,7 @@ def documentfunc2 (dstart, title, func_text, short_text)
 
 def frewrite(text)
 # let the library name appear in the header 
-  buf = [text[0].gsub!("\" \"", "\" \"\" \"")]
+  buf = [text[0].gsub!(/\" \"/, "\" \"\" \"")]
 
   title =  text[0].split(" ")[1].chop!.reverse.chop!.reverse
 
@@ -251,10 +251,10 @@ def desrewrite(text)
   text.each_with_index{|line,i|
 
 ### TEST 6/24
-  line.gsub!(".RS 4","")
+  line.gsub!(/^\.RS 4/,"")
 
 ### letting verbatim end in place
-  line.gsub!(/^.nf/,".NF")
+  line.gsub!(/^\.nf/,".NF")
 
 #removing "More..."  hyperlink
   line.gsub!(/More.../,"")
@@ -349,7 +349,7 @@ def orewrite(text)
 
      # let the library name appear in the header 
               if line =~ /^.TH/
-                 line = line.gsub!("\" \"", "\" \"\" \"")
+                 line = line.gsub!(/\" \"/, "\" \"\" \"")
      	      end
 
      # finding structure documentations and merging into "structures"
@@ -375,7 +375,7 @@ def orewrite(text)
 
      #removing author section
              line.gsub!(/^\.SH\s\"AUTHOR\"/,"")
-             line.gsub!("Generated automatically by Doxygen for m17n_test from the source code.","")
+             line.gsub!(/Generated automatically by Doxygen for m17n_test from the source code\./,"")
 
              line.gsub!(/\\fP\s+,/,"\\fP,")
              line.gsub!(/\\fP\s+\./,"\\fP.")
