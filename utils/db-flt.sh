@@ -11,17 +11,18 @@ databasse and their brief descriptions.  */
 M17N データベースが提供する Font Layout Table (FLT) のリストとそれぞれ
 の簡単な説明。 */
 
-/*** <ul> */
+/***
+<ul>
 EOF
 
 for file in $*; do
-  echo "/***"
-  sed -n '/^;; <li>/,/^$/p' < $file
-  echo "*/"
+  sed -n '/^;; <li>/,/^$/ s/^;; *//p' < $file
+  echo
 done
 
 cat <<EOF
-/*** </ul> */
+</ul>
+*/
 EOF
 
 # Local Variables:

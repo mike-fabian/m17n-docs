@@ -9,15 +9,18 @@ their brief descriptions.  */
 /***ja @page m17nDBMIM M17N データベースが提供する入力メソッド
 
 M17N データベースが提供する入力メソッドのリストとそれぞれの簡単な説明。 */
-/*** <ul> */
+/***
+<ul>
 EOF
 
 for file in $*; do
-  sed -n '/^;; \/\*\*\*/,/^;; \*\//s/^;; *//p' < $file
+  sed -n '/^;; <li>/,/^$/ s/^;; *//p' < $file
+  echo
 done
 
 cat <<EOF
-/*** </ul> */
+</ul>
+*/
 EOF
 
 # Local Variables:
