@@ -56,9 +56,12 @@ Global IT Security Group\n
 National Information Technology Research Institute\n
 Institute of Advanced Industrial Science and Technology
 
-Web: http://www.m17n.org/m17n-lib/\n
+Web: http://www.m17n.org/m17n-lib/
 
-E-mail: m17n-lib@m17n.org (English)\n
-	m17n-lib-ja@m17n.org (Japanese)
+Bug report: m17n-lib-bug@m17n.org
+
+Mailing list (English): m17n-lib@m17n.org
+
+Mailing list (Japanese): m17n-lib-ja@m17n.org
 */
 ////

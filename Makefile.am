@@ -140,6 +140,7 @@ doxyfile-man.usr: doxyfile-man
 			utils/%_filter.rb m17n-lib.css
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
+	cp smallmule.gif `dirname $@`
 
 %/latex/refman.tex: doxyfile-latex.% ${SRCFILES} data-%/mainpage.txt data-%/dbformat.txt \
 			utils/%_filter.rb
@@ -192,5 +193,17 @@ ja/man3m/%.3m: ja/man/man3/%.3m sample-ja.c utils/mkman.rb
 	rm -rf ja/man3m/index.*
 	ruby utils/mkman.rb ja
 	rm -rf doxytemp sample
+
+CLEANFILES=doxyfile-*
+
+clean-local:
+	rm -rf usr dev ja
+
+WEBDIR = /project/web/extra/m17n-lib/m17n-docs
+
+web: dist
+	[ -d ${WEBDIR} ] || mkdir ${WEBDIR}
+	cp ${distdir}.tar.gz ${WEBDIR}
+	cp usr/html/* ${WEBDIR}
 
 endif
