@@ -125,7 +125,7 @@ doxyfile-man.usr: doxyfile Makefile
 	    -e 's|%GENERATE_MAN%|YES|' \
 	  < $< >$@
 
-%/html/index.html: doxyfile-html.% ${SRCFILES} m17nlib.css
+%/html/index.html: doxyfile-html.% ${SRCFILES} data-%/mainpage.c m17nlib.css
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
