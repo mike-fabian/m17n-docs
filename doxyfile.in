@@ -308,7 +308,14 @@ WARN_LOGFILE           = warning
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = "data-%USR_JA_DEV%/mainpage.txt" "@M17NLIB@/src/m17n-core.h" "@M17NLIB@/src/m17n.h" "@M17NLIB@/src/m17n-win.h" "@M17NLIB@/src/m17n-X.h" "@M17NLIB@/src/m17n-err.h" "@M17NLIB@/src/" "data-%USR_JA_DEV%/dbformat.txt"
+INPUT                  = "data-%USR_JA_DEV%/mainpage.txt"
+INPUT		       += "@M17NLIB@/src/m17n-core.h"
+INPUT		       += "@M17NLIB@/src/m17n.h"
+INPUT		       += "@M17NLIB@/src/m17n-win.h"
+INPUT		       += "@M17NLIB@/src/m17n-X.h"
+INPUT		       += "@M17NLIB@/src/m17n-err.h"
+INPUT		       += "@M17NLIB@/src/"
+INPUT		       += "data-%USR_JA_DEV%/dbformat.txt"
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
@@ -426,7 +433,6 @@ HTML_FOOTER            = @abs_srcdir@/footer.html
 # will generate a default style sheet
 
 HTML_STYLESHEET        = @abs_srcdir@/m17n-lib.css
-# HTML_STYLESHEET        = 
 
 # If the HTML_ALIGN_MEMBERS tag is set to YES, the members of classes, 
 # files or namespaces will be aligned in HTML using tables. If set to 
@@ -672,7 +678,7 @@ INCLUDE_FILE_PATTERNS  =
 # omitted =1 is assumed.
 
 PREDEFINED             = FOR_DOXYGEN
-#PREDEFINED             += DOXYGEN_INTERNAL_MODULE
+#PREDEFINED            += DOXYGEN_INTERNAL_MODULE
 
 # If the MACRO_EXPANSION and EXPAND_PREDEF_ONLY tags are set to YES then 
 # this tag can be used to specify a list of macro names that should be expanded. 

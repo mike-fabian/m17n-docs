@@ -116,7 +116,7 @@ format of the data is as follows:
 
 @verbatim
 FONT-ENCODING ::=
-    '(' PER-FONT-INFO * ')'
+    PER-FONT-INFO *
 
 PER-FONT-INFO ::=
     '(' FONT-SPEC ENCODING ')'
@@ -153,7 +153,7 @@ resize\>.  The plist format of the data is as follows:
 
 @verbatim
 FONT-RESIZE ::=
-    '(' PER-FONT-INFO * ')'
+    PER-FONT-INFO *
 
 PER-FONT-INFO ::=
     '(' FONT-SPEC RESIZE-RATIO ')'
@@ -184,7 +184,7 @@ as follows:
 
 @verbatim
 FONTSET ::=
-    '(' PER-SCRIPT + ')'
+    PER-SCRIPT +
 
 PER-SCRIPT ::=
     '(' SCRIPT PER-LANGUAGE + ')'
