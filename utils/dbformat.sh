@@ -1,6 +1,7 @@
 #!/bin/sh
 
 cat <<EOF
+/* -*- coding: euc-jp; -*- */
 /***en @page m17nDBFormat Data format of the m17n database
 
 This section describes formats of these data supplied by the m17n

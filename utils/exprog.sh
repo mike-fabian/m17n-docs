@@ -1,6 +1,7 @@
 #!/bin/sh
 
 cat <<EOF
+/* -*- coding: euc-jp; -*- */
 /***en @page m17nExProg Sample Programs
 
 This section describes these example programs.  They are to demonstrate

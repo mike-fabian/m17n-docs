@@ -1,6 +1,7 @@
 #!/bin/sh
 
 cat <<EOF
+/* -*- coding: euc-jp; -*- */
 /***en @page m17nDBData Data provided by the m17n database
 
 The m17n database provides the following data. */
