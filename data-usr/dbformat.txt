@@ -1,8 +1,4 @@
-/*** @addtogroup m17nDatabase */
-////
-/*** @{ */
-////
-/***@defgroup m17nDatabaseFormat DatabaseFormat
+/***@page m17nDatabaseFormat DatabaseFormat
 
 This section describes the formats of predefined @e plist @e type data
 in the m17n database.
@@ -103,8 +99,6 @@ of this syntax from the database file.
 
 Here after we describes the plist format of each data by this syntax.
 
-@section fontset Fontset
-
 @section fontenc Font Encoding
 
 The m17n library loads information about the encoding of each font
@@ -173,14 +167,80 @@ this @c PER-FONT-INFO:
 means that, to use a font of registry "devanagari-cdac" with a
 specific size, we have to open an 1.5 times bigger one.
 
+@section fontset Fontset
+
+The m17n library loads a fontset definition from the m17n database by
+the tags \<fontset, FONTSET-NAME\>.  The plist format of the data is
+as follows:
+
+@verbatim
+FONTSET ::=
+    '(' PER-SCRIPT + ')'
+
+PER-SCRIPT ::=
+    '(' SCRIPT PER-LANGUAGE + ')'
+
+PER-LANGUAGE ::=
+    '(' LANGUAGE FONT-SPEC-ELEMENT + ')'
+
+FONT-SPEC-ELEMENT ::=
+    '(' FONT-SPEC [ FLT-NAME ] ')'
+
+FONT-SPEC ::=
+    '(' 
+    [ FOUNDRY FAMILY [ WEIGHT [ STYLE [ STRETCH [ ADSTYLE ] ] ] ] ] REGISTRY
+    ')'
+@endverbatim    
+
+@c SCRIPT is a symbol of script name (e.g. latin, han), or @c nil.  @c
+LANGUAGE is a two-letter symbol of language name code defined by ISO
+639 (e.g. ja, zh) or @c nil.  The meanings of @c FOUNDRY to @c
+REGISTRY are the same as @e Font @e Encoding.  @c FLT-NAME is a name
+of @ref flt.
+
+For instance, this @c PER_SCRIPT:
+
+@verbatim
+(han
+  (ja
+    ((jisx0208.1983-0)))
+  (zh
+    ((gb2312.1980-0)))
+  (nil
+    ((big5-0))))
+@endverbatim
+
+instructs the rendering engine to use a font of registry
+"jisx0208.1983-0" for a "han" character that has @c Mlanguage text
+propert "ja" if the character is in the repertories of such fonts.
+Otherwise, try a font of registry "gb2312.1980-0" or "big5-0".  If a
+"han" character doesn not have @c Mlangauge text property, try all
+three fonts.
+
 @section flt Font Layout Table
+
+Usually, the rendering engine converts character codes of a text into
+glyph codes one by one by consulting information about encoding of
+each selected font.  But, for rendering a text that requires
+complicated layouting (e.g. Thai and Indic), such an one to one
+conversion is not sufficient.  In addition, some glyphs must be
+shifted 2-dimensionally on the screen.  For such a case, a font layout
+table (FLT in short) must be used.
+
+A FLT can contain all the information in OpenType Layout Table (CMAP,
+GSUB, and GPOS) in addition to the information about how to extract a
+grapheme cluster and how to re-order characters.
+
+The m17n library loads a FLT from the m17n database by the tags
+\<font, layouter, FLT-NAME\>.  The plist format of the data is as
+follows:
 
 @verbinclude flt.txt
 
 @section im Input Method
 
-@verbinclude im.txt */
+@verbinclude im.txt
 
-////
-/*** @} */
+*/
+
 ////

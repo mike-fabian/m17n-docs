@@ -1,6 +1,3 @@
 /documentclass/ s/a4paper/a4paper,twoside/
-/The M17N Library Module Index/,/files/ d
-/The M17N Library File Documentation/,/printindex/ d
-$ i \
-\\printindex
-
+/The M17N Library Module Index/,/pages/ d
+/The M17N Library File Documentation/,/textprop_8c/ d
