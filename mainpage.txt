@@ -65,15 +65,18 @@ mandatory but several functions of the m17n library depend on them.
 <ul>
 <li> m17n-db -- http://www.m17n.org/m17n-db/
 
-     Used by @ref m17nShell and @ref m17nGUI..
+     Used by @ref m17nShell and @ref m17nGUI.
 
 <li> libxml2 -- http://xmlsoft.org/
 
      Used by the functions mtext_serialize () and mtext_deserialize ().
+     Those functions return NULL libxml2 is not avairable,
 
 <li> fribidi -- http://fribidi.sourceforge.net/
 
-     Used for BIDI processing.
+     Used for BIDI processing.  If it is not avairable, the rendering
+     engine of the m17n library can't handle such scritp as Arabic and
+     Hebrew correctly.
 
 <li> freetype -- http://www.freetype.org/
 

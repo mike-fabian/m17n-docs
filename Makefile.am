@@ -317,7 +317,9 @@ WEBDIR = /project/web/extra/m17n-lib/m17n-docs
 
 release: dist
 	[ -d ${WEBDIR} ] || mkdir ${WEBDIR}
-	cd usr/html; for f in *; do case $$f in *8c*);; *8h*);; *8txt*);; *) echo $$f;; esac; done
+	cd usr/html; for f in *; do \
+	  case $$f in *8c*);; *8h*);; *8txt*);; *) echo $$f;; esac; \
+	done
 	cp ${distdir}.tar.gz ${WEBDIR}
 
 
