@@ -18,9 +18,9 @@ if [ $USR_JA_DEV = "ja" ] ; then
     < refman.tex > m17n-lib.tex
 else
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
-      -e '/The M17N Library Module Index/,/pages/ d' \
-      -e '/The M17N Library File Documentation/,/textprop_8c/ d' \
-      -e 's/The M17N Library Page Documentation/Appendix/' \
+      -e '/The m17n Library Module Index/,/pages/ d' \
+      -e '/The m17n Library File Documentation/,/textprop_8c/ d' \
+      -e 's/The m17n Library Page Documentation/Appendix/' \
     < refman.tex > m17n-lib.tex
 fi
 ${LATEX} m17n-lib.tex
