@@ -255,6 +255,9 @@ def desrewrite(text)
 ### TEST 6/24
   line.gsub!(".RS 4","")
 
+### letting verbatim end in place
+  line.gsub!(/^.nf/,".NF")
+
 #removing "More..."  hyperlink
   line.gsub!(/More.../,"")
 # ? ad hoc 
@@ -342,6 +345,9 @@ def orewrite(text)
 
   text.each_with_index{|line,i|
              line.gsub!(/More.../,"")
+     
+     ### let verbatim end in place
+        line.gsub!(/^.nf/,".NF")
 
      # let the library name appear in the header 
               if line =~ /^.TH/
