@@ -1,4 +1,4 @@
-This directory tree holds version 0.9 of the m17n library documentation.
+This directory tree holds version 1.0 of the m17n library documentation.
 Copyright (C) 2003
   National Institute of Advanced Industrial Science and Technology (AIST)
   Registration Number H15PRO112
@@ -15,10 +15,13 @@ The default installation path ${prefix} is "/usr/local",
 the default data installation path ${datadir} is "${prefix}/share",
 and the default man installation path ${mandir} is "${prefix}/man".
 
-These files are installed in "${datadir}/m17n-lib"
-	m17n-lib.dvi, m17n-lib.ps
-Html files are installed in "${datadir}/m17n-lib/html"
-Man files are installed in "${mandir}/man3m.
+o LaTeX documents (m17n-lib.dvi and m17n-lib.ps) are installed in
+  "${datadir}/m17n/docs".
+	
+o HTML files are installed in "${datadir}/m17n/docs/html".
+
+o MAN files are installed in "${mandir}/man1, ${mandir}/man3, and
+  ${mandir}/man5.
 
 The default paths ${prefix}, ${datadir}, and ${mandir} can be changed
 by giving these arguments to the "configure" script respectively.

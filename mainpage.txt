@@ -55,6 +55,24 @@ Just include <m17n.h> in your program, and link it with the m17n
 library by -lm17n.  See @ref m17nIntro @latexonly
 (P.\pageref{group__m17nIntro}) @endlatexonly for the detail.  */
 
+/***en @section extralib External libraries and data */
+/***ja @section extralib 外部ライブラリ／データ */
+/***
+
+The m17n library utilizes these external libraries.  They are not
+mandatory but several functions of the m17n library depend on them.
+
+<ul>
+<li> libxml2 -- http://xmlsoft.org/
+<li> fribidi -- http://fribidi.sourceforge.net/
+<li> freetype -- http://www.freetype.org/
+<li> libotf  -- http://www.m17n.org/libotf/
+<li> anthy -- http://anthy.sourceforge.jp/
+<li> m17n-db -- http://www.m17n.org/m17n-db/
+</ul>
+
+*/
+
 /***en @section contact Contact us: */
 /***ja @section contact 連絡先 */
 /***
@@ -80,7 +98,7 @@ Special thanks to:
 
 <li> Dimitri van Heesch <dimitri@stack.nl>
 
-Author of Doxygen (<http://www.stack.nl/~dimitri/doxygen/>).  Without
+Author of Doxygen <http://www.stack.nl/~dimitri/doxygen/>.  Without
 this tool, it would have been impossible to create this document.
 
 </ul>

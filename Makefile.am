@@ -30,7 +30,7 @@ pkgdata_DATA = \
 	man/man3/m17nIntro.3m17n \
 	man/man5/mdbGeneral.5
 
-pkgdatadir = $(datadir)/m17n-lib
+pkgdatadir = $(datadir)/m17n/docs
 
 EXTRA_DIST = usr/html usr/latex/m17n-lib.dvi usr/latex/m17n-lib.ps \
 	man/man1 man/man3 man/man5
