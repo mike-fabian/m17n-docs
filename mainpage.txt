@@ -87,6 +87,11 @@ mandatory but several functions of the m17n library depend on them.
 
      Used for the Japanese input method ja-anthy.mim.
 
+<li> wordcut -- http://thaiwordseg.sourceforge.net/
+
+     Used to find Thai word boundary in the example program
+     example/linebreak.c.
+
 </ul>
 
 */
