@@ -240,7 +240,7 @@ data/m17n-db.txt: @M17NDB@/m17n-db.in
 			utils/%_filter.rb m17n-lib.css
 	rm -f `dirname $@`/*.html
 	${DOXYGEN} $<
-	cd `dirname $@`; rm *_8c* *_8h* *_8txt* dirs.html dir_* files.html
+	cd `dirname $@`; rm -f *_8c* *_8h* *_8txt* dirs.html dir_* files.html
 	echo 'code { font-weight: bold }' >> `dirname $@`/doxygen.css
 
 %/html/parrot.png: parrot.png
@@ -249,7 +249,7 @@ data/m17n-db.txt: @M17NDB@/m17n-db.in
 %/latex/refman.tex: doxyfile-latex.% ${SRCALL} utils/%_filter.rb
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
-	cd `dirname $@`; rm *_8c* *_8h* *_8txt* dirs.tex dir_* files.tex
+	cd `dirname $@`; rm -f *_8c* *_8h* *_8txt* dirs.tex dir_* files.tex
 
 %/latex/m17n-lib.dvi: %/latex/refman.tex styles/m17n-lib.sty utils/latex.sh
 	utils/latex.sh `dirname $@` latex
@@ -263,8 +263,9 @@ data/m17n-db.txt: @M17NDB@/m17n-db.in
 
 %/man/man1/m17n-config.1: doxyfile-man1.% ${MAN1} utils/%_filter.rb
 	rm -rf `dirname $@`
+	cp doxyfile-man1.usr temp
 	${DOXYGEN} $<
-	cd `dirname $@`; rm _*.1 *.c.1 *.txt.1
+	cd `dirname $@`; rm -f _*.1 *.c.1 *.txt.1
 
 %/man/man3/m17nIntro.3m17n: doxyfile-man3.% ${MAN3} utils/%_filter.rb
 	rm -rf `dirname $@`
