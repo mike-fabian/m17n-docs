@@ -122,12 +122,12 @@ ja-man man-ja: ${MAN_JA_TARGET}
 TARGET = ${HTML_TARGET} ${LATEX_TARGET} ${MAN_TARGET}
 
 usr: usr-html usr-latex usr-man
-ja: ja-html ja-latex ja-man
+ja: ja-html ja-latex
 dev: dev-html dev-latex
 
 html: usr-html ja-html dev-html
 latex: usr-latex ja-latex dev-latex
-man: usr-man ja-man
+man: usr-man
 
 doxyfile-html: doxyfile ${SRCALL}
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
