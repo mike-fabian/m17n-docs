@@ -1,14 +1,13 @@
 (require 'un-define)
 
-(defconst latex-dir
-  (format "%s/latex" (nth 2 command-line-args-left)))
+(defconst latex-dir (file-name-directory (nth 2 command-line-args-left)))
 
 (defun parse-toc ()
   (let ((sections nil)
 	section-type
 	title pos current-section current-subsection)
     (save-excursion
-      (find-file (expand-file-name "m17nlib.toc" latex-dir))
+      (find-file (expand-file-name "m17n-lib.toc" latex-dir))
       (while (re-search-forward "{\\(sub\\)*section}" nil t)
 	(goto-char (1+ (match-beginning 0)))
 	(setq section-type (intern (buffer-substring

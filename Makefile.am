@@ -9,7 +9,6 @@ if MAINTAINER_MODE
 SRCFILES = $(shell echo @M17NLIB@/src/*.[ch])
 
 STYLEPATH = @abs_srcdir@/styles
-UTILPATH = @abs_srcdir@/utils
 
 LATEX_JA = ${STYLEPATH}/doxygen-m17n.sty \
 	@abs_srcdir@/data-ja/header.tex \
@@ -19,9 +18,7 @@ LATEX_JA = ${STYLEPATH}/doxygen-m17n.sty \
 	@abs_srcdir@/data-ja/m17n-database.tex \
 	@abs_srcdir@/data-ja/conclusion.tex
 
-LATEX_USR = ${STYLEPATH}/doxygen-m17n.sty \
-	@abs_srcdir@/data-usr/header.tex \
-	@abs_srcdir@/data-usr/conclusion.tex
+LATEX_USR = data-usr/m17n-lib.sty
 
 LATEX_DEV = ${STYLEPATH}/doxygen-m17n.sty \
 	@abs_srcdir@/data-dev/header.tex \
@@ -45,9 +42,9 @@ usr-html html-usr: usr/html/index.html
 ja-html html-ja: ja/html/index.html
 dev-html html-dev: dev/html/index.html
 
-usr-latex latex-usr: usr/latex/m17nlib.ps
-ja-latex latex-ja: ja/latex/m17nlib.ps
-dev-latex latex-dev: dev/latex/m17nlib.ps
+usr-latex latex-usr: usr/latex/m17n-lib.ps
+ja-latex latex-ja: ja/latex/m17n-lib.ps
+dev-latex latex-dev: dev/latex/m17n-lib.ps
 
 usr-man man-usr: man/man3m/m17nIntro.3m
 
@@ -125,7 +122,7 @@ doxyfile-man.usr: doxyfile Makefile
 	    -e 's|%GENERATE_MAN%|YES|' \
 	  < $< >$@
 
-%/html/index.html: doxyfile-html.% ${SRCFILES} data-%/mainpage.c m17nlib.css
+%/html/index.html: doxyfile-html.% ${SRCFILES} data-%/mainpage.c m17n-lib.css
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
@@ -133,28 +130,23 @@ doxyfile-man.usr: doxyfile Makefile
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
-%/latex/m17nlib.tex: %/latex/refman.tex ${UTILPATH}/refman-filter.sed
-	sed -f ${UTILPATH}/refman-filter.sed < $< > $@
+%/latex/m17n-lib.tex: %/latex/refman.tex utils/refman-filter.sed
+	sed -f utils/refman-filter.sed < $< > $@
 
-ja/latex/m17nlib.ps: ja/latex/m17nlib.tex ${UTILPATH}/run-latex.sh ${LATEX_JA}
-	${UTILPATH}/run-latex.sh @abs_srcdir@ ja
-	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji ja
+%/latex/m17n-lib.ps: %/latex/m17n-lib.tex data-%/m17n-lib.sty utils/latex.sh
+	utils/latex.sh `dirname $@` platex
+	emacs -batch -q -l utils/mokuji.el -f write-mokuji $@
 
-usr/latex/m17nlib.ps: usr/latex/m17nlib.tex ${UTILPATH}/run-latex.sh ${LATEX_USR}
-	${UTILPATH}/run-latex.sh @abs_srcdir@ usr
-	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji usr
+%/latex/m17n-lib.pdf: %/latex/m17n-lib.tex data-%/m17n-lib.sty utils/latex.sh
+	utils/latex.sh `dirname $@ `pdflatex
 
-dev/latex/m17nlib.ps: dev/latex/m17nlib.tex ${UTILPATH}/run-latex.sh ${LATEX_DEV}
-	${UTILPATH}/run-latex.sh @abs_srcdir@ dev
-	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji dev
-
-doxyhead.txt: sample.c ${UTILPATH}/mkheaderlist.rb
+doxyhead.txt: sample.c utils/mkheaderlist.rb
 
 %/man/man3/m17nIntro.3m: doxyfile-man.% ${SRCFILES}
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
-man/man3m/%.3m: usr/man/man3/%.3m sample.c ${UTILPATH}/mkman.rb 
+man/man3m/%.3m: usr/man/man3/%.3m sample.c utils/mkman.rb 
 	-${DOXYGEN} -g doxytemp
 	echo "INPUT = sample.c" >> doxytemp
 	echo "GENERATE_LATEX = NO" >> doxytemp
@@ -164,10 +156,10 @@ man/man3m/%.3m: usr/man/man3/%.3m sample.c ${UTILPATH}/mkman.rb
 	echo "OPTIMIZE_OUTPUT_FOR_C  = yes" >> doxytemp
 	${DOXYGEN} doxytemp
 	[ -d "man/man3m" ] || mkdir -p man/man3m
-	ruby ${UTILPATH}/mkman.rb usr
+	ruby utils/mkman.rb usr
 	rm -rf doxytemp sample
 
-man/ja/man3m/%.3m: ja/man/man3/%.3m sample-ja.c ${UTILPATH}/mkman.rb 
+man/ja/man3m/%.3m: ja/man/man3/%.3m sample-ja.c utils/mkman.rb 
 	-${DOXYGEN} -g doxytemp
 	echo "INPUT = sample.c" >> doxytemp
 	echo "GENERATE_LATEX = NO" >> doxytemp
@@ -177,7 +169,7 @@ man/ja/man3m/%.3m: ja/man/man3/%.3m sample-ja.c ${UTILPATH}/mkman.rb
 	echo "OPTIMIZE_OUTPUT_FOR_C  = yes" >> doxytemp
 	${DOXYGEN} doxytemp
 	[ -d "man/ja/man3m" ] || mkdir -p man/ja/man3m
-	ruby ${UTILPATH}/mkman.rb ja
+	ruby utils/mkman.rb ja
 	rm -rf doxytemp sample
 
 CLEANFILES = doxyfile doxyfile-*.* m17n.tag warning \
@@ -185,5 +177,16 @@ CLEANFILES = doxyfile doxyfile-*.* m17n.tag warning \
 
 DISTCLEANFILES = doxyfile *~
 
+html/index.html: usr/html/index.html
+	[ -d html ] || mkdir html
+	cp usr/html/* html
+
+latex/m17n-lib.ps: usr/latex/m17n-lib.ps
+	[ -d latex ] || mkdir latex
+	cp usr/latex/m17n-lib.dvi latex
+	cp usr/latex/m17n-lib.ps latex
+
+pack: latex/m17n-lib.ps html/index.html man/man3m/m17nIntro.3m dist
+
 endif
-DISTFILES = man
+DISTFILES = latex html man 
