@@ -1,42 +1,16 @@
 #	-*- coding: euc-jp; -*-
-
-EXTRA_DIST = dev usr ja smallmule.gif
-
-# The followings are for maintainers only.
+# This makefile is for maintainer only.
 
 if MAINTAINER_MODE
 
 SRCFILES = $(shell echo @M17NLIB@/src/*.[ch])
 
-STYLEPATH = @abs_srcdir@/styles
-
-LATEX_JA = ${STYLEPATH}/doxygen-m17n.sty \
-	@abs_srcdir@/data-ja/header.tex \
-	@abs_srcdir@/data-ja/introduction.tex \
-	@abs_srcdir@/data-ja/m17n-basicC.tex \
-	@abs_srcdir@/data-ja/m17n-X.tex \
-	@abs_srcdir@/data-ja/m17n-database.tex \
-	@abs_srcdir@/data-ja/conclusion.tex
-
-LATEX_USR = data-usr/m17n-lib.sty
-
-LATEX_DEV = ${STYLEPATH}/doxygen-m17n.sty \
-	@abs_srcdir@/data-dev/header.tex \
-	@abs_srcdir@/data-dev/conclusion.tex
+PROJECT_NAME_EN = "The M17N Library"
+PROJECT_NAME_JA = "M17N 多言語ライブラリ"
 
 DOXYGEN = doxygen
 
-PROJECT_NAME_EN = "The M17N Library"
-PROJECT_NAME_JA = "Unix/Linux 用多言語ライブラリ"
-
-notarget:
-	@echo "Please specify one of the following targets:"
-	@echo "  usr-latex ja-latex dev-latex"
-	@echo "  usr-html ja-html dev-html"
-	@echo "  usr ja dev"
-	@echo "  all"
-
-all: usr ja dev man
+all: usr ja dev
 
 usr-html html-usr: usr/html/index.html
 ja-html html-ja: ja/html/index.html
@@ -52,81 +26,73 @@ usr: html-usr latex-usr man-usr
 ja: html-ja latex-ja
 dev: html-dev latex-dev
 
-doxyfile-html.usr: doxyfile Makefile
-	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
-	    -e 's/%USR_JA_DEV%/usr/' \
-	    -e 's/%INPUT_FILTER%/usr/' \
-	    -e 's/%OUTPUT_LANGUAGE%/English/' \
-	    -e 's|%GENERATE_HTML%|YES|' \
+doxyfile-html: doxyfile Makefile
+	sed -e 's|%GENERATE_HTML%|YES|' \
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-html.dev: doxyfile Makefile
+doxyfile-html.usr: doxyfile-html Makefile
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
-	    -e 's/%USR_JA_DEV%/dev/' \
-	    -e 's/%INPUT_FILTER%/dev/' \
+	    -e 's/%USR_JA_DEV%/usr/g' \
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
-	    -e 's|%GENERATE_HTML%|YES|' \
-	    -e 's|%GENERATE_LATEX%|NO|' \
-	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-html.ja: doxyfile Makefile
+doxyfile-html.dev: doxyfile-html Makefile
+	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
+	    -e 's/%USR_JA_DEV%/dev/g' \
+	    -e 's/%OUTPUT_LANGUAGE%/English/' \
+	  < $< >$@
+
+doxyfile-html.ja: doxyfile-html Makefile
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_JA}|' \
-	    -e 's/%USR_JA_DEV%/ja/' \
-	    -e 's/%INPUT_FILTER%/ja/' \
+	    -e 's/%USR_JA_DEV%/ja/g' \
 	    -e 's/%OUTPUT_LANGUAGE%/Japanese/' \
-	    -e 's|%GENERATE_HTML%|YES|' \
-	    -e 's|%GENERATE_LATEX%|NO|' \
-	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-latex.usr: doxyfile Makefile
-	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
-	    -e 's/%USR_JA_DEV%/usr/' \
-	    -e 's/%INPUT_FILTER%/usr/' \
-	    -e 's/%OUTPUT_LANGUAGE%/English/' \
-	    -e 's|%GENERATE_HTML%|NO|' \
+doxyfile-latex: doxyfile Makefile
+	sed -e 's|%GENERATE_HTML%|NO|' \
 	    -e 's|%GENERATE_LATEX%|YES|' \
 	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-latex.dev: doxyfile Makefile
+doxyfile-latex.usr: doxyfile-latex Makefile
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
-	    -e 's/%USR_JA_DEV%/dev/' \
-	    -e 's/%INPUT_FILTER%/dev/' \
+	    -e 's/%USR_JA_DEV%/usr/g' \
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
-	    -e 's|%GENERATE_HTML%|NO|' \
-	    -e 's|%GENERATE_LATEX%|YES|' \
-	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-latex.ja: doxyfile Makefile
+doxyfile-latex.dev: doxyfile-latex Makefile
+	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
+	    -e 's/%USR_JA_DEV%/dev/g' \
+	    -e 's/%OUTPUT_LANGUAGE%/English/' \
+	  < $< >$@
+
+doxyfile-latex.ja: doxyfile-latex Makefile
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_JA}|' \
-	    -e 's/%USR_JA_DEV%/ja/' \
-	    -e 's/%INPUT_FILTER%/ja/' \
+	    -e 's/%USR_JA_DEV%/ja/g' \
 	    -e 's/%OUTPUT_LANGUAGE%/Japanese/' \
-	    -e 's|%GENERATE_HTML%|NO|' \
-	    -e 's|%GENERATE_LATEX%|YES|' \
-	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-man.usr: doxyfile Makefile
-	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
-	    -e 's/%USR_JA_DEV%/usr/' \
-	    -e 's/%INPUT_FILTER%/usr/' \
-	    -e 's/%OUTPUT_LANGUAGE%/English/' \
-	    -e 's|%GENERATE_HTML%|NO|' \
+doxyfile-man: doxyfile Makefile
+	sed -e 's|%GENERATE_HTML%|NO|' \
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|YES|' \
 	  < $< >$@
 
-%/html/index.html: doxyfile-html.% ${SRCFILES} data-%/mainpage.c m17n-lib.css
+doxyfile-man.usr: doxyfile-man Makefile
+	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
+	    -e 's/%USR_JA_DEV%/usr/g' \
+	    -e 's/%OUTPUT_LANGUAGE%/English/' \
+	  < $< >$@
+
+%/html/index.html: doxyfile-html.% ${SRCFILES} data-%/mainpage.txt data-%/dbformat.txt \
+			utils/%_filter.rb m17n-lib.css
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
-%/latex/refman.tex: doxyfile-latex.% ${SRCFILES} data-%/mainpage.c
+%/latex/refman.tex: doxyfile-latex.% ${SRCFILES} data-%/mainpage.txt data-%/dbformat.txt \
+			utils/%_filter.rb
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
@@ -140,9 +106,7 @@ doxyfile-man.usr: doxyfile Makefile
 %/latex/m17n-lib.pdf: %/latex/m17n-lib.tex data-%/m17n-lib.sty utils/latex.sh
 	utils/latex.sh `dirname $@ `pdflatex
 
-doxyhead.txt: sample.c utils/mkheaderlist.rb
-
-%/man/man3/m17nIntro.3m: doxyfile-man.% ${SRCFILES}
+%/man/man3/m17nIntro.3m: doxyfile-man.% ${SRCFILES} utils/%_filter.rb
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
@@ -155,7 +119,8 @@ man/man3m/%.3m: usr/man/man3/%.3m sample.c utils/mkman.rb
 	echo "MAN_OUTPUT = sample" >> doxytemp
 	echo "OPTIMIZE_OUTPUT_FOR_C  = yes" >> doxytemp
 	${DOXYGEN} doxytemp
-	[ -d "man/man3m" ] || mkdir -p man/man3m
+	[ -d man/man3m ] || mkdir -p man/man3m
+	rm -rf man/index.*
 	ruby utils/mkman.rb usr
 	rm -rf doxytemp sample
 
@@ -169,6 +134,7 @@ man/ja/man3m/%.3m: ja/man/man3/%.3m sample-ja.c utils/mkman.rb
 	echo "OPTIMIZE_OUTPUT_FOR_C  = yes" >> doxytemp
 	${DOXYGEN} doxytemp
 	[ -d "man/ja/man3m" ] || mkdir -p man/ja/man3m
+	rm -rf man/index.*
 	ruby utils/mkman.rb ja
 	rm -rf doxytemp sample
 
@@ -187,6 +153,8 @@ latex/m17n-lib.ps: usr/latex/m17n-lib.ps
 	cp usr/latex/m17n-lib.ps latex
 
 pack: latex/m17n-lib.ps html/index.html man/man3m/m17nIntro.3m dist
+
+.PRECIOUS: %/latex/m17n-lib.tex
 
 endif
 DISTFILES = latex html man 

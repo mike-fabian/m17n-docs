@@ -1,0 +1,67 @@
+;; FILE-FORMAT:
+;;	'('
+;;	CATEGORY-TABLE GENERATOR
+;;	( CATEGORY-TABLE ? GENERATOR ) *
+;;	')'
+;;
+;; CATEGORY-TABLE ::=
+;;	'(' 'category' CATEGORY-SPEC + ')'
+;;
+;; CATEGORY-SPEC ::=
+;;	'(' CODE CATEGORY-CODE ')'
+;;	|
+;;	'(' CODE CHAR-CODE CATEGORY-CODE ')'
+;;
+;; CATEGORY-CODE ::=
+;;	[ '?A' .. '?Z' '?a' .. '?z' ]
+;;
+;; GENERATOR ::=
+;;	'(' 'generator' REGEX-RULE RULE-DEF * ')'
+;;
+;; RULE-DEF ::=
+;;	'(' RULE-NAME ( REGEXP-RULE | MATCH-RULE | MAP-RULE ) ')'
+;;
+;; REGEXP-RULE ::=
+;;	'(' REGEXP RULE-SEQ ')' | RULE-NAME
+;; MATCH-RULE ::=
+;;	'(' MATCH-IDX RULE-SEQ ')' | RULE-NAME
+;;
+;; RULE-SEQ ::=
+;;	'(' ( REGEXP-RULE | MATCH-RULE | MAP-RULE | PREDEFINED ) ')'
+
+;; PREDEFIND ::= PREDEFIND-SIMLE | PREDEFIND-OTF
+;;
+;; PREDEFIND-SIMLE ::= '=' | '*' | '<' | '>' | '|'
+;;
+;; PREDEFIND-OTF ::= 'otf:SCRIPT-TAG[:LANGSYS-TAG]' 
+;;   where
+;;	SCRIPT-TAG is OTF's ScriptTag name (four letters) listed at:
+;;		<http://www.microsoft.om/typograph/otspec/scripttags.htm>
+;;	LANGSYS-TAG is OTF's Language System name (four letters) listed at:
+;;		<http://www.microsoft.om/typograph/otspec/languagetags.htm>
+;;   ex: 'otf:deva'
+;;
+;; MAP-RULE ::=
+;;	'(' ( SEQ-TO-SEQ | RANGE-TO-CODE ) + ')' | RULE-NAME
+;;
+;; SEQ-TO-SEQ ::=
+;;	'(' CODE + '-1' ( COMPOSITION-RULE ? CODE ) * ')'
+;; RANGE-TO-CODE ::=
+;;	'(' '(' CODE CODE ')' COMPOSITION-RULE ? CODE ')'
+;;
+;; COMPOSITION-RULE ::= 'VHOVH'
+;;	where V ::= ( 't' | 'c' | 'b' | 'B' )
+;;	      H ::= ( 'l' | 'c' | 'r' )
+;;	      O ::= ( '.' | XOFF | XOFF ? YOFF )
+;;	      XOFF ::= ('+' | '-') DIGITS
+;;	      YOFF ::= ('<' | '>') DIGITS
+;;   Ex: 'tc+bc', 'Bl-10<20Br'
+;;
+;; Semantics of predefiend commands:
+;;
+;;  '*': repeat the previous command if the command was successful.
+;;  '<': start grapheme cluster
+;;  '>': end grapheme cluster
+;;  '|': produce a special glyph whose code has category-code ' '.
+;;  '=': use the first glyph of the current run as is.
+;;

@@ -1,0 +1,337 @@
+;; FILE-FORMAT ::=
+;;	TITLE MAP-LIST MODULE-LIST ? STATE-LIST
+;;
+;; TITLE ::=
+;;	'(' title MTEXT ')'
+;;
+;; MAP-LIST ::=
+;;	'(' 'map' MAP * ')'
+;;
+;; MAP ::=
+;;	'(' MAP-NAME RULE * ')'
+;;
+;; MAP-NAME ::=
+;;	SYMBOL
+;;
+;; RULE ::=
+;;	'(' KEYSEQ MAP-ACTION * ')'
+;;
+;; KEYSEQ ::=
+;;	MTEXT | '(' [ SYMBOL | INTEGER ] * ')'
+;;
+;; MAP-ACTION ::=
+;;	ACTION
+;;
+;; ACTION ::=
+;;	MTEXT | CANDIDATES | '(' ACTION-NAME ACTION-ARG * ')'
+;;
+;; CANDIDATES ::=
+;;	'(' CANDIDATE-GROUP * ')'
+;;
+;;   (in ASCTION,
+;;	MTEXT is a short form of "(insert MTEXT)"
+;;	CANDIDATES is a short form of "(candidates CANDIDATE-GROUP *)")
+;;
+;; ACTION-NAME ::=
+;;	'insert' | 'candidates' | 'delete' | 'select' | 'select-group'
+;;	| 'move' | 'mark' | 'pushback' | 'undo' | 'shift' | 'call'
+;;
+;; ACTION-ARG ::=
+;;	INTEGER | SYMBOL | MTEXT | CANDIDATE-GROUP
+;;
+;; CANDIDATE-GROUP ::=
+;;	MTEXT | '('  MTEXT * ')'
+;;
+;; PREDEFINED-SYMBOL ::=
+;;	'@0' | '@1' | '@2' | '@3' | '@4' | '@5' | '@6' | '@7' | '@8' | '@9'
+;;	| '@<' | '@=' | '@>' | '@-' | '@+'
+;;
+;; MARKER ::=
+;;	PREDEFINED-SYMBOL | SYMBOL
+;;
+;; CANDIDATE-INDEX ::=
+;;	PREDEFINED-SYMBOL
+;;
+;; CANDIDATE-GROUP-INDEX ::=
+;;	PREDEFINED-SYMBOL
+
+;; ;; The first five actions ('insert' .. 'select-group') are for
+;; ;; editing a text in the preediting buffer.  The buffer can keep
+;; ;; multiple markers.  Each marker is represented by a symbol, and
+;; ;; keeps a position between characters in the preediting buffer.
+
+;; ;; PREDEFINED-SYMBOL has special meanings when used as MARKER:
+;; ;;   '@0', '@1', ... '@9'
+;; ;;      The 0th, 1th, ... 9th position.
+;; ;;   '@<', '@=', '@>'
+;; ;;      The first, current, and end position.
+;; ;;   '@-', '@+'
+;; ;;      The previous and next position.
+
+;; ;; PREDEFINED-SYMBOL has special meanings when used as CANDIDATE-INDEX:
+;; ;;   '@0', '@1', ... '@9'
+;; ;;      The 0th, 1th, ... 9th candidate of the current candidate group.
+;; ;;   '@<', '@=', '@>'
+;; ;;      The first, current, and end candidate of the current candidate
+;; ;;      group.
+;; ;;   '@-'
+;; ;;      The previous candidate.  If the current candidate is the
+;; ;;      first of the current candidate group, the last candidate of
+;; ;;      the previous candidate group.
+;; ;;   '@+'
+;; ;;      The next candidate.  If the current candidate is the last of
+;; ;;      the current candidate group, the first candidate of the
+;; ;;      previous candidate group.
+
+;; ;; PREDEFINED-SYMBOL has special meanings when used as CANDIDATE-INDEX:
+;; ;;   '@0', '@1', ... '@9'
+;; ;;      The 0th, 1th, ... 9th candidate of the current candidate group.
+;; ;;   '@<', '@=', '@>'
+;; ;;      The first, current, and end candidate of the current candidate
+;; ;;      group.
+;; ;;   '@-'
+;; ;;      The previous candidate.  If the current candidate is the
+;; ;;      first of the current candidate group, the last candidate of
+;; ;;      the previous candidate group.
+;; ;;   '@+'
+;; ;;      The next candidate.  If the current candidate is the last of
+;; ;;      the current candidate group, the first candidate of the
+;; ;;      previous candidate group.
+
+;; ;; PREDEFINED-SYMBOL has special meanings when used as
+;; ;; CANDIDATE-GROUP-INDEX:
+;; ;;   '@0', '@1', ... '@9'
+;; ;;      The 0th, 1th, ... 9th candidate group.
+;; ;;   '@<', '@=', '@>'
+;; ;;      The first, current, and end candidate group.
+;; ;;   '@-', '@+'
+;; ;;      The previous and the next candidate group.
+
+;; ;; (insert MTEXT) inserts MTEXT before @=.
+
+;; ;; (candidates CANDIDATE-GROUP *) set the current candidates list
+;; ;; to the list of arguments, set the current candidate group to the
+;; ;; first argument, insert the first candidate of the current group
+;; ;; before @=, and mark the inserted text as the current candidate.
+;; ;; Each element of CANDIDATE-GROUP represents a candidate, i.e. if
+;; ;; CANDIDATE-GROUP is MTEXT, each character in MTEXT is a
+;; ;; candidate, if CANDIDATE-GROUP is a list of MTEXT, each MTEXT is
+;; ;; a candidate.
+
+;; ;; (select CANDIDATE-INDEX) replaces the current candidate with
+;; ;; what specified by CANDIDATE-INDEX.  If a candidate of the
+;; ;; different candidate group is specified, set the current
+;; ;; candidate group to that group.
+
+;; ;; (select-group CANDIDATE-GROUP-INDEX) sets the current candidate
+;; ;; group to a group indicated by CANDIDATE-GROUP-INDEX, and relaces
+;; ;; the current candiate with the candiate of the same index in the
+;; ;; new group.
+
+;; ;; (delete MARKER) deletes characters between @= and the position
+;; ;; specified by MARKER.
+
+;; ;; (move MARKER) sets @= to the position of specified by MARKER.
+
+;; ;; (mark MARKER) sets MARKER to the position of @=.  MARKER must
+;; ;; not be PREDEFINED-SYMBOL.
+
+;; ;; (pushback) pushbacks the latest key events to the event queue.
+
+;; ;; (undo) cancels the last key events.
+
+;; ;; (shift STATE-NAME) shifts the current state to the state
+;; ;; specified by STATE-NAME.
+
+;; ;; (call FUNCTION ARG *) calls the function FUNCTION of an external
+;; ;; module.  FUNCTION must be defined in MODULE-LIST.
+
+;; ;; The function is called with a property list (MPlist *) that has
+;; ;; these properties in this order.
+;; ;;   KEY		VALUE
+;; ;;   ---		-----
+;; ;;   mtext		The current preedit text.
+;; ;;   symbol		The current state name (MSymbol).
+;; ;; The remaining properties (if any) are ARGs.
+;; ;;
+;; ;; The function must return a property list (MPlist *) that
+;; ;; represents a list of ACTIONs to take.
+
+;; MODULE-LIST ::=
+;;	'(' 'module' MODULE * ')'
+;;
+;; MODULE ::=
+;;	'(' MODULE-NAME FUNCTION * ')'
+;;
+;; MODULE-NAME ::=
+;;	MTEXT
+;;
+;; FUNCTION ::=
+;;	SYMBOL
+
+;; STATE-LIST ::=
+;;   '(' 'state' STATE * ')'
+;;
+;; STATE ::=
+;;	'(' STATE-NAME BRANCH * ')'
+;;
+;; STATE-NAME ::=
+;;	SYMBOL
+;;
+;; BRANCH ::=
+;;	'(' [ MAP-NAME | 'nil' ]  BRANCH-ACTION * ')'
+
+;; ;; If MAP-NAME is specified, it must be a name of a map defined in
+;; ;; MAP-LIST.  Otherwise, BRANCH is the default branch of STATE.
+
+;; BRANCH-ACTION ::=
+;;	ACTION
+
+
+;; Example:
+
+(title "sample")
+(maps
+ (single
+  ("a" "A")
+  ("b" "B"))
+ (double
+  ("bb" (("BB" "Bb"))))
+ (select
+  ((Left) (select @-))
+  ((Right) (select @+))))
+
+(states
+ (init
+  (single)
+  (double (shift selection)))
+ (selection
+  (select)))
+  
+;; When this input method is loaded, the following state transition
+;; machine is created.
+
+;; STATE-TRANSITION-MACHINE ::=
+;;	'(' STATE-NAME ROOT-MAP ')' *
+;; ROOT-MAP ::= TRANSITION-MAP
+;; TRANSITION-MAP ::=
+;;	'(' INDEX [ KEY | 'nil' ]
+;;	    MAP-ACTIONS TRANSITION-MAPS BRANCH-ACTIONS ')'
+;; TRANSITION-MAPS ::=
+;;	'(' TRANSITION-MAP * ')'
+;; MAP-ACTIONS ::=
+;;	'(' MAP-ACTION * ')'
+;; BRANCH-ACTIONS ::=
+;;	'(' BRANCH-ACTION * ')'
+
+(init
+ (#0 nil nil
+    ((#1 'a' ((insert "A")) nil nil)
+     (#2 'b' ((insert "B"))
+	((#3 'b' ((candidates (("BB" "Bb")))) nil (shift selection)))
+	nil))
+    nil))
+(selection
+ (#4 nil nil
+     ((#5 'Left' ((delete @<) (select @-)) nil nil)
+      (#6 'Right' ((delete @<) (select @+)) nil nil))
+    nil))
+
+;; The state transition machine keeps these things:
+;; STATE: the current state, initially 'init'.
+;; MAP: current transition map, initially #0.
+;; PREEDIT: the preediting buffer, initially empty.
+;; MARKERS: the positions assigned to each marker, @= is initially 0.
+;; PRODUCED: the produced text, initially empty.
+;; CANDIDATE-LIST: the current candidate group list, initially NULL.
+;; CANDIDATE-GROUP: the current candidate group, initially NULL.
+;; CANDIDATE: the the current candidate, initially NULL.
+;;
+;; When MAP is changed to the root map of the initial state, PREEDIT
+;; is concatenated to PRODUCED and reset to empty.  This way, the
+;; machine produces a text.
+;;
+;; The machine accepts one key KEY, handles it while updating internal
+;; information, and return 'nil' (if KEY is correctly handled) or KEY
+;; (if KEY can't be handled in the machine).
+
+;; Here we describes how the key sequence:
+;;	'a' 'b' 'b' 'Right' 'b' 'a'
+;; is handled by the machine and "aBbba" is produced.
+
+;; 'a' arrives.
+;;
+;; Lookup the transition maps of #0 for 'a' and find #1.  Change MAP
+;; to #1.  Perform its map actions.  Now PREEDIT contains "a".  As it
+;; has no sub transition maps, no branch actions, no state to shift,
+;; change MAP to #0, the root map of the current state.
+;;
+;; As we have changed MAP to the root map of the initial map,
+;; concatenate PREEDIT to PRODUCED, and reset PREEDIT to empty.
+;;
+;; Now we have consumed the key.  As MAP has sub transition maps, wait
+;; for the next key.
+
+;; 'b' arrives.
+;;
+;; Lookup #0 for 'b' and find #2.  Change MAP to #2.  Perform the map
+;; actions.  Now, PREEDIT contains "B".  As it has sub transition
+;; maps, and we have consumed the key, wait for the next key.
+
+;; 'b' arrives.
+;;
+
+;; Lookup #2 for 'b' and find #3.  Cancel the change in PREEDIT done
+;; by the map actions of #2, and change MAP to #3.  Perform the map
+;; actions.  Now, PREEDIT is "BB", CANDIDATE-LIST is (("BB" "Bb")),
+;; CANDIDATE is "BB".  As #3 has no sub transition maps and no branch
+;; actions, change STATE to 'selection' and change MAP to #4, the root
+;; map of 'selection'.  As it has sub transition maps, and we have
+;; consumed the key.  Wait for the next key.
+
+;; 'Right' arrives.
+;;
+;; Lookup #4 for 'Right' and find #5.  Change MAP to #5.  Perform the
+;; map actions.  Now PREEDIT is "Bb".  As #5 has no sub transition
+;; maps, no branch actions, no state to shift, change MAP to #4 (the
+;; initial map of the current state 'selection'.
+;;
+;; As #4 has sub transition maps, and we have consumed the key.  Wait
+;; for the next key.
+
+;; 'b' arrives.
+;;
+;; Lookup #4 for 'b' and fail.  As #4 has no branch maps, no shift to
+;; transit, change STATE to 'init', MAP to #0.
+;;
+;; As we have changed MAP to the root map of the initial map,
+;; concatenate PREEDIT to PRODUCED, and reset PREEDIT to empty.  Now
+;; PRODUCED has "aBb".
+;;
+;; As we have not yet consumed the key 'b', handle it in MAP (#0).
+;;
+;; Lookup #0 for 'b' and find #2.  Change MAP to #2.  Perform the map
+;; actions.  Now, PREEDIT contains "B".  As it has sub transition
+;; maps, and we have consumed the key, wait for the next key.
+
+;; 'a' arrives.  Lookup #2 for 'a' and fail.  As #2 has no branch
+;; actions, no state to shift, Change MAP to #0, the root map of the
+;; current state.
+;;
+;; As we have changed MAP to the root map of the initial map,
+;; concatenate PREEDIT to PRODUCED, and reset PREEDIT to empty.  Now
+;; PRODUCED has "aBbb".
+;;
+;; As we have not yet consumed the key 'a', handle it in MAP (#0).
+;;
+;; Lookup #0 for 'a' and find #1.  Change MAP to #1.  Perform its map
+;; actions.  Now PREEDIT contains "a".  As it has no sub transition
+;; maps, no branch actions, no state to shift, change MAP to #0, the
+;; root map of the current state.
+;;
+;; As we have changed MAP to the root map of the initial map,
+;; concatenate PREEDIT to PRODUCED, and reset PREEDIT to empty.  Now
+;; PRODUCED has "aBbba".
+
+;; Now we have consumed the key.  As MAP has sub transition maps, wait
+;; for the next key.

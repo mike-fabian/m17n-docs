@@ -1,0 +1,115 @@
+/*** @addtogroup m17nDatabase */
+////
+/*** @{ */
+////
+/***@defgroup m17nDatabaseFormat DatabaseFormat
+
+This section describes the formats of predefined @e plist @e type data
+in the m17n database.
+
+@section general General format
+
+The m17n library expects that the function mdatabase_load () returns a
+plist of a specific format on loading data identified by a specific
+set of tags.  As the plist format used for the database data is
+strongly limited, we can use the equivalent text of simple syntax
+(S-expression) to represent the plist as below.
+
+The text consists of one or more @e elements .  Each element
+represents a property, i.e. a single element of a plist, and the
+sequence of the elements constitute a plist.
+
+Elements are separated by one or more @e whitespaces, i.e. a space
+(code 32), a tab (code 9), or a newline (code 10).  Comments begin
+with a semicolon (<tt>;</tt>) and extend to the end of the line.
+
+The key and the value of each property are determined based on the
+form of element as below:
+
+<ul>
+
+<li> INTEGER
+
+An element that matches the regular expression @c -?[0-9]+ or @c
+0[xX][0-9A-Fa-f]+ represents a property whose key is @c Minteger .  An
+element matching the former expression is interpreted as an integer in
+decimal notation, and one matching the latter expression is
+interpreted as an integer in hexadecimal notation.  The resulting
+integer is the value of the property.
+
+For instance, the element 0xA0 represents a property whose value is
+the integer 160.
+
+<li> SYMBOL
+
+An element that matchs the regular expression @c
+[^-0-9(]([^\\()]|\\.)+ represents a property whose key is @c Msymbol .
+In the sequence, @c \\t , @c \\n , @c \\r , and @c \\e are replaced
+with tab (code 9), newline (code 10), carriage return (code 13), and
+escape (code 27) respectively.  Other characters following a backslash
+is interpreted as it is.  The symbol having the name of the resulting
+sequence is the value of the property.
+
+For instance, the element <tt>abc\ def</tt> represents a property
+whose value is the symbol of name "abc def".
+
+<li> M-TEXT
+
+An element that matches the regular expression @c "([^"]|\\")*"
+represents a property whose key is @c Mtext .  The backslash escape
+explained above also applies here.  Moreover, each part in the
+sequence matching the regular expression @c
+\\[xX][0-9A-Fa-f][0-9A-Fa-f] is replaced with its hexadecimal
+interpretation.
+
+After having resolved the backslash escapes, the byte sequence between
+the double quotes is interpreted as a UTF-8 sequence and decoded into
+an M-text.  This M-text is the value of the property.
+
+<li> PLIST
+
+An element that is preceded by a left parenthesis, followed zero or
+more elements, and terminated by a right parenthesis represents a
+property whose key is @c Mplist .  Parentheses also serve as a
+separator, which means whitespaces before and after a parenthesis can
+be omitted.  The value of the property is a plist, which is the result
+of recursive interpretation of the elements between the parentheses.
+
+</ul>
+
+EXAMPLE
+
+Suppose (K1:V1, K2:V2, ... ,Kn:Vn) represents a plist whose first
+property key and value are K1 and V1, second key and value are K2 and
+V2, and so on.  Then the line:
+@verbatim
+abc 123 (pqr 0xff) "m\"text" (_\\_ ("string" xyz) -456)
+@endverbatim
+is interpreted as follows.
+@verbatim
+(Msymbol:abc,
+ Minteger:123,
+ Mplist:(Msymbol:pqr,
+         Minteger:255),
+ Mtext:m"text,
+ Mplist:(Msymbol:_\_,
+         Mplist:(Mtext:string,
+                 Msymbol:xyz),
+         Minteger:-456))
+@endverbatim
+
+The default database loader of the m17n library actually read a text
+of this syntax from the database file.
+
+Here after we describes the plist format of each data by this syntax.
+
+@section flt Font Layout Table
+
+@verbinclude flt.txt
+
+@section im Input Method
+
+@verbinclude im.txt */
+////
+/*** @} */
+////
