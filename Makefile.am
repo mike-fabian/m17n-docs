@@ -125,7 +125,7 @@ doxyfile-man.usr: doxyfile
 	    -e 's|%GENERATE_MAN%|YES|' \
 	  < $< >$@
 
-%/html/index.html: doxyfile-html.% ${SRCFILES}
+%/html/index.html: doxyfile-html.% ${SRCFILES} m17nlib.css
 	${DOXYGEN} $<
 
 %/latex/refman.tex: doxyfile-latex.% ${UTILPATH}/refman-filter.awk ${SRCFILES}
