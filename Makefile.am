@@ -92,7 +92,7 @@ SRCALL = \
 	data/dbdata.txt fdl.txt
 
 DBDATA = $(shell echo @M17NDB@/*.{dir,mim,flt,fst,tbl})
-DBIMAGE = $(shell echo @M17NDB@/FORMATS/*.png)
+DBIMAGE = $(shell echo @M17NDB@/FORMATS/*.png @M17NDB@/FORMATS/*.eps)
 
 HTML_USR_TARGET = usr/html/index.html usr/html/parrot.png
 HTML_JA_TARGET = ja/html/index.html ja/html/parrot.png
