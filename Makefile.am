@@ -115,8 +115,8 @@ usr-latex latex-usr: ${LATEX_USR_TARGET}
 ja-latex latex-ja: ${LATEX_JA_TARGET}
 dev-latex latex-dev: ${LATEX_DEV_TARGET}
 
-MAN_USR_TARGET = man/man1/m17n-config.1 man/man3/m17nIntro.3m17n man/man5/m17nDBgeneral.5
-MAN_JA_TARGET = man/ja/man1/m17n-config.1 man/ja/man3/m17nIntro.3m17n man/ja/man5/m17nDatabaseFormat.5
+MAN_USR_TARGET = man/man1/m17n-config.1 man/man3/m17nIntro.3m17n man/man5/mdbGeneral.5
+MAN_JA_TARGET = man/ja/man1/m17n-config.1 man/ja/man3/m17nIntro.3m17n man/ja/man5/mdbGeneral.5
 MAN_TARGET = ${MAN_USR_TARGET} ${MAN_JA_TARGET}
 
 usr-man man-usr: ${MAN_USR_TARGET}
@@ -263,7 +263,7 @@ data/m17n-config.txt: @M17NLIB@/m17n-config.in
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
-%/man/man5/m17nDBgeneral.5: doxyfile-man5.% ${MAN5} utils/%_filter.rb
+%/man/man5/mdbGeneral.5: doxyfile-man5.% ${MAN5} utils/%_filter.rb
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
