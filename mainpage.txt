@@ -95,7 +95,7 @@ library by -lm17n.  See @ref m17nIntro @latexonly
 
 <m17n.h> をプログラムに include し、-lm17n で m17n ライブラリとリンク
 してください。 @ref m17nIntro を参照。@latexonly
-(P.\pageref{group__m17nIntro}) @endlatexonly for the detail.  */
+(P.\pageref{group__m17nIntro}) @endlatexonly  */
 
 /***en @section extralib External libraries and data 
 
