@@ -8,29 +8,27 @@ if MAINTAINER_MODE
 
 SRCFILES = $(shell echo @M17NLIB@/src/*.[ch])
 
-STYLEPATH = @srcdir@/styles
-UTILPATH = @srcdir@/utils
+STYLEPATH = @abs_srcdir@/styles
+UTILPATH = @abs_srcdir@/utils
 
 LATEX_JA = ${STYLEPATH}/doxygen-m17n.sty \
-	@srcdir@/data-ja/header.tex \
-	@srcdir@/data-ja/introduction.tex \
-	@srcdir@/data-ja/m17n-basicC.tex \
-	@srcdir@/data-ja/m17n-X.tex \
-	@srcdir@/data-ja/m17n-database.tex \
-	@srcdir@/data-ja/conclusion.tex
+	@abs_srcdir@/data-ja/header.tex \
+	@abs_srcdir@/data-ja/introduction.tex \
+	@abs_srcdir@/data-ja/m17n-basicC.tex \
+	@abs_srcdir@/data-ja/m17n-X.tex \
+	@abs_srcdir@/data-ja/m17n-database.tex \
+	@abs_srcdir@/data-ja/conclusion.tex
 
 LATEX_USR = ${STYLEPATH}/doxygen-m17n.sty \
-	@srcdir@/data-usr/header.tex
+	@abs_srcdir@/data-usr/header.tex
 
 LATEX_DEV = ${STYLEPATH}/doxygen-m17n.sty \
-	@srcdir@/data-dev/header.tex
+	@abs_srcdir@/data-dev/header.tex
 
 DOXYGEN = doxygen
 
 PROJECT_NAME_EN = "Multilingual Library for Unix/Linux"
 PROJECT_NAME_JA = "Unix/Linux 用多言語ライブラリ"
-
-PROJECT_NUMBER = 1.0
 
 LATEX_HEADER_JA = header.tex
 LATEX_HEADER_EN =
@@ -42,7 +40,7 @@ notarget:
 	@echo "  usr ja dev"
 	@echo "  all"
 
-all: usr ja dev
+all: usr ja dev man
 
 usr-html html-usr: usr/html/index.html
 ja-html html-ja: ja/html/index.html
@@ -55,88 +53,103 @@ dev-latex latex-dev: dev/latex/refman.ps
 usr: html-usr latex-usr
 ja: html-ja latex-ja
 dev: html-dev latex-dev
+man: man/man3/m17nIntro.3
 
-doxyfile-html.usr: @srcdir@/doxyfile ${SRCFILES}
-	umask 002; \
+doxyfile-html.usr: @abs_srcdir@/doxyfile ${SRCFILES}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
-	    -e 's/%PROJECT_NUMBER%/${PROJECT_NUMBER}/' \
-	    -e 's/%DEV_OR_USR_OR_JA%/usr/' \
+	    -e 's/%USR_JA_DEV_MAN%/usr/' \
+	    -e 's/%INPUT_FILTER%/usr/' \
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
 	    -e 's|%GENERATE_HTML%|YES|' \
 	    -e 's|%GENERATE_LATEX%|NO|' \
+	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-html.dev: @srcdir@/doxyfile ${SRCFILES}
-	umask 002; \
+doxyfile-html.dev: @abs_srcdir@/doxyfile ${SRCFILES}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
-	    -e 's/%PROJECT_NUMBER%/${PROJECT_NUMBER}/' \
-	    -e 's/%DEV_OR_USR_OR_JA%/dev/' \
+	    -e 's/%USR_JA_DEV_MAN%/dev/' \
+	    -e 's/%INPUT_FILTER%/dev/' \
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
 	    -e 's|%GENERATE_HTML%|YES|' \
 	    -e 's|%GENERATE_LATEX%|NO|' \
+	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-html.ja: @srcdir@/doxyfile ${SRCFILES}
-	umask 002; \
+doxyfile-html.ja: @abs_srcdir@/doxyfile ${SRCFILES}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_JA}|' \
-	    -e 's/%PROJECT_NUMBER%/${PROJECT_NUMBER}/' \
-	    -e 's/%DEV_OR_USR_OR_JA%/ja/' \
+	    -e 's/%USR_JA_DEV_MAN%/ja/' \
+	    -e 's/%INPUT_FILTER%/ja/' \
 	    -e 's/%OUTPUT_LANGUAGE%/Japanese/' \
 	    -e 's|%GENERATE_HTML%|YES|' \
 	    -e 's|%GENERATE_LATEX%|NO|' \
+	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-latex.usr: @srcdir@/doxyfile ${SRCFILES}
-	umask 002; \
+doxyfile-html.man: @abs_srcdir@/doxyfile ${SRCFILES}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
-	    -e 's/%PROJECT_NUMBER%/${PROJECT_NUMBER}/' \
-	    -e 's/%DEV_OR_USR_OR_JA%/usr/' \
+	    -e 's/%USR_JA_DEV_MAN%/man/' \
+	    -e 's/%INPUT_FILTER%/usr/' \
+	    -e 's/%OUTPUT_LANGUAGE%/English/' \
+	    -e 's|%GENERATE_HTML%|NO|' \
+	    -e 's|%GENERATE_LATEX%|NO|' \
+	    -e 's|%GENERATE_MAN%|YES|' \
+	  < $< >$@
+
+doxyfile-latex.usr: @abs_srcdir@/doxyfile ${SRCFILES}
+	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
+	    -e 's/%USR_JA_DEV_MAN%/usr/' \
+	    -e 's/%INPUT_FILTER%/usr/' \
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
 	    -e 's|%GENERATE_HTML%|YES|' \
 	    -e 's|%GENERATE_LATEX%|YES|' \
+	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-latex.dev: @srcdir@/doxyfile ${SRCFILES}
-	umask 002; \
+doxyfile-latex.dev: @abs_srcdir@/doxyfile ${SRCFILES}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
-	    -e 's/%PROJECT_NUMBER%/${PROJECT_NUMBER}/' \
-	    -e 's/%DEV_OR_USR_OR_JA%/dev/' \
+	    -e 's/%USR_JA_DEV_MAN%/dev/' \
+	    -e 's/%INPUT_FILTER%/dev/' \
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
 	    -e 's|%GENERATE_HTML%|YES|' \
 	    -e 's|%GENERATE_LATEX%|YES|' \
+	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-latex.ja: @srcdir@/doxyfile ${SRCFILES}
-	umask 002; \
+doxyfile-latex.ja: @abs_srcdir@/doxyfile ${SRCFILES}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_JA}|' \
-	    -e 's/%PROJECT_NUMBER%/${PROJECT_NUMBER}/' \
-	    -e 's/%DEV_OR_USR_OR_JA%/ja/' \
+	    -e 's/%USR_JA_DEV_MAN%/ja/' \
+	    -e 's/%INPUT_FILTER%/ja/' \
 	    -e 's/%OUTPUT_LANGUAGE%/Japanese/' \
 	    -e 's|%GENERATE_HTML%|YES|' \
 	    -e 's|%GENERATE_LATEX%|YES|' \
+	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
 %/html/index.html: doxyfile-html.%
-	umask 002; \
 	${DOXYGEN} $<
 
 %/latex/refman.tex: doxyfile-latex.% ${UTILPATH}/refman-filter.awk
-	umask 002; \
 	${DOXYGEN} $<; \
 	awk -f ${UTILPATH}/refman-filter.awk < $@ > temp; \
 	mv temp $@
 
 ja/latex/refman.ps: ja/latex/refman.tex ${UTILPATH}/run-latex.sh ${LATEX_JA}
-	${UTILPATH}/run-latex.sh @srcdir@ ja
+	${UTILPATH}/run-latex.sh @abs_srcdir@ ja
 	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji ja
 
 usr/latex/refman.ps: usr/latex/refman.tex ${UTILPATH}/run-latex.sh ${LATEX_USR}
-	${UTILPATH}/run-latex.sh @srcdir@ usr
+	${UTILPATH}/run-latex.sh @abs_srcdir@ usr
 	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji usr
 
 dev/latex/refman.ps: dev/latex/refman.tex ${UTILPATH}/run-latex.sh ${LATEX_DEV}
-	${UTILPATH}/run-latex.sh @srcdir@ dev
+	${UTILPATH}/run-latex.sh @abs_srcdir@ dev
 	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji dev
+
+tmp/man3/m17nIntro.3: doxyfile-html.man
+	${DOXYGEN} $<
+
+man/man3/m17nIntro.3: tmp/man3/m17nIntro.3 ${UTILPATH}/mkman2.rb
+	cd tmp/man3; ${UTILPATH}/mkman2.rb 
 
 .PRECIOUS: %/latex/refman.tex
 
