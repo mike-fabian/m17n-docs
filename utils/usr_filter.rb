@@ -33,16 +33,22 @@ while gets
     	commentblock(buf)
     	buf = []
    
-     when /\/\*\s.*\*\//	# /* comment */ type comment
+     when /^\/\*\s.*\*\//	# /* comment */ type comment
 	if doxy == 1		
 	buf.push($_.gsub!(/\*\//, " ").gsub!(/\/\*/, "//")) # should be included only in the example code
+	end
+
+     when /\/\*\s.*\*\//	# code + /* comment */ type comment
+	if doxy == 1		
+	buf.push($_.gsub!(/\*\//, " ").gsub!(/\/\*/, "//")) # should be included in the example code
 	else
-          if doxy == 0 
+         if doxy == 0 
     	  commentblock(buf)
     	  buf = []
 	  print $_.gsub!(/\/\*\s.*\*\//," ")	            # should be omiited in code
 	  end
 	end
+
      when /\/\*{2,3}ja.*\*\//	#japanese one liner
      when /\/\*\*en.*\*\//	#one liner
      when /\/\*\*\*en.*\*\//	#one liner
