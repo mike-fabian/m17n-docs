@@ -1,8 +1,9 @@
 #!/bin/sh
 
 cat <<EOF
-/***en @page m17nExMim Example Input Methods
-
+/***en @page m17nExMim Example Input Methods */
+/***ja @page m17nExMim サンプル入力メソッド */
+/***
 This section describes these example input methods.  They are to
 demonstrate the usage of the m17n library, not for practical use.
 
@@ -21,3 +22,7 @@ sed -n -e '/;; \/\*\*\*/,/;; \*\// p' | \
 sed -e 's/;; *//' \
     -e 's/@section/@subsection/' \
     -e 's/@page \([^.]*\).mim/@section \1 \1.mim --/'
+
+# Local Variables:
+# coding: euc-jp
+# End:

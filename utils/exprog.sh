@@ -1,8 +1,9 @@
 #!/bin/sh
 
 cat <<EOF
-/***en @page m17nExProg Example Programs
-
+/***en @page m17nExProg Sample Programs */
+/***ja @page m17nExProg サンプルプログラム */
+/***
 This section describes these example programs.  They are to demonstrate
 the usage of the m17n library, not for practical use.
 
@@ -20,3 +21,7 @@ cat $* | \
 sed -n -e '/\/\*\*\*/,/\*\// p' | \
 sed -e 's/@section/@subsection/' \
     -e 's/@page \([^ ]*\)/@section \1 \1 --/'
+
+# Local Variables:
+# coding: euc-jp
+# End:

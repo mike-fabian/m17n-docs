@@ -18,12 +18,12 @@ while gets
   gsub!("@returns", "@par 戻り値:")
   gsub!("@return", "@par 戻り値:")
  #let doxygen find functions
-  gsub!(/[a-z_]\s\(\)/) {|m| m.delete!(" ")}
+  gsub!(/[a-zA-Z_]\s\(\)/) {|m| m.delete!(" ")}
  #make variables in function descriptions shown in bold
-  gsub!(/\$[A-Z_]+/) {|m| m.delete!("$").reverse.downcase!.concat(" e@").reverse}
+  gsub!(/\$[A-Z_]+/) {|m| m.delete!("$").reverse.downcase!.concat(" b@").reverse}
 
    case  $_
-     when /^$/
+     when /^\s*$/
 	if doxy == 1 
            buf.push($_)
 	   end
@@ -42,22 +42,24 @@ while gets
 	  end
 	end
      when /\/\*{2,3}en.*\*\//	#english one liner is omitted
-     when /\/\*{2,3}ja.*\*\//	#one liner
+     when /\/\*\*ja.*\*\//	#one liner
+     when /\/\*\*\*ja.*\*\//	#one liner
         buf.push($_.gsub!(/\/\*+ja/, " ").gsub!(/\*\//, " "))
-     when /\/\*{2,3}.*\*\//	#one liner
-        buf.push($_.gsub!(/\/\*+/, " ").gsub!(/\*\//, " "))
+     when /\/\*\*\s.*\*\//	#one liner
+     when /\/\*\*\*\s.*\*\//	#one liner
+        buf.push($_.gsub!(/\/\*+/, " ").gsub!(/\*\//, " ")).push("\n")
 
-     when /\/\*\s|\/\*{2,3}en/
+     when /\/\*{1,2}\s|\/\*{2,3}en|\/\*\*ja/  #this is not for Ja nor users
 	doxy = -1
-     when /\/\*{2,3}ja/
+     when /\/\*\*\*ja/
         buf.push($_.gsub!(/\/\*+ja/, " "))
 	doxy = 1
-     when /\/\*{2,3}/	
+     when /\/\*\*\*/	
         buf.push($_.gsub!(/\/\*+/, " "))
 	doxy = 1
 
      when /EXAMPLE_CODE/ 
-        buf.push($_.gsub!(/#if EXAMPLE_CODE/, "@par 例： \n @code \n"))
+        buf.push($_.gsub!(/#if EXAMPLE_CODE/, "\n \n @par 例： \n @code"))
 	doxy = 1
 
      when /#endif/
@@ -86,3 +88,9 @@ while gets
         end
    end
 end
+
+commentblock(buf)
+
+# Local Variables:
+# coding: euc-jp
+# End:

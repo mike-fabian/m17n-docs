@@ -1,8 +1,10 @@
-/***en
-@mainpage The M17N Library Documentation
+/***en @mainpage The M17N Library Documentation */	-*- coding: euc-jp; -*-
+/***ja @mainpage M17N ライブラリ */
 
-@section what What is the m17n library?
+/***en @section what What is the m17n library? */
+/***ja @section what M17N ライブラリとは? */
 
+/***
 The @e m17n @e library is a multilingual text processing library for
 the C language.
 
@@ -44,15 +46,17 @@ information efficiently.
 system.
 
 </ul>
-
-@section usage How to use it?
-
+*/
+/***en @section usage How to use it? */
+/***ja @section usage 利用法 */
+/***
 Just include <m17n.h> in your program, and link it with the m17n
 library by -lm17n.  See @ref m17nIntro @latexonly
-(P.\pageref{group__m17nIntro}) @endlatexonly for the detail.
+(P.\pageref{group__m17nIntro}) @endlatexonly for the detail.  */
 
-@section contact Contact us:
-
+/***en @section contact Contact us: */
+/***ja @section contact 連絡先 */
+/***
 Global IT Security Group\n
 National Information Technology Research Institute\n
 Institute of Advanced Industrial Science and Technology
@@ -64,9 +68,11 @@ Bug report: m17n-lib-bug@m17n.org
 Mailing list (English): m17n-lib@m17n.org
 
 Mailing list (Japanese): m17n-lib-ja@m17n.org
+*/
 
-@section Acknowledgements
-
+/***en @section ack Acknowledgements */
+/***ja @section ack 謝辞 */
+/***
 Special thanks to:
 
 <ul>
@@ -77,6 +83,5 @@ Author of Doxygen (<http://www.stack.nl/~dimitri/doxygen/>).  Without
 this tool, it would have been impossible to create this document.
 
 </ul>
-
 */
 
