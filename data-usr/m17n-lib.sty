@@ -1,5 +1,5 @@
 \ProvidesPackage{m17n-lib}
-%% Don't leave the space for marginal notes.
+%% Don't leave the space for marginal notes and foot notes.
 \setlength{\textwidth}{\paperwidth}
 \addtolength{\textwidth}{-2in}
 \setlength{\textheight}{\paperheight}
@@ -20,15 +20,9 @@
 \cfoot[]{}
 \def\footrule{}
 
-%% Use arabic numbers in the second level `enumerate' environment.
-\renewcommand\theenumii{\@arabic\c@enumii}
-
-%% Make each section start with a new page.
-\let\origsection\section
-\def\section{\cleardoublepage\origsection}
-
 %% Hook function to print credit and add subsections to TOC.
 \def\m17nhook{
+\newpage
 \thispagestyle{empty}
 \vspace*{\fill}
 Copyright (C) 2003\\
@@ -51,15 +45,12 @@ You should have received a copy of the GNU General Public License
 along with the m17n library; see the file COPYING.  If not, write to
 the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.
-\newpage%
-\setcounter{tocdepth}{2}%
-\setcounter{page}{1}%
 }
 
-%% Run the above hook before printing TOC.
-\let\origtableofcontents\tableofcontents
-\def\tableofcontents{\m17nhook\origtableofcontents\clearpage}
+%% Run the above hook in the back of the title page.
+\let\origendtitlepage\endtitlepage
+\def\endtitlepage{\m17nhook\origendtitlepage}
 
 %% Add Index section to the table of contents.
 \let\origprintindex\printindex
-\def\printindex{\addcontentsline{toc}{section}{Index}\origprintindex}
+\def\printindex{\addcontentsline{toc}{chapter}{Index}\origprintindex}

@@ -322,6 +322,6 @@ release: dist
 	cp ${distdir}.tar.gz ${FTPDIR}
 
 
-.PRECIOUS: %/latex/m17n-lib.tex %/man/man3/m17nIntro.3m ${SRCALL}
+.PRECIOUS: usr/latex/refman.tex usr/latex/m17n-lib.tex %/man/man3/m17nIntro.3m ${SRCALL}
 
 endif
