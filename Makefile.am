@@ -1,5 +1,28 @@
-#	-*- coding: euc-jp; -*-
-# This makefile is for maintainer only.
+# Makefile.am -- Makefile for the m17n library documentation.
+#						 -*- coding: euc-jp; -*-
+# Copyright (C) 2003
+#   National Institute of Advanced Industrial Science and Technology (AIST)
+#   Registration Number H15PRO112
+
+# This file is part of the m17n library documentation, a sub-part of
+# the m17n library.
+
+# The m17n library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2, or (at
+# your option) any later version.
+
+# The m17n library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with the m17n library; see the file COPYING.  If not, write to
+# the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+# Boston, MA 02111-1307, USA.
+
+## Process this file with Automake to create Makefile.in
 
 pkgdata_DATA = \
 	usr/html/index.html \
@@ -19,6 +42,9 @@ install-pkgdataDATA: $(pkgdata_DATA)
 	cd usr/man3m; \
 	  for f in *.3m; do $(INSTALL_DATA) $$f $(mandir)/man3m/$$f; done
 
+#
+# The followings are for maintainers only.
+#
 if MAINTAINER_MODE
 
 SRCFILES = $(shell echo @M17NLIB@/src/*.[ch] @M17NLIB@/example/README.txt)

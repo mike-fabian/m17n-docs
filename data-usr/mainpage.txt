@@ -7,7 +7,7 @@ the C language.
 
 <ul>
 
-<li> It is an open source software.
+<li> It is a free and open source software.
 
 <li> It is for any GNU/Linux and Unix applications/libraries.
 
