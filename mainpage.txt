@@ -103,22 +103,26 @@ The m17n library utilizes these external libraries.  They are not
 mandatory but several functions of the m17n library depend on them.
 
 <ul>
-<li> m17n-db -- http://www.m17n.org/m17n-lib/download/m17n-db-1.0.tar.gz
+<li> m17n-db -- http://www.m17n.org/m17n-lib/download/m17n-db-1.1.tar.gz
 
      Used by @ref m17nShell and @ref m17nGUI.
 
 <li> libxml2 -- http://xmlsoft.org/
 
      Used by the functions mtext_serialize () and mtext_deserialize ().
-     Those functions return NULL when libxml2 is not avairable,
+     Those functions return NULL when libxml2 is not available,
 
 <li> fribidi -- http://fribidi.sourceforge.net/
 
-     Used for BIDI processing.  If it is not avairable, the rendering
-     engine of the m17n library can't handle such scritp as Arabic and
+     Used for BIDI processing.  If it is not available, the rendering
+     engine of the m17n library can't handle such script as Arabic and
      Hebrew correctly.
 
 <li> freetype -- http://www.freetype.org/
+
+     Used for handling local fonts.
+
+<li> fontconfig -- http://nexp.cs.pdx.edu/fontconfig/
 
      Used for handling local fonts supported by the freetype library.
 
@@ -130,6 +134,10 @@ mandatory but several functions of the m17n library depend on them.
 
      Used for drawing text with local fonts by X Render Extension of X
      server in combination with fontconfig.
+
+<li> GD
+
+     Used for rendering text with local fonts on bitmap/pixmap.
 
 <li> libotf  -- http://www.m17n.org/libotf/
 
@@ -171,10 +179,9 @@ m17n ライブラリは以下の外部ライブラリを利用しています。必須ではありま
 
 <li> freetype -- http://www.freetype.org/
 
-     Freetype ライブラリでサポートされているローカルフォントの処理に使
-     います。
+     ローカルフォントの処理に使います。
 
-<li> fontconfig -- http://freedesktop.org/Software/fontconfig
+<li> fontconfig -- http://nexp.cs.pdx.edu/fontconfig/
 
      Xft と共に、ローカルフォントの検索に使います。
 
@@ -182,6 +189,10 @@ m17n ライブラリは以下の外部ライブラリを利用しています。必須ではありま
 
      fontconfig と共に X サーバの XRender 拡張を利用してテキストをロー
      カルフォントで表示するために使います。
+
+<li> GD
+     テキストをローカルフォントで bitmap/pixmal 上に表示するのに使いま
+     す。
 
 <li> libotf  -- http://www.m17n.org/libotf/
 
