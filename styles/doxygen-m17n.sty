@@ -62,9 +62,10 @@
 %% \catcode`\_11\relax
 
 %% Make each section start with a new page.
-%% \let\origsection\section
-%% \def\newsection{\cleardoublepage\origsection}
-%% \def\sectionOnNewpage{\let\section\newsection}
+\let\origsection\section
+\def\newsection{\cleardoublepage\origsection}
+\def\sectionOnNewpage{\let\section\newsection}
+\sectionOnNewpage
 
 %% Cross reference for IPA document.
 \def\IPAlabel#1{\label{IPA:#1}}
@@ -80,3 +81,11 @@
 %{\catcode`"=\active\gdef"{{\catcode`"=12\verb+"+}}}
 %\catcode`"=\active
 %\def\includegraphics[#1]#2{}
+
+\let\origtableofcontents\tableofcontents
+\def\tableofcontents{\setcounter{tocdepth}{2}
+\pagenumbering{roman}
+\origtableofcontents
+\pagenumbering{arabic}}
+
+\setcounter{tocdepth}{2}
