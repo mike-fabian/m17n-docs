@@ -68,7 +68,9 @@ EXAMPLE = \
 	@M17NLIB@/example/mview.c \
 	@M17NLIB@/example/mdate.c \
 	@M17NLIB@/example/mdump.c \
-	@M17NLIB@/example/medit.c
+	@M17NLIB@/example/medit.c \
+	@M17NLIB@/example/mimx-anthy.c \
+	@M17NLIB@/example/mimx-ispell.c
 
 DBFORMAT = \
 	@M17NDB@/FORMATS
@@ -85,24 +87,40 @@ MAN3 =	@M17NLIB@/src/m17n-core.h \
 MAN5 = ${DBFORMAT}
 
 SRCALL = \
-	data/mainpage.txt \
+	mainpage.txt \
 	${MAN3} \
 	data/m17n-config.txt data/example.txt data/dbformat.txt
 
-usr-html html-usr: usr/html/index.html usr/html/parrot.png
-ja-html html-ja: ja/html/index.html ja/html/parrot.png
-dev-html html-dev: dev/html/index.html dev/html/parrot.png
+HTML_USR_TARGET = usr/html/index.html usr/html/parrot.png
+HTML_JA_TARGET = ja/html/index.html ja/html/parrot.png
+HTML_DEV_TARGET = dev/html/index.html dev/html/parrot.png
+HTML_TARGET = ${HTML_USR_TARGET} ${HTML_JA_TARGET} ${HTML_DEV_TARGET}
 
-usr-latex latex-usr: usr/latex/m17n-lib.ps
-ja-latex latex-ja: ja/latex/m17n-lib.ps
-dev-latex latex-dev: dev/latex/m17n-lib.ps
+usr-html html-usr: ${HTML_USR_TARGET}
+ja-html html-ja: ${HTML_JA_TARGET}
+dev-html html-dev: ${HTML_DEV_TARGET}
 
-usr-man man-usr: man/man1/m17n-config.1 man/man3/m17nIntro.3m17n man/man5/m17nDatabaseFormat.5
-ja-man man-ja: ja/man3/m17nIntro.3m
+LATEX_USR_TARGET = usr/latex/m17n-lib.dvi usr/latex/m17n-lib.ps
+LATEX_JA_TARGET = ja/latex/m17n-lib.dvi ja/latex/m17n-lib.ps
+LATEX_DEV_TARGET = dev/latex/m17n-lib.dvi dev/latex/m17n-lib.ps
+LATEX_TARGET = ${LATEX_USR_TARGET} ${LATEX_JA_TARGET} ${LATEX_DEV_TARGET}
 
-usr: html-usr latex-usr man-usr
-ja: html-ja latex-ja
-dev: html-dev latex-dev
+usr-latex latex-usr: ${LATEX_USR_TARGET}
+ja-latex latex-ja: ${LATEX_JA_TARGET}
+dev-latex latex-dev: ${LATEX_DEV_TARGET}
+
+MAN_USR_TARGET = man/man1/m17n-config.1 man/man3/m17nIntro.3m17n man/man5/m17nDBgeneral.5
+MAN_JA_TARGET = man/ja//man1/m17n-config.1 man/ja//man3/m17nIntro.3m17n man/ja/man5/m17nDatabaseFormat.5
+MAN_TARGET = ${MAN_USR_TARGET} ${MAN_JA_TARGET}
+
+usr-man man-usr: ${MAN_USR_TARGET}
+ja-man man-ja: ${MAN_JA_TARGET}
+
+TARGET = ${HTML_TARGET} ${LATEX_TARGET} ${MAN_TARGET}
+
+usr: usr-html usr-latex usr-man
+ja: ja-html ja-latex ja-man
+dev: dev-html dev-latex
 
 doxyfile-html: doxyfile
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
@@ -189,14 +207,11 @@ doxyfile-man%.usr: doxyfile-man%
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
 	  < $< >$@
 
-data/mainpage.txt: data-usr/mainpage.txt
-	cp $< $@
-
-data/example.txt: ${MAN1} utils/example.sh
-	cat ${EXAMPLE} | utils/example.sh > $@
+data/example.txt: ${EXAMPLE} utils/example.sh
+	utils/example.sh ${EXAMPLE} > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
-	cat ${DBFORMAT}/*.txt | utils/dbformat.sh > $@
+	utils/dbformat.sh ${DBFORMAT}/*.txt > $@
 
 data/m17n-config.txt: @M17NLIB@/m17n-config.in
 	sed -n -e '/\/\*\*\*/,/\*\// p' < $< > $@
@@ -235,7 +250,7 @@ data/m17n-config.txt: @M17NLIB@/m17n-config.in
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
-%/man/man5/m17nDatabaseFormat.5: doxyfile-man5.% ${MAN5} utils/%_filter.rb
+%/man/man5/m17nDBgeneral.5: doxyfile-man5.% ${MAN5} utils/%_filter.rb
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
@@ -281,10 +296,10 @@ ja/man3m/%.3m: ja/man/man3/%.3m sample-ja.c utils/mkman.rb
 	ruby utils/mkman.rb ja
 	rm -rf doxytemp sample
 
-CLEANFILES=doxyfile-* *.tar.gz warning *~
+CLEANFILES=doxyfile-* ${TARGET} *.tar.gz warning *~
 
 clean-local:
-	rm -rf usr dev ja doxywork
+	rm -rf usr dev ja man doxywork
 
 WEBDIR = /project/web/extra/m17n-lib/m17n-docs
 

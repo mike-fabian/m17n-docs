@@ -1,4 +1,5 @@
-/***@mainpage The M17N Library Documentation
+/***en
+@mainpage The M17N Library Documentation
 
 @section what What is the m17n library?
 
@@ -64,4 +65,4 @@ Mailing list (English): m17n-lib@m17n.org
 
 Mailing list (Japanese): m17n-lib-ja@m17n.org
 */
-////
+
