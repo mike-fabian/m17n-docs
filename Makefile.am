@@ -223,7 +223,7 @@ data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
 data/exmim.txt: ${EXAMPLE_MIMS} utils/exmim.sh
 	utils/exmim.sh ${EXAMPLE_MIMS} > $@
 
-data/dbdata.txt: ${DBDATA} utils/dbdata.awk
+data/dbdata.txt: ${DBDATA} @M17NDB@/mdb.dir utils/dbdata.awk
 	@AWK@ -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
