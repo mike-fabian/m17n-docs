@@ -1,8 +1,19 @@
-This directory tree holds version 0.9 of the documentation of the m17n library.
+This directory tree holds version 0.9 of the m17n library documentation.
 
-   Copyright (C) 2003
-     National Institute of Advanced Industrial Science and Technology (AIST)
-     Registration Number H15PRO112
+Copyright (C) 2003
+  National Institute of Advanced Industrial Science and Technology (AIST)
+  Registration Number H15PRO112
+See the end for copying conditions.
+
+
+
+
+----------------------------------------------------------------------
+Copyright information
+
+Copyright (C) 2003
+  National Institute of Advanced Industrial Science and Technology (AIST)
+  Registration Number H15PRO112
 
 This file is part of the m17n library documentation, a sub-part of the
 m17n library.
