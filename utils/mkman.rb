@@ -19,6 +19,9 @@ else
 end
 $sampledir="sample/man3/"
 
+$headfile = $currentdir+"manhead"
+headbuf = open($headfile, "r").readlines
+
 #
 # Extra information about header strings Doxygen generates in a man file.
 #
@@ -469,6 +472,7 @@ unless FileTest.directory? filename
       end
 
      filetowrite = open($dstman3m+filename,"w")
+     filetowrite.puts(headbuf)
      filetowrite.puts(buf)
      filetowrite.flush
 end
