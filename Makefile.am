@@ -123,6 +123,8 @@ doxyfile-man.usr: doxyfile-man
 %/latex/m17n-lib.tex: %/latex/refman.tex utils/refman-filter.sed
 	sed -f utils/refman-filter.sed < $< > $@
 
+.PRECIOUS: %/latex/m17n-lib.tex
+
 %/latex/m17n-lib.dvi: %/latex/m17n-lib.tex data-%/m17n-lib.sty utils/latex.sh
 	utils/latex.sh `dirname $@` latex
 
