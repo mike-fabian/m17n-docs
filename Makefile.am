@@ -55,9 +55,9 @@ PROJECT_VERSION = @PACKAGE_VERSION@
 
 DOXYGEN = doxygen
 
-usr-html html-usr: usr/html/index.html
-ja-html html-ja: ja/html/index.html
-dev-html html-dev: dev/html/index.html
+usr-html html-usr: usr/html/index.html usr/html/parrot.gif
+ja-html html-ja: ja/html/index.html ja/html/parrot.gif
+dev-html html-dev: dev/html/index.html dev/html/parrot.gif
 
 usr-latex latex-usr: usr/latex/m17n-lib.ps
 ja-latex latex-ja: ja/latex/m17n-lib.ps
@@ -136,11 +136,15 @@ doxyfile-man.usr: doxyfile-man
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
 	  < $< >$@
 
-%/html/index.html: doxyfile-html.% ${SRCFILES} data-%/mainpage.txt data-%/dbformat.txt \
+%/html/index.html: doxyfile-html.% ${SRCFILES} \
+			header.html footer.html \
+			data-%/mainpage.txt data-%/dbformat.txt \
 			utils/%_filter.rb m17n-lib.css
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
-	cp smallmule.gif `dirname $@`
+
+%/html/parrot.gif: parrot.gif
+	cp $< $@
 
 %/latex/refman.tex: doxyfile-latex.% ${SRCFILES} data-%/mainpage.txt data-%/dbformat.txt \
 			utils/%_filter.rb
