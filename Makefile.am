@@ -196,15 +196,16 @@ ja/man3m/%.3m: ja/man/man3/%.3m sample-ja.c utils/mkman.rb
 	ruby utils/mkman.rb ja
 	rm -rf doxytemp sample
 
-CLEANFILES=doxyfile-*
+CLEANFILES=doxyfile-* *.tar.gz warning *~
 
 clean-local:
-	rm -rf usr dev ja
+	rm -rf usr dev ja doxywork
 
 WEBDIR = /project/web/extra/m17n-lib/m17n-docs
 
 web: $(pkgdata_DATA)
 	[ -d ${WEBDIR} ] || mkdir ${WEBDIR}
+	[ -f ${distdir}.tar.gz ] || make dist
 	cp ${distdir}.tar.gz ${WEBDIR}
 	cp usr/html/* ${WEBDIR}
 

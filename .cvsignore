@@ -12,3 +12,4 @@ usr
 dev
 ja
 warning
+*.tar.gz
