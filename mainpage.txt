@@ -120,11 +120,21 @@ mandatory but several functions of the m17n library depend on them.
 
 <li> freetype -- http://www.freetype.org/
 
-     Used for handling TrueType and Type1 fonts.
+     Used for handling local fonts supported by the freetype library.
+
+<li> fontconfig -- http://freedesktop.org/Software/fontconfig
+
+     Used for finding local fonts in combination with Xft.
+
+<li> xft -- http://freedesktop.org/Software/Xft
+
+     Used for drawing text with local fonts by X Render Extension of X
+     server in combination with fontconfig.
 
 <li> libotf  -- http://www.m17n.org/libotf/
 
-     Used for handling OpenTypee fonts.
+     Used for handling OpenTypee fonts in combination with freetype
+     and Xft.
 
 <li> anthy -- http://anthy.sourceforge.jp/
 
@@ -161,11 +171,21 @@ m17n ライブラリは以下の外部ライブラリを利用しています。必須ではありま
 
 <li> freetype -- http://www.freetype.org/
 
-     TrueType と Type1 フォントの処理に使います。
+     Freetype ライブラリでサポートされているローカルフォントの処理に使
+     います。
+
+<li> fontconfig -- http://freedesktop.org/Software/fontconfig
+
+     Xft と共に、ローカルフォントの検索に使います。
+
+<li> xft -- http://freedesktop.org/Software/Xft
+
+     fontconfig と共に X サーバの XRender 拡張を利用してテキストをロー
+     カルフォントで表示するために使います。
 
 <li> libotf  -- http://www.m17n.org/libotf/
 
-     OpenType フォントの処理に使います。
+     freetype と共に OpenType フォントの処理に使います。
 
 <li> anthy -- http://anthy.sourceforge.jp/
 
