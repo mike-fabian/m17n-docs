@@ -41,9 +41,9 @@ install-pkgdataDATA: $(pkgdata_DATA)
 	$(INSTALL_DATA) usr/latex/m17n-lib.dvi $(pkgdatadir)/m17n-lib.dvi
 	$(INSTALL_DATA) usr/latex/m17n-lib.ps $(pkgdatadir)/m17n-lib.ps
 	cd usr/html; \
-	  for f in *.html; do $(INSTALL_DATA) $$f $(pkgdatadir)/html/$$f; done
-	cd usr/html; \
-	  for f in *.png; do $(INSTALL_DATA) $$f $(pkgdatadir)/html/$$f; done
+	  for f in *.html *.png; do \
+	    $(INSTALL_DATA) $$f $(pkgdatadir)/html/$$f; \
+	  done
 	cd man/man1; \
 	  for f in *.1; do $(INSTALL_DATA) $$f $(mandir)/man1/$$f; done
 	cd man/man3; \
@@ -93,11 +93,9 @@ SRCALL = \
 	mainpage.txt \
 	${MAN3} \
 	data/m17n-config.txt data/exprog.txt data/exmim.txt data/dbformat.txt \
-	data/db-mim.txt data/db-flt.txt
+	data/dbdata.txt
 
-DB_MIM = $(shell echo @M17NDB@/*.mim)
-
-DB_FLT = $(shell echo @M17NDB@/*.flt)
+DBDATA = $(shell echo @M17NDB@/*.mim @M17NDB@/*.flt)
 
 HTML_USR_TARGET = usr/html/index.html usr/html/parrot.png
 HTML_JA_TARGET = ja/html/index.html ja/html/parrot.png
@@ -134,7 +132,7 @@ html: usr-html ja-html dev-html
 latex: usr-latex ja-latex dev-latex
 man: usr-man ja-man
 
-doxyfile-html: doxyfile
+doxyfile-html: doxyfile Makefile
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
 	    -e 's|%INPUT%|${SRCALL}|' \
 	    -e 's|%GENERATE_HTML%|YES|' \
@@ -225,11 +223,8 @@ data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
 data/exmim.txt: ${EXAMPLE_MIMS} utils/exmim.sh
 	utils/exmim.sh ${EXAMPLE_MIMS} > $@
 
-data/db-mim.txt: ${DB_MIM} utils/db-mim.sh
-	utils/db-mim.sh ${DB_MIM} > $@
-
-data/db-flt.txt: ${DB_FLT} utils/db-flt.sh
-	utils/db-flt.sh ${DB_FLT} > $@
+data/dbdata.txt: ${DBDATA} utils/dbdata.sh
+	utils/dbdata.sh @M17NDB@ > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
 	utils/dbformat.sh ${DBFORMAT}/*.txt > $@
