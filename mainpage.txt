@@ -2,10 +2,8 @@
 /***en @mainpage The m17n Library Documentation */
 /***ja @mainpage m17n ライブラリ */
 
-/***en @section what What is the m17n library? */
-/***ja @section what m17n ライブラリとは? */
+/***en @section what What is the m17n library? 
 
-/***
 The @e m17n @e library is a multilingual text processing library for
 the C language.
 
@@ -43,21 +41,63 @@ characters and more non-Unicode characters.
 <li> @e Chartable: A data structure that contains per-character
 information efficiently.
 
-<li> Functions for inputting and displaying M-text on a window
+<li> Functions for inputting and displaying M-texts on a window
 system.
 
 </ul>
 */
-/***en @section usage How to use it? */
-/***ja @section usage 利用法 */
-/***
+/***ja @section what m17n ライブラリとは? 
+
+@e m17nライブラリ は C 言語用の多言語文書処理ライブラリです。
+
+<ul>
+
+<li> 自由公開ソフトウェアです。
+
+<li> GNU/Linux と Unix のアプリケーションやライブラリから利用できます。
+
+<li> アプリケーションやライブラリのさまざまな側面で、多言語化を実現し
+ます。
+
+</ul> 
+
+"m17n" とは "multilingualization" の省略形です。
+
+m17n ライブラリは多言語を扱うため、以下の機能を提供します。
+
+<ul>
+
+<li> @e M-text: 多言語テキスト用のデータ構造。基本的には文字列であるが、
+テキストプロパティと呼ばれる属性が付いており、C の文字列の代わりになる
+よう設計されている。m17n ライブラリで最も重要なオブジェクト。
+
+<li> M-text を作ったり取り扱ったりするための関数。
+
+<li> M-text と既存のフォーマットでコード化された文字列との間の変換を行
+う関数。
+
+<li> 巨大な文字空間。 Unicode 文字すべてとそれ以上の数の非 Unicode 文
+字を含むことができる。
+
+<li> @e 文字テーブル: 文字毎の情報を効率的に保持するデータ構造。
+
+<li>  M-text をウィンドウシステム上で入力／表示する関数。
+
+</ul>
+*/
+/***en @section usage How to use it? 
+
 Simply include <m17n.h> in your program, and link it with the m17n
 library by -lm17n.  See @ref m17nIntro @latexonly
 (P.\pageref{group__m17nIntro}) @endlatexonly for the detail.  */
 
-/***en @section extralib External libraries and data */
-/***ja @section extralib 外部ライブラリ／データ */
-/***
+/***ja @section usage 利用方法 
+
+<m17n.h> をプログラムに include し、-lm17n で m17n ライブラリとリンク
+してください。 @ref m17nIntro を参照。@latexonly
+(P.\pageref{group__m17nIntro}) @endlatexonly for the detail.  */
+
+/***en @section extralib External libraries and data 
 
 The m17n library utilizes these external libraries.  They are not
 mandatory but several functions of the m17n library depend on them.
@@ -70,7 +110,7 @@ mandatory but several functions of the m17n library depend on them.
 <li> libxml2 -- http://xmlsoft.org/
 
      Used by the functions mtext_serialize () and mtext_deserialize ().
-     Those functions return NULL libxml2 is not avairable,
+     Those functions return NULL when libxml2 is not avairable,
 
 <li> fribidi -- http://fribidi.sourceforge.net/
 
@@ -98,10 +138,49 @@ mandatory but several functions of the m17n library depend on them.
 </ul>
 
 */
+/***ja @section extralib 外部ライブラリ／データ 
 
-/***en @section contact Contact us: */
-/***ja @section contact 連絡先 */
-/***
+m17n ライブラリは以下の外部ライブラリを利用しています。必須ではありま
+せんが、m17n ライブラリの幾つかの関数はこれらに依存しています。
+
+<ul>
+<li> m17n-db -- http://www.m17n.org/m17n-lib/download/m17n-db-1.0.tar.gz
+
+     @ref m17nShell と @ref m17nGUI が使います。
+
+<li> libxml2 -- http://xmlsoft.org/
+
+     関数 mtext_serialize () と mtext_deserialize () が使います。
+     libxml2 が利用できない時には、これらの関数は NULL を返します。
+
+
+<li> fribidi -- http://fribidi.sourceforge.net/
+
+     BIDI 処理に使います。利用できない時は、m17n ライブラリの表示エン
+     ジンは Arabic やHebrew などのスクリプトを正しく処理できません。
+
+<li> freetype -- http://www.freetype.org/
+
+     TrueType と Type1 フォントの処理に使います。
+
+<li> libotf  -- http://www.m17n.org/libotf/
+
+     OpenType フォントの処理に使います。
+
+<li> anthy -- http://anthy.sourceforge.jp/
+
+     日本語入力メソッド ja-anthy.mim が使います。
+
+<li> wordcut -- http://thaiwordseg.sourceforge.net/
+
+     プログラム例 example/linebreak.c 中でタイ語の語の境界を見つけるた
+     めに使っています。
+
+</ul>
+*/
+
+/***en @section contact Contact us: 
+
 Global IT Security Group\n
 National Information Technology Research Institute\n
 Institute of Advanced Industrial Science and Technology
@@ -110,11 +189,24 @@ Web: http://www.m17n.org/m17n-lib/
 
 Bug report: m17n-lib-bug@m17n.org
 
-Mailing list (English): m17n-lib@m17n.org
-
-Mailing list (Japanese): m17n-lib-ja@m17n.org
+Subscribe the mailing list 
+@li (English): http://www.m17n.org/m17n-lib/m17n-lib-archive/index.html
+@li (Japanese): http://www.m17n.org/m17n-lib/m17n-lib-ja-archive/index.html
 */
+/***ja @section contact 連絡先:
 
+独立行政法人 産業技術総合研究所\n
+情報処理研究部門\n
+グローバル IT セキュリティグループ
+
+Web: http://www.m17n.org/m17n-lib/
+
+バグレポート: m17n-lib-bug@m17n.org
+
+メイリングリスト購読 (英語): http://www.m17n.org/m17n-lib/m17n-lib-archive/index.html
+
+メイリングリスト購読 (日本語): http://www.m17n.org/m17n-lib/m17n-lib-ja-archive/index.html
+*/
 /***en @section ack Acknowledgements */
 /***ja @section ack 謝辞 */
 /***
