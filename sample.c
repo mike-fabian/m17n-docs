@@ -6,7 +6,7 @@
 
 /** @brief 
 
-    long structure document */
+    loong structure document */
 
 typedef struct
   
@@ -14,6 +14,13 @@ typedef struct
 /** SampleFiledDocument */
  void SampleField;
 } SampleStructure;
+
+/** SampleStructure2Document */
+struct SampleStructure2
+{ 
+/** SampleFiledDocument2 */
+ void SampleField2;
+} ;
 
 /** @brief 
 
