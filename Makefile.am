@@ -134,6 +134,7 @@ doxyfile-html: doxyfile ${SRCALL}
 	    -e 's|%GENERATE_HTML%|YES|' \
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|NO|' \
+	    -e 's|%ENABLED_SECTIONS%|FOR-HTML|' \
 	  < $< >$@
 
 doxyfile-html.usr: doxyfile-html
@@ -160,6 +161,7 @@ doxyfile-latex: doxyfile ${SRCALL}
 	    -e 's|%GENERATE_HTML%|NO|' \
 	    -e 's|%GENERATE_LATEX%|YES|' \
 	    -e 's|%GENERATE_MAN%|NO|' \
+	    -e 's|%ENABLED_SECTIONS%|FOR-LATEX|' \
 	  < $< >$@
 
 doxyfile-latex.usr: doxyfile-latex
@@ -187,6 +189,7 @@ doxyfile-man1: doxyfile ${SRCALL}
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|YES|' \
 	    -e 's|%MAN_EXTENSION%|.1|' \
+	    -e 's|%ENABLED_SECTIONS%|FOR-MAN|' \
 	  < $< >$@
 
 doxyfile-man3: doxyfile ${SRCALL}
@@ -196,6 +199,7 @@ doxyfile-man3: doxyfile ${SRCALL}
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|YES|' \
 	    -e 's|%MAN_EXTENSION%|.3m17n|' \
+	    -e 's|%ENABLED_SECTIONS%|FOR-MAN|' \
 	  < $< >$@
 
 doxyfile-man5: doxyfile ${SRCALL}
@@ -205,6 +209,7 @@ doxyfile-man5: doxyfile ${SRCALL}
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|YES|' \
 	    -e 's|%MAN_EXTENSION%|.5|' \
+	    -e 's|%ENABLED_SECTIONS%|FOR-MAN|' \
 	  < $< >$@
 
 doxyfile-man%.usr: doxyfile-man%
