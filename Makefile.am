@@ -45,9 +45,9 @@ usr-html html-usr: usr/html/index.html
 ja-html html-ja: ja/html/index.html
 dev-html html-dev: dev/html/index.html
 
-usr-latex latex-usr: usr/latex/refman.ps
-ja-latex latex-ja: ja/latex/refman.ps
-dev-latex latex-dev: dev/latex/refman.ps
+usr-latex latex-usr: usr/latex/m17nlib.ps
+ja-latex latex-ja: ja/latex/m17nlib.ps
+dev-latex latex-dev: dev/latex/m17nlib.ps
 
 usr-man man-usr: man/man3m/m17nIntro.3m
 
@@ -129,21 +129,22 @@ doxyfile-man.usr: doxyfile Makefile
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
-%/latex/refman.tex: doxyfile-latex.% ${UTILPATH}/refman-filter.awk ${SRCFILES}
+%/latex/refman.tex: doxyfile-latex.% ${SRCFILES} data-%/mainpage.c
 	rm -rf `dirname $@`
-	${DOXYGEN} $<; \
-	awk -f ${UTILPATH}/refman-filter.awk < $@ > temp; \
-	mv temp $@
+	${DOXYGEN} $<
 
-ja/latex/refman.ps: ja/latex/refman.tex ${UTILPATH}/run-latex.sh ${LATEX_JA}
+%/latex/m17nlib.tex: %/latex/refman.tex ${UTILPATH}/refman-filter.sed
+	sed -f ${UTILPATH}/refman-filter.sed < $< > $@
+
+ja/latex/m17nlib.ps: ja/latex/m17nlib.tex ${UTILPATH}/run-latex.sh ${LATEX_JA}
 	${UTILPATH}/run-latex.sh @abs_srcdir@ ja
 	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji ja
 
-usr/latex/refman.ps: usr/latex/refman.tex ${UTILPATH}/run-latex.sh ${LATEX_USR}
+usr/latex/m17nlib.ps: usr/latex/m17nlib.tex ${UTILPATH}/run-latex.sh ${LATEX_USR}
 	${UTILPATH}/run-latex.sh @abs_srcdir@ usr
 	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji usr
 
-dev/latex/refman.ps: dev/latex/refman.tex ${UTILPATH}/run-latex.sh ${LATEX_DEV}
+dev/latex/m17nlib.ps: dev/latex/m17nlib.tex ${UTILPATH}/run-latex.sh ${LATEX_DEV}
 	${UTILPATH}/run-latex.sh @abs_srcdir@ dev
 	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji dev
 
@@ -153,7 +154,7 @@ doxyhead.txt: sample.c ${UTILPATH}/mkheaderlist.rb
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
-man/man3m/m17nIntro.3m: usr/man/man3/m17nIntro.3m sample.c ${UTILPATH}/mkman.rb 
+man/man3m/%.3m: usr/man/man3/%.3m sample.c ${UTILPATH}/mkman.rb 
 	-${DOXYGEN} -g doxytemp
 	echo "INPUT = sample.c" >> doxytemp
 	echo "GENERATE_LATEX = NO" >> doxytemp
@@ -166,11 +167,18 @@ man/man3m/m17nIntro.3m: usr/man/man3/m17nIntro.3m sample.c ${UTILPATH}/mkman.rb
 	ruby ${UTILPATH}/mkman.rb usr
 	rm -rf doxytemp sample
 
-man/ja/man3m/m17nIntro.3m: ja/man/man3/m17nIntro.3m doxyhead.txt ${UTILPATH}/mkman.rb 
+man/ja/man3m/%.3m: ja/man/man3/%.3m sample-ja.c ${UTILPATH}/mkman.rb 
+	-${DOXYGEN} -g doxytemp
+	echo "INPUT = sample.c" >> doxytemp
+	echo "GENERATE_LATEX = NO" >> doxytemp
+	echo "GENERATE_HTML = NO" >> doxytemp
+	echo "GENERATE_MAN = YES" >> doxytemp
+	echo "MAN_OUTPUT = sample" >> doxytemp
+	echo "OPTIMIZE_OUTPUT_FOR_C  = yes" >> doxytemp
+	${DOXYGEN} doxytemp
 	[ -d "man/ja/man3m" ] || mkdir -p man/ja/man3m
 	ruby ${UTILPATH}/mkman.rb ja
-
-.PRECIOUS: %/latex/refman.tex
+	rm -rf doxytemp sample
 
 CLEANFILES = doxyfile doxyfile-*.* m17n.tag warning \
 	*/html/index.html */latex/refman.*
