@@ -63,12 +63,30 @@ The m17n library utilizes these external libraries.  They are not
 mandatory but several functions of the m17n library depend on them.
 
 <ul>
-<li> libxml2 -- http://xmlsoft.org/
-<li> fribidi -- http://fribidi.sourceforge.net/
-<li> freetype -- http://www.freetype.org/
-<li> libotf  -- http://www.m17n.org/libotf/
-<li> anthy -- http://anthy.sourceforge.jp/
 <li> m17n-db -- http://www.m17n.org/m17n-db/
+
+     Used by @ref m17nShell and @ref m17nGUI..
+
+<li> libxml2 -- http://xmlsoft.org/
+
+     Used by the functions mtext_serialize () and mtext_deserialize ().
+
+<li> fribidi -- http://fribidi.sourceforge.net/
+
+     Used for BIDI processing.
+
+<li> freetype -- http://www.freetype.org/
+
+     Used for handling TrueType and Type1 fonts.
+
+<li> libotf  -- http://www.m17n.org/libotf/
+
+     Used for handling OpenTypee fonts.
+
+<li> anthy -- http://anthy.sourceforge.jp/
+
+     Used for the Japanese input method ja-anthy.mim.
+
 </ul>
 
 */

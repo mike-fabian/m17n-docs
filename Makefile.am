@@ -71,10 +71,6 @@ EXAMPLE_PROGS = \
 	@M17NLIB@/example/mimx-anthy.c \
 	@M17NLIB@/example/mimx-ispell.c
 
-EXAMPLE_MIMS = \
-	@M17NLIB@/example/anthy.mim \
-	@M17NLIB@/example/ispell.mim
-
 DBFORMAT = \
 	@M17NDB@/FORMATS
 
@@ -92,7 +88,7 @@ MAN5 = ${DBFORMAT}
 SRCALL = \
 	mainpage.txt \
 	${MAN3} \
-	data/m17n-config.txt data/exprog.txt data/exmim.txt data/dbformat.txt \
+	data/m17n-config.txt data/exprog.txt data/dbformat.txt \
 	data/dbdata.txt fdl.txt
 
 DBDATA = $(shell echo @M17NDB@/*.{dir,mim,flt,fst,tbl})
@@ -219,9 +215,6 @@ doxyfile-man%.usr: doxyfile-man%
 
 data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
 	utils/exprog.sh ${EXAMPLE_PROGS} > $@
-
-data/exmim.txt: ${EXAMPLE_MIMS} utils/exmim.sh
-	utils/exmim.sh ${EXAMPLE_MIMS} > $@
 
 data/dbdata.txt: ${DBDATA} @M17NDB@/mdb.dir utils/dbdata.awk
 	@AWK@ -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
