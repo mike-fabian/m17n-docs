@@ -422,4 +422,4 @@ end
 
 Dir.chdir($doxywork)
 
-#Dir.open(".").each{|f|  File.delete(f) if FileTest.file?(f)}
+Dir.open(".").each{|f|  File.delete(f) if FileTest.file?(f)}
