@@ -142,6 +142,8 @@ def datastructure(struct)
        nl = fdline + 1 
        writedocumentation(buf, text, nl)
    end
+   
+#   File.delete(struct) if FileTest.file?(struct)
 
 return buf
 end
@@ -159,7 +161,7 @@ end
 def documentfunc2 (dstart, title, func_text, short_text)
  #func_textの最初の行中の関数名
 
-   dstart =~ /\s([a-z_]+)\s\(/
+   dstart =~ /\s([a-z0-9_]+)\s\(/
    return if $1 == nil
    fname = $1
 
@@ -385,9 +387,9 @@ Dir.open(".").each{|filename|
 	next
      end   
 
-     if filename =~ /\.c\./
-        next
-     end   
+     #if filename =~ /\.c\./
+     #   next
+     #end   
 
      file = open(filename,"r") 
      text = file.readlines
@@ -438,19 +440,22 @@ Dir.chdir($doxywork)
 Dir.open(".").each{|filename|
 unless FileTest.directory? filename
 
-   print "PROCESSING: ", filename, "\n"
+     file = open(filename,"r") 
+        text = file.readlines
 
-    file = open(filename,"r") 
-    text = file.readlines
+     if text.include?($fielddheader)
+        next 
+        end
 
- if /@function/ =~ text[0]  
-    buf = frewrite(text[1..text.size])
-    else buf = orewrite(text)
- end
+     print "PROCESSING: ", filename, "\n"
 
-  filetowrite = open($dstman3m+filename,"w")
-  filetowrite.puts(buf)
-  filetowrite.flush
+     if /@function/ =~ text[0]  
+        buf = frewrite(text[1..text.size])
+        else buf = orewrite(text)
+      end
 
+     filetowrite = open($dstman3m+filename,"w")
+     filetowrite.puts(buf)
+     filetowrite.flush
 end
 }
