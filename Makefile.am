@@ -56,8 +56,8 @@ install-pkgdataDATA: $(pkgdata_DATA)
 #
 if MAINTAINER_MODE
 
-PROJECT_NAME_EN = "The M17N Library"
-PROJECT_NAME_JA = "M17N ライブラリ"
+PROJECT_NAME_EN = "The m17n Library"
+PROJECT_NAME_JA = "m17n ライブラリ"
 PROJECT_VERSION = @PACKAGE_VERSION@
 
 DOXYGEN = doxygen
@@ -313,14 +313,15 @@ CLEANFILES=doxyfile-* ${TARGET} *.tar.gz warning *~
 clean-local:
 	rm -rf usr dev ja man doxywork
 
-WEBDIR = /project/web/extra/m17n-lib/m17n-docs
+WEBDIR = /project/web/extra/m17n-lib
 
 release: dist
-	[ -d ${WEBDIR} ] || mkdir ${WEBDIR}
+	[ -d ${WEBDIR}/m17n-docs ] || mkdir ${WEBDIR}/m17n-docs
+	[ -d ${WEBDIR}/download ] || mkdir ${WEBDIR}/download
 	cd usr/html; for f in *; do \
-	  case $$f in *8c*);; *8h*);; *8txt*);; *) echo $$f;; esac; \
+	  case $$f in *8c*);; *8h*);; *8txt*);; *) cp $$f ${WEBDIR}/m17n-docs;; esac; \
 	done
-	cp ${distdir}.tar.gz ${WEBDIR}
+	cp ${distdir}.tar.gz ${WEBDIR}/download
 
 
 .PRECIOUS: %/latex/refman.tex %/man/man3/m17nIntro.3m ${SRCALL}

@@ -1,9 +1,9 @@
 /* -*- coding: euc-jp; -*- */
-/***en @mainpage The M17N Library Documentation */
-/***ja @mainpage M17N ライブラリ */
+/***en @mainpage The m17n Library Documentation */
+/***ja @mainpage m17n ライブラリ */
 
 /***en @section what What is the m17n library? */
-/***ja @section what M17N ライブラリとは? */
+/***ja @section what m17n ライブラリとは? */
 
 /***
 The @e m17n @e library is a multilingual text processing library for
@@ -51,7 +51,7 @@ system.
 /***en @section usage How to use it? */
 /***ja @section usage 利用法 */
 /***
-Just include <m17n.h> in your program, and link it with the m17n
+Simply include <m17n.h> in your program, and link it with the m17n
 library by -lm17n.  See @ref m17nIntro @latexonly
 (P.\pageref{group__m17nIntro}) @endlatexonly for the detail.  */
 
@@ -63,7 +63,7 @@ The m17n library utilizes these external libraries.  They are not
 mandatory but several functions of the m17n library depend on them.
 
 <ul>
-<li> m17n-db -- http://www.m17n.org/m17n-db/
+<li> m17n-db -- http://www.m17n.org/m17n-lib/download/m17n-db-1.0.tar.gz
 
      Used by @ref m17nShell and @ref m17nGUI.
 
