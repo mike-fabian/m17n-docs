@@ -201,13 +201,6 @@ def frewrite(text)
 
   title =  text[0].split(" ")[1].chop!.reverse.chop!.reverse
 
-  if text.index("\\fBReturns: \\fP\n")  == nil
-   print  title, ": Returns not described\n" 
-   end  
-  if text.index("\\fBErrors: \\fP\n")  == nil
-   print  title, ": Errors not described\n" 
-   end
-
   buf.push(".ad l\n.nh\n.SH NAME\n")
 #  if @brief is given  
   if text[1] =~ /\"\\fI(.+)\\fP\"/
@@ -223,7 +216,8 @@ def frewrite(text)
     description == []
     print title, ": No description found\n"
     else
-    buf.push("\n.SH DESCRIPTION\n").push(womanrewrite(desrewrite(description)))
+    descriptiontext = womanrewrite(desrewrite(description))
+    buf.push("\n.SH DESCRIPTION\n").push(descriptiontext)
   end
  return buf
 end
@@ -244,6 +238,8 @@ end
 ####non-synopsys section of a function
 
 def desrewrite(text)
+  returndescribed = false 
+  errordescribed = false
 
 #removing identation
   text.grep(/^\\fB.+\\fP/){|line| 
@@ -253,15 +249,27 @@ def desrewrite(text)
 
   text.each_with_index{|line,i|
 
+### TEST 6/24
+  line.gsub!(".RS 4","")
+
 #removing "More..."  hyperlink
   line.gsub!(/More.../,"")
 # ? ad hoc 
   line.gsub!(/^\.TP/,"")
 
 #headers
-  line.gsub!(/^\\fBReturn value:\\fP/,"\n.SH RETURNS\n.PP")
+  if line =~ /Return\svalue:/
+     line = "\n.SH RETURNS\n.PP"
+     returndescribed = true
+  end 
+#  line.gsub!(/^\\fBReturn value:\\fP/,"\n.SH RETURNS\n.PP")
+  if line =~ /Errors:/  
+     line = "\n.SH ERRORS\n.PP"
+     errordescribed = true
+  end
+#  line.gsub!(/^\\fBErrors:\\fP/,"\n.SH ERRORS\n.PP")
   line.gsub!(/^\\fBSee Also:\\fP/,"\n.SH \"SEE ALSO\"\n.PP")
-  line.gsub!(/^\\fBErrors:\\fP/,"\n.SH ERRORS\n.PP")
+
 
   line.gsub!(/^\\fB(.+)\\fP/){"\n.SS " << $1}
 
@@ -290,6 +298,13 @@ def desrewrite(text)
    line.gsub!(/\s+\\fI\s*/,"\n.ft I\n")
 
   }
+
+unless returndescribed == true 
+       print (" return not described \n")
+end 
+unless errordescribed == true 
+       print (" errors not described \n")
+end 
 
 return text
 end
@@ -383,6 +398,7 @@ Dir.mkdir $doxywork unless FileTest.directory? $doxywork
 Dir.chdir($srcman3)
 
 Dir.open(".").each{|filename|
+
      if FileTest.directory? filename 
 	next
      end   
