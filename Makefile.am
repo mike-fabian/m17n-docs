@@ -29,7 +29,7 @@ pkgdata_DATA = \
 	usr/latex/m17n-lib.dvi usr/latex/m17n-lib.ps \
 	man/man1/m17nconfig.1 \
 	man/man3/m17nIntro.3m17n \
-	man/man5/m17nDatabaseFormat.5
+	man/man5/mdbGeneral.5
 
 pkgdatadir = $(datadir)/m17n-lib
 
@@ -230,7 +230,7 @@ data/m17n-config.txt: @M17NLIB@/m17n-config.in
 %/html/index.html: doxyfile-html.% ${SRCALL} \
 			header.html footer.html \
 			utils/%_filter.rb m17n-lib.css
-	rm -rf `dirname $@`
+	rm -f `dirname $@`/*.html
 	${DOXYGEN} $<
 	echo 'code { font-weight: bold }' >> `dirname $@`/doxygen.css
 
