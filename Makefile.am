@@ -33,7 +33,8 @@ pkgdata_DATA = \
 pkgdatadir = $(datadir)/m17n/docs
 
 EXTRA_DIST = usr/html usr/latex/m17n-lib.dvi usr/latex/m17n-lib.ps \
-	man/man1 man/man3 man/man5
+	man/man1 man/man3 man/man5 \
+	ja/html ja/latex/m17n-lib-ja.dvi ja/latex/m17n-lib-ja.ps
 
 install-pkgdataDATA: $(pkgdata_DATA)
 	$(mkinstalldirs) $(pkgdatadir)/html
@@ -325,6 +326,10 @@ release: dist
 	[ -d ${WEBDIR}/download ] || mkdir ${WEBDIR}/download
 	cd usr/html; for f in *; do \
 	  case $$f in *8c*);; *8h*);; *8txt*);; *) cp $$f ${WEBDIR}/m17n-docs;; esac; \
+	done
+	[ -d ${WEBDIR}-ja/m17n-docs ] || mkdir ${WEBDIR}-ja/m17n-docs
+	cd ja/html; for f in *; do \
+	  case $$f in *8c*);; *8h*);; *8txt*);; *) cp $$f ${WEBDIR}-ja/m17n-docs;; esac; \
 	done
 	cp ${distdir}.tar.gz ${WEBDIR}/download
 

@@ -1,5 +1,5 @@
-This directory tree holds version 1.0 of the m17n library documentation.
-Copyright (C) 2003
+This directory tree holds version 1.1 of the m17n library documentation.
+Copyright (C) 2003, 2004
   National Institute of Advanced Industrial Science and Technology (AIST)
   Registration Number H15PRO112
 See the end for copying conditions.
@@ -29,12 +29,19 @@ by giving these arguments to the "configure" script respectively.
 	--datadir=DIR
 	--mandir=DIR
 
+Note: Although this package contains Japanese translation of HTML and
+LaTeX files, they are not installed by the above procedure.  Please
+install the following files manually if you need them:
+	ja/html/*.html
+	ja/latex/m17n-lib-ja.dvi
+	ja/latex/m17n-lib-ja.ps
+
 See the file INSTALL for more detail.
 
 ----------------------------------------------------------------------
 Copyright information
 
-Copyright (C) 2003
+Copyright (C) 2003, 2004
   National Institute of Advanced Industrial Science and Technology (AIST)
   Registration Number H15PRO112
 

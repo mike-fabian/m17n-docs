@@ -11,21 +11,30 @@ cd $1
 LATEX=$2
 if [ $USR_JA_DEV = "ja" ] ; then
   LATEX=platex
+  SOURCE=m17n-lib-ja
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
       -e '/m17n ライブラリ モジュール索引/,/pages/ d' \
       -e '/m17n ライブラリ ファイルの解説/,/textprop_8c/ d' \
       -e 's/m17n ライブラリ ページの解説/Appendix/' \
-    < refman.tex > m17n-lib.tex
-else
+    < refman.tex > ${SOURCE}.tex
+elif [ $USR_JA_DEV = "dev" ] ; then
+  SOURCE=m17n-lib-dev
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
       -e '/The m17n Library Module Index/,/pages/ d' \
       -e '/The m17n Library File Documentation/,/textprop_8c/ d' \
       -e 's/The m17n Library Page Documentation/Appendix/' \
-    < refman.tex > m17n-lib.tex
+    < refman.tex > ${SOURCE}.tex
+else
+  SOURCE=m17n-lib
+  sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
+      -e '/The m17n Library Module Index/,/pages/ d' \
+      -e '/The m17n Library File Documentation/,/textprop_8c/ d' \
+      -e 's/The m17n Library Page Documentation/Appendix/' \
+    < refman.tex > ${SOURCE}.tex
 fi
-${LATEX} m17n-lib.tex
+${LATEX} ${SOURCE}.tex
 if [ "${USR_JA_DEV}" = "ja" ] ; then
-  nkf -e < m17n-lib.idx > temp.idx; mv temp.idx m17n-lib.idx
+  nkf -e < ${SOURCE}.idx > temp.idx; mv temp.idx ${SOURCE}.idx
 fi
-makeindex m17n-lib.idx
-${LATEX} m17n-lib.tex
+makeindex ${SOURCE}.idx
+${LATEX} ${SOURCE}.tex
