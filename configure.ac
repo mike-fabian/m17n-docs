@@ -6,6 +6,7 @@ AM_MAINTAINER_MODE
 
 # Checks for programs.
 AC_PROG_INSTALL
+AC_PROG_AWK
 
 if test $USE_MAINTAINER_MODE = yes; then
 

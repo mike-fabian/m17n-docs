@@ -224,7 +224,7 @@ data/exmim.txt: ${EXAMPLE_MIMS} utils/exmim.sh
 	utils/exmim.sh ${EXAMPLE_MIMS} > $@
 
 data/dbdata.txt: ${DBDATA} utils/dbdata.awk
-	gawk -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
+	@AWK@ -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
 	utils/dbformat.sh ${DBFORMAT}/*.txt > $@
