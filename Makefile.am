@@ -93,7 +93,7 @@ SRCALL = \
 	mainpage.txt \
 	${MAN3} \
 	data/m17n-config.txt data/exprog.txt data/exmim.txt data/dbformat.txt \
-	data/dbdata.txt
+	data/dbdata.txt fdl.txt
 
 DBDATA = $(shell echo @M17NDB@/*.{dir,mim,flt,fst,tbl})
 

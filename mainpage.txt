@@ -99,8 +99,29 @@ Special thanks to:
 <li> Dimitri van Heesch <dimitri@stack.nl>
 
 Author of Doxygen <http://www.stack.nl/~dimitri/doxygen/>.  Without
-this tool, it would have been impossible to create this document.
+this tool, it would have been impossible to create this documentation.
+
+<li> Information-technology Promotion Agency (IPA), Japan
+
+Writing this documentation was partially funded by
+Information-technology Promotion Agency (IPA)
+<http://www.ipa.go.jp/about/english/index.html> in fiscal year 2001.
 
 </ul>
 */
 
+/*** 
+@htmlonly
+<hr>
+Copyright (C) 2001 Information-technology Promotion Agency (IPA)<p>
+Copyright (C) 2001-2004
+  National Institute of Advanced Industrial Science and Technology (AIST)<p>
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2 or
+any later version published by the Free Software Foundation; with no
+Invariant Section, Front-Cover Texts "The m17n library documentation",
+and no Back-Cover Texts.  A copy of the license is included in the
+appendix entitled "GNU Free Documentation License".
+@endhtmlonly
+*/
