@@ -128,15 +128,15 @@ doxyfile-latex.ja: @srcdir@/doxyfile ${SRCFILES}
 
 ja/latex/refman.ps: ja/latex/refman.tex ${UTILPATH}/run-latex.sh ${LATEX_JA}
 	${UTILPATH}/run-latex.sh @srcdir@ ja
-	emacs21 -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji ja
+	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji ja
 
 usr/latex/refman.ps: usr/latex/refman.tex ${UTILPATH}/run-latex.sh ${LATEX_USR}
 	${UTILPATH}/run-latex.sh @srcdir@ usr
-	emacs21 -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji usr
+	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji usr
 
 dev/latex/refman.ps: dev/latex/refman.tex ${UTILPATH}/run-latex.sh ${LATEX_DEV}
 	${UTILPATH}/run-latex.sh @srcdir@ dev
-	emacs21 -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji dev
+	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji dev
 
 .PRECIOUS: %/latex/refman.tex
 
