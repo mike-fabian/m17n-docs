@@ -247,14 +247,25 @@ def desrewrite(text)
                      ind = text.index(line)
                      text.delete_at(ind+1)  if text[ind+1] == (".in +1c\n")}
 
+### letting verbatim end in place Part1
+  verbatim = false
 
   text.each_with_index{|line,i|
 
 ### TEST 6/24
   line.gsub!(/^\.RS 4/,"")
 
-### letting verbatim end in place
-  line.gsub!(/^\.nf/,".NF")
+### letting verbatim end in place Part2
+  if line =~ /^\.nf/
+     verbatim = true
+     end
+
+  if verbatim == true
+       if line =~ /^\.PP/
+          line.gsub!(/^\.PP/,".fi")
+          verbatim = false
+        end
+  end
 
 #removing "More..."  hyperlink
   line.gsub!(/More.../,"")
