@@ -1,61 +1,74 @@
 /***@page m17nDatabaseFormat DatabaseFormat
 
-This section describes the formats of predefined @e plist @e type data
-in the m17n database.
+This section describes the data formats used in the m17n database.
 
 @section dbformat General format
 
-The m17n library expects that the function mdatabase_load () returns a
-plist of a specific format on loading data identified by a specific
-set of tags.  As the plist format used for the database data is
-strongly limited, we can use the equivalent text of simple syntax
-(S-expression) to represent the plist as below.
+The mdatabase_load () function receives a set of tags and returns the
+contents of database in the form of plist.  The keys of the returned
+plist are limited to <tt>Minteger</tt>, <tt>Msymbol</tt>,
+<tt>Mtext</tt>, and <tt>Mplist</tt>.  The type of the value is
+unambiguously determined by the corresponding key.  If the key is
+<tt>Minteger</tt>, the value is an integer.  If the key is
+<tt>Msymbol</tt>, the value is a symbol.  And so on.
 
-The text consists of one or more @e elements .  Each element
-represents a property, i.e. a single element of a plist, and the
-sequence of the elements constitute a plist.
+A number of character representations are possible to represent a
+plist.  For instance, we can use the form <tt>(K1:V1, K2:V2,
+... ,Kn:Vn)</tt> to represent a plist whose first property key and
+value are K1 and V1, second key and value are K2 and V2, and so on.
+However, we can use a simpler notation here because the types of
+plists used in the m17n database are fairly restricted.
 
-Elements are separated by one or more @e whitespaces, i.e. a space
+Hereafter, we use a character representation, which is similar to
+S-expression, to represent a plist.  (Actually, the default database
+loader of the m17n library is designed to read data files written in
+this format.)
+
+The representation consists of one or more <i>elements</i>.  Each
+element represents a property, i.e. a single element of a plist.
+
+Elements are separated by one or more <i>whitespaces</i>, i.e. a space
 (code 32), a tab (code 9), or a newline (code 10).  Comments begin
 with a semicolon (<tt>;</tt>) and extend to the end of the line.
 
 The key and the value of each property are determined based on the
-form of element as below:
+type of the element as explained below.
 
 <ul>
 
 <li> INTEGER
 
-An element that matches the regular expression @c -?[0-9]+ or @c
-0[xX][0-9A-Fa-f]+ represents a property whose key is @c Minteger .  An
-element matching the former expression is interpreted as an integer in
-decimal notation, and one matching the latter expression is
-interpreted as an integer in hexadecimal notation.  The resulting
-integer is the value of the property.
+An element that matches the regular expression <tt>-?[0-9]+</tt> or
+<tt>0[xX][0-9A-Fa-f]+</tt> represents a property whose key is
+<tt>Minteger</tt>.  An element matching the former expression is
+interpreted as an integer in decimal notation, and one matching the
+latter is interpreted as an integer in hexadecimal notation.  The
+value of the property is the result of interpretation.
 
-For instance, the element 0xA0 represents a property whose value is
-the integer 160.
+For instance, the element <tt>0xA0</tt> represents a property whose value is
+160 in decimal.
 
 <li> SYMBOL
 
-An element that matchs the regular expression @c
-[^-0-9(]([^\\()]|\\.)+ represents a property whose key is @c Msymbol .
-In the sequence, @c \\t , @c \\n , @c \\r , and @c \\e are replaced
-with tab (code 9), newline (code 10), carriage return (code 13), and
-escape (code 27) respectively.  Other characters following a backslash
-is interpreted as it is.  The symbol having the name of the resulting
-sequence is the value of the property.
+An element that matches the regular expression
+<tt>[^-0-9(]([^\\()]|\\.)+</tt> represents a property whose key is
+<tt> Msymbol</tt>.  In the element, <tt>\\t</tt> , <tt>\\n</tt>,
+<tt>\\r</tt>, and <tt>\\e</tt> are replaced with tab (code 9), newline
+(code 10), carriage return (code 13), and escape (code 27)
+respectively.  Other characters following a backslash is interpreted
+as it is.  The value of the property is the symbol having the
+resulting string as its name.
 
 For instance, the element <tt>abc\ def</tt> represents a property
-whose value is the symbol of name "abc def".
+whose value is the symbol having the name "abc def".
 
 <li> M-TEXT
 
-An element that matches the regular expression @c "([^"]|\\")*"
-represents a property whose key is @c Mtext .  The backslash escape
+An element that matches the regular expression <tt>"([^"]|\\")*"</tt>
+represents a property whose key is <tt>Mtext</tt>.  The backslash escape
 explained above also applies here.  Moreover, each part in the
-sequence matching the regular expression @c
-\\[xX][0-9A-Fa-f][0-9A-Fa-f] is replaced with its hexadecimal
+element matching the regular expression <tt>
+\\[xX][0-9A-Fa-f][0-9A-Fa-f]</tt> is replaced with its hexadecimal
 interpretation.
 
 After having resolved the backslash escapes, the byte sequence between
@@ -64,24 +77,25 @@ an M-text.  This M-text is the value of the property.
 
 <li> PLIST
 
-An element that is preceded by a left parenthesis, followed zero or
-more elements, and terminated by a right parenthesis represents a
-property whose key is @c Mplist .  Parentheses also serve as a
-separator, which means whitespaces before and after a parenthesis can
-be omitted.  The value of the property is a plist, which is the result
-of recursive interpretation of the elements between the parentheses.
+Zero or more elements surrounded by a pair of parentheses represent a
+property whose key is <tt>Mplist</tt>.  Whitespaces before and after a
+parenthesis can be omitted.  The value of the property is a plist,
+which is the result of recursive interpretation of the elements
+between the parentheses.
 
 </ul>
 
 EXAMPLE
 
-Suppose (K1:V1, K2:V2, ... ,Kn:Vn) represents a plist whose first
-property key and value are K1 and V1, second key and value are K2 and
-V2, and so on.  Then the line:
+Here is an example of plist that is written in our S-expression like
+representation.
+
 @verbatim
 abc 123 (pqr 0xff) "m\"text" (_\\_ ("string" xyz) -456)
 @endverbatim
-is interpreted as follows.
+
+It represents the following plist:
+
 @verbatim
 (Msymbol:abc,
  Minteger:123,
@@ -93,11 +107,6 @@ is interpreted as follows.
                  Msymbol:xyz),
          Minteger:-456))
 @endverbatim
-
-The default database loader of the m17n library actually read a text
-of this syntax from the database file.
-
-Here after we describes the plist format of each data by this syntax.
 
 @section fontenc Font Encoding
 

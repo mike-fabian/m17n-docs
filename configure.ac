@@ -27,7 +27,7 @@ AC_SUBST(M17NLIB)
 
 AC_CHECK_PROG(HAVEDOXYGEN, doxygen, yes, no)
 AC_CHECK_PROG(RUBY, ruby, yes, no)
-AC_CHECK_PROG(LATEX, platex, yes, no)
+AC_CHECK_PROG(LATEX, latex, yes, no)
 AC_CHECK_PROG(PLATEX, platex, yes, no)
 
 OK=yes
