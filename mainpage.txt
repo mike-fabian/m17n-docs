@@ -64,5 +64,18 @@ Bug report: m17n-lib-bug@m17n.org
 Mailing list (English): m17n-lib@m17n.org
 
 Mailing list (Japanese): m17n-lib-ja@m17n.org
+
+@section Acknowledgements
+
+Special thanks to:
+
+<ul>
+
+<li> Dimitri van Heesch <dimitri@stack.nl>, author of Doxygen
+(<http://www.stack.nl/~dimitri/doxygen/>).  Without this tool, it
+would have been impossible to create this document.
+
+</ul>
+
 */
 
