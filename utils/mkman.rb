@@ -1,25 +1,23 @@
 #! /usr/local/bin/ruby
+# Usage: mkman.rb SRCDIR DSTDIR
+
 #実行すると/tmp/doxymanをつかってファイルを分け、
 #もとのdirectoryにかきなおす。
 # see also の中身を woman 向けに書き換える。
 
-usr_or_ja=$*[0]
+$manext="."+$*[0]
 
 #
 # Setting up directory names.
 #
 
 $currentdir = Dir.pwd+"/"
+$srcdir=$currentdir+$*[1]+"/"
+$dstdir=$currentdir+$*[2]+"/"
 $doxywork = $currentdir+"doxywork/"
-$srcman3 = $currentdir+usr_or_ja+"/man/man3/"
-if usr_or_ja == "usr"
-  $dstman3m = $currentdir+"/usr/man3m/"
-else
-  $dstman3m = $currentdir+"/ja/man3m/"
-end
 $sampledir="sample/man3/"
-
 $headfile = $currentdir+"manhead"
+
 headbuf = open($headfile, "r").readlines
 
 #
@@ -87,7 +85,7 @@ def  writedocumentation(buf, text, index)
 
 def datastructure(struct)
 
-   text = open(struct.concat(".3m"),"r").readlines
+   text = open(struct.concat($manext),"r").readlines
 
    buf = []
 
@@ -172,7 +170,7 @@ def documentfunc2 (dstart, title, func_text, short_text)
  #short_textの関数名の２行後がbrief。
    brief =  short_text[short_text.index(short_text.find{|i| i.index(ffname)}) + 2]
  #関数ごとのファイルを作る。
-   file = open($doxywork+fname+".3m", "w")
+   file = open($doxywork+fname+$manext, "w")
    file.puts("@function")
  #ヘッダ
    /^\.TH \"([^"]*)\"\s/ =~ title
@@ -402,7 +400,7 @@ end
 
 Dir.mkdir $doxywork unless FileTest.directory? $doxywork
 
-Dir.chdir($srcman3)
+Dir.chdir($srcdir)
 
 Dir.open(".").each{|filename|
 
@@ -454,7 +452,7 @@ Dir.open(".").each{|filename|
 
 #############################rewriting files
 
-Dir.chdir($dstman3m)
+Dir.chdir($dstdir)
 
 Dir.open(".").each{|f|  File.delete(f) if FileTest.file?(f)}
 
@@ -477,7 +475,7 @@ unless FileTest.directory? filename
         else buf = orewrite(text)
       end
 
-     filetowrite = open($dstman3m+filename,"w")
+     filetowrite = open($dstdir+filename,"w")
      filetowrite.puts(headbuf)
      filetowrite.puts(buf)
      filetowrite.flush

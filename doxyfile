@@ -308,15 +308,7 @@ WARN_LOGFILE           = warning
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = "data-%USR_JA_DEV%/mainpage.txt"
-INPUT		       += "%M17NLIB%/src/m17n-core.h"
-INPUT		       += "%M17NLIB%/src/m17n.h"
-INPUT		       += "%M17NLIB%/src/m17n-gui.h"
-INPUT		       += "%M17NLIB%/src/m17n-X.h"
-INPUT		       += "%M17NLIB%/src/m17n-err.h"
-INPUT		       += "%M17NLIB%/src/"
-INPUT		       += "data-%USR_JA_DEV%/dbformat.txt"
-INPUT		       += "%M17NLIB%/example/README.txt"
+INPUT                  = %INPUT%
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
@@ -609,7 +601,7 @@ MAN_OUTPUT             =
 # The MAN_EXTENSION tag determines the extension that is added to 
 # the generated man pages (default is the subroutine's section .3)
 
-MAN_EXTENSION          = .3m
+MAN_EXTENSION          = %MAN_EXTENSION%
 
 # If the MAN_LINKS tag is set to YES and Doxygen generates man output,
 # then it will generate one additional man file for each entity
