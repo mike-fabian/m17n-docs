@@ -1,5 +1,4 @@
 # Makefile.am -- Makefile for the m17n library documentation.
-#						 -*- coding: euc-jp; -*-
 # Copyright (C) 2003
 #   National Institute of Advanced Industrial Science and Technology (AIST)
 #   Registration Number H15PRO112
@@ -227,8 +226,7 @@ data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
 data/m17n-config.txt: @M17NLIB@/m17n-config.in
 	sed -n -e '/\/\*\*\*/,/\*\// p' < $< > $@
 
-%/html/index.html: doxyfile-html.% ${SRCALL} \
-			header.html footer.html \
+%/html/index.html: doxyfile-html.% header.%.html footer.%.html ${SRCALL} \
 			utils/%_filter.rb m17n-lib.css
 	rm -f `dirname $@`/*.html
 	${DOXYGEN} $<
@@ -325,3 +323,7 @@ release: dist
 .PRECIOUS: usr/latex/refman.tex usr/latex/m17n-lib.tex %/man/man3/m17nIntro.3m ${SRCALL}
 
 endif
+
+# Local Variables:
+# coding: euc-jp
+# End:

@@ -1,4 +1,5 @@
-/***en @mainpage The M17N Library Documentation */	-*- coding: euc-jp; -*-
+/* -*- coding: euc-jp; -*- */
+/***en @mainpage The M17N Library Documentation */
 /***ja @mainpage M17N ライブラリ */
 
 /***en @section what What is the m17n library? */
