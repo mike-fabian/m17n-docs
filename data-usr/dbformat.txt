@@ -12,19 +12,19 @@ unambiguously determined by the corresponding key.  If the key is
 <tt>Minteger</tt>, the value is an integer.  If the key is
 <tt>Msymbol</tt>, the value is a symbol.  And so on.
 
-A number of character representations are possible to represent a
+A number of expressions are possible to represent a
 plist.  For instance, we can use the form <tt>(K1:V1, K2:V2,
 ... ,Kn:Vn)</tt> to represent a plist whose first property key and
 value are K1 and V1, second key and value are K2 and V2, and so on.
-However, we can use a simpler notation here because the types of
+However, we can use a simpler expression here because the types of
 plists used in the m17n database are fairly restricted.
 
-Hereafter, we use a character representation, which is similar to
+Hereafter, we use an expression, which is similar to
 S-expression, to represent a plist.  (Actually, the default database
 loader of the m17n library is designed to read data files written in
-this format.)
+this expression.)
 
-The representation consists of one or more <i>elements</i>.  Each
+The expression consists of one or more <i>elements</i>.  Each
 element represents a property, i.e. a single element of a plist.
 
 Elements are separated by one or more <i>whitespaces</i>, i.e. a space
@@ -87,8 +87,8 @@ between the parentheses.
 
 EXAMPLE
 
-Here is an example of plist that is written in our S-expression like
-representation.
+Here is an example of plist that is written in the expression
+explained above.
 
 @verbatim
 abc 123 (pqr 0xff) "m\"text" (_\\_ ("string" xyz) -456)
