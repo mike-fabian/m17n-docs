@@ -84,7 +84,7 @@ MAN3 =	@M17NLIB@/src/m17n-core.h \
 	@M17NLIB@/src/m17n.h \
 	@M17NLIB@/src/m17n-gui.h \
 	@M17NLIB@/src/m17n-X.h \
-	@M17NLIB@/src/m17n-err.h \
+	@M17NLIB@/src/m17n-misc.h \
 	@M17NLIB@/src
 
 MAN5 = ${DBFORMAT}
