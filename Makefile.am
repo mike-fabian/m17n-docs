@@ -29,7 +29,7 @@ LATEX_DEV = ${STYLEPATH}/doxygen-m17n.sty \
 
 DOXYGEN = doxygen
 
-PROJECT_NAME_EN = "Multilingual Library for Unix/Linux"
+PROJECT_NAME_EN = "The M17N Library"
 PROJECT_NAME_JA = "Unix/Linux 用多言語ライブラリ"
 
 notarget:
@@ -55,7 +55,7 @@ usr: html-usr latex-usr man-usr
 ja: html-ja latex-ja
 dev: html-dev latex-dev
 
-doxyfile-html.usr: doxyfile
+doxyfile-html.usr: doxyfile Makefile
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
 	    -e 's/%USR_JA_DEV%/usr/' \
 	    -e 's/%INPUT_FILTER%/usr/' \
@@ -65,7 +65,7 @@ doxyfile-html.usr: doxyfile
 	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-html.dev: doxyfile
+doxyfile-html.dev: doxyfile Makefile
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
 	    -e 's/%USR_JA_DEV%/dev/' \
 	    -e 's/%INPUT_FILTER%/dev/' \
@@ -75,7 +75,7 @@ doxyfile-html.dev: doxyfile
 	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-html.ja: doxyfile
+doxyfile-html.ja: doxyfile Makefile
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_JA}|' \
 	    -e 's/%USR_JA_DEV%/ja/' \
 	    -e 's/%INPUT_FILTER%/ja/' \
@@ -95,7 +95,7 @@ doxyfile-latex.usr: doxyfile Makefile
 	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-latex.dev: doxyfile
+doxyfile-latex.dev: doxyfile Makefile
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
 	    -e 's/%USR_JA_DEV%/dev/' \
 	    -e 's/%INPUT_FILTER%/dev/' \
@@ -105,7 +105,7 @@ doxyfile-latex.dev: doxyfile
 	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-latex.ja: doxyfile
+doxyfile-latex.ja: doxyfile Makefile
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_JA}|' \
 	    -e 's/%USR_JA_DEV%/ja/' \
 	    -e 's/%INPUT_FILTER%/ja/' \
@@ -115,7 +115,7 @@ doxyfile-latex.ja: doxyfile
 	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-man.usr: doxyfile
+doxyfile-man.usr: doxyfile Makefile
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
 	    -e 's/%USR_JA_DEV%/usr/' \
 	    -e 's/%INPUT_FILTER%/usr/' \
@@ -172,11 +172,10 @@ man/ja/man3m/m17nIntro.3m: ja/man/man3/m17nIntro.3m doxyhead.txt ${UTILPATH}/mkm
 
 .PRECIOUS: %/latex/refman.tex
 
-DISTFILES = man
-
 CLEANFILES = doxyfile doxyfile-*.* m17n.tag warning \
 	*/html/index.html */latex/refman.*
 
 DISTCLEANFILES = doxyfile *~
 
 endif
+DISTFILES = man

@@ -196,7 +196,7 @@ INLINE_INFO            = YES
 # declaration order.
 ### # this seems to affect the order of module list. Dec14 Nishikimi
 
-SORT_MEMBER_DOCS       = yes
+SORT_MEMBER_DOCS       = no
 
 # If member grouping is used in the documentation and the DISTRIBUTE_GROUP_DOC 
 # tag is set to YES, then doxygen will reuse the documentation of the first 
