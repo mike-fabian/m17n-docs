@@ -1,12 +1,32 @@
 This directory tree holds version 0.9 of the m17n library documentation.
-
 Copyright (C) 2003
   National Institute of Advanced Industrial Science and Technology (AIST)
   Registration Number H15PRO112
 See the end for copying conditions.
 
+# HOW TO INSTALL #
 
+Simply type the followings on the command line.
 
+	% ./configure
+	% make install
+
+The default installation path ${prefix} is "/usr/local",
+the default data installation path ${datadir} is "${prefix}/share",
+and the default man installation path ${mandir} is "${prefix}/man".
+
+These files are installed in "${datadir}/m17n-lib"
+	m17n-lib.dvi, m17n-lib.ps
+Html files are installed in "${datadir}/m17n-lib/html"
+Man files are installed in "${mandir}/man3m.
+
+The default paths ${prefix}, ${datadir}, and ${mandir} can be changed
+by giving these arguments to the "configure" script respectively.
+	--prefix=DIR
+	--datadir=DIR
+	--mandir=DIR
+
+See the file INSTALL for more detail.
 
 ----------------------------------------------------------------------
 Copyright information
