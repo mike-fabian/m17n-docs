@@ -261,14 +261,15 @@ def desrewrite(text)
   if line =~ /Return\svalue:/
      returndescribed = true
   end 
-  line.gsub!(/^\\fBReturn value:\\fP/,"\n.SH RETURNS\n.PP")
+  line.gsub!(/^\\fBReturn value:\\fP/,"\n.SH RETURN VALUE\n.PP")
   if line =~ /Errors:/  
      errordescribed = true
   end
   line.gsub!(/^\\fBErrors:\\fP/,"\n.SH ERRORS\n.PP")
   line.gsub!(/^\\fBSee Also:\\fP/,"\n.SH \"SEE ALSO\"\n.PP")
 
-  line.gsub!(/^\\fB(.+)\\fP/){"\n.SS " << $1}
+  line.gsub!(/^\\fB(.+)[^\)]\\fP/){"\n.SS " << $1}
+ # [^\)] in the pattern is added to avoid the first function in see also section. 
 
 #removing indentation
  if text[i - 1] =~ /^.PP/
