@@ -57,7 +57,7 @@ install-pkgdataDATA: $(pkgdata_DATA)
 if MAINTAINER_MODE
 
 PROJECT_NAME_EN = "The M17N Library"
-PROJECT_NAME_JA = "M17N 多言語ライブラリ"
+PROJECT_NAME_JA = "M17N ライブラリ"
 PROJECT_VERSION = @PACKAGE_VERSION@
 
 DOXYGEN = doxygen
@@ -113,7 +113,7 @@ ja-latex latex-ja: ${LATEX_JA_TARGET}
 dev-latex latex-dev: ${LATEX_DEV_TARGET}
 
 MAN_USR_TARGET = man/man1/m17n-config.1 man/man3/m17nIntro.3m17n man/man5/m17nDBgeneral.5
-MAN_JA_TARGET = man/ja//man1/m17n-config.1 man/ja//man3/m17nIntro.3m17n man/ja/man5/m17nDatabaseFormat.5
+MAN_JA_TARGET = man/ja/man1/m17n-config.1 man/ja/man3/m17nIntro.3m17n man/ja/man5/m17nDatabaseFormat.5
 MAN_TARGET = ${MAN_USR_TARGET} ${MAN_JA_TARGET}
 
 usr-man man-usr: ${MAN_USR_TARGET}
@@ -239,10 +239,7 @@ data/m17n-config.txt: @M17NLIB@/m17n-config.in
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
-%/latex/m17n-lib.tex: %/latex/refman.tex utils/refman-filter.sed
-	sed -f utils/refman-filter.sed < $< > $@
-
-%/latex/m17n-lib.dvi: %/latex/m17n-lib.tex data-%/m17n-lib.sty utils/latex.sh
+%/latex/m17n-lib.dvi: %/latex/refman.tex data-%/m17n-lib.sty utils/latex.sh
 	utils/latex.sh `dirname $@` latex
 
 %/latex/m17n-lib.ps: %/latex/m17n-lib.dvi utils/dvips.sh
@@ -292,19 +289,20 @@ man/man5/%: usr/man/man5/% sample/man3/SampleGroup.3 utils/mkman.rb
 	rm -rf doxywork man/man5/*
 	ruby utils/mkman.rb 5 usr/man/man5 man/man5
 
-ja/man3m/%.3m: ja/man/man3/%.3m sample-ja.c utils/mkman.rb 
-	-${DOXYGEN} -g doxytemp
-	echo "INPUT = sample.c" >> doxytemp
-	echo "GENERATE_LATEX = NO" >> doxytemp
-	echo "GENERATE_HTML = NO" >> doxytemp
-	echo "GENERATE_MAN = YES" >> doxytemp
-	echo "MAN_OUTPUT = sample" >> doxytemp
-	echo "OPTIMIZE_OUTPUT_FOR_C  = yes" >> doxytemp
-	${DOXYGEN} doxytemp
-	[ -d "ja/man3m" ] || mkdir -p ja/man3m
-	rm -rf ja/man3m/index.*
-	ruby utils/mkman.rb ja
-	rm -rf doxytemp sample
+man/ja/man1/%: ja/man/man1/% sample/man3/SampleGroup.3 utils/mkman.rb 
+	$(mkinstalldirs) man/ja/man1
+	rm -rf doxywork man/ja/man1/*
+	ruby utils/mkman.rb 1 ja/man/man1 man/ja/man1
+
+man/ja/man3/%: ja/man/man3/% sample/man3/SampleGroup.3 utils/mkman.rb 
+	$(mkinstalldirs) man/ja/man3
+	rm -rf doxywork man/ja/man3/*
+	ruby utils/mkman.rb 3m17n ja/man/man3 man/ja/man3
+
+man/ja/man5/%: ja/man/man5/% sample/man3/SampleGroup.3 utils/mkman.rb 
+	$(mkinstalldirs) man/ja/man5
+	rm -rf doxywork man/ja/man5/*
+	ruby utils/mkman.rb 5 ja/man/man5 man/ja/man5
 
 CLEANFILES=doxyfile-* ${TARGET} *.tar.gz warning *~
 
@@ -320,7 +318,7 @@ release: dist
 	cp ${distdir}.tar.gz ${FTPDIR}
 
 
-.PRECIOUS: usr/latex/refman.tex usr/latex/m17n-lib.tex %/man/man3/m17nIntro.3m ${SRCALL}
+.PRECIOUS: %/latex/refman.tex %/man/man3/m17nIntro.3m ${SRCALL}
 
 endif
 
