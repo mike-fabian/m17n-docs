@@ -74,7 +74,7 @@ EXAMPLE_PROGS = \
 DBFORMAT = \
 	@M17NDB@/FORMATS
 
-MAN1 =	data/m17n-config.txt ${EXAMPLE_PROGS}
+MAN1 =	data/m17n-config.txt data/m17n-db.txt ${EXAMPLE_PROGS}
 
 MAN3 =	@M17NLIB@/src/m17n-core.h \
 	@M17NLIB@/src/m17n.h \
@@ -88,8 +88,8 @@ MAN5 = ${DBFORMAT}
 SRCALL = \
 	mainpage.txt \
 	${MAN3} \
-	data/m17n-config.txt data/exprog.txt data/dbformat.txt \
-	data/dbdata.txt fdl.txt
+	data/m17n-config.txt data/m17n-db.txt data/exprog.txt \
+	data/dbformat.txt data/dbdata.txt fdl.txt
 
 DBDATA = $(shell echo @M17NDB@/*.{dir,mim,flt,fst,tbl})
 DBIMAGE = $(shell echo @M17NDB@/FORMATS/*.png @M17NDB@/FORMATS/*.eps)
@@ -112,12 +112,13 @@ usr-latex latex-usr: ${LATEX_USR_TARGET}
 ja-latex latex-ja: ${LATEX_JA_TARGET}
 dev-latex latex-dev: ${LATEX_DEV_TARGET}
 
-MAN_USR_TARGET = man/man1/m17n-config.1 man/man3/m17nIntro.3m17n man/man5/mdbGeneral.5
-MAN_JA_TARGET = man/ja/man1/m17n-config.1 man/ja/man3/m17nIntro.3m17n man/ja/man5/mdbGeneral.5
-MAN_TARGET = ${MAN_USR_TARGET} ${MAN_JA_TARGET}
+MAN_TARGET = \
+	man/man1/m17n-config.1 \
+	man/man1/m17n-db.1 \
+	man/man3/m17nIntro.3m17n \
+	man/man5/mdbGeneral.5
 
-usr-man man-usr: ${MAN_USR_TARGET}
-ja-man man-ja: ${MAN_JA_TARGET}
+usr-man man-usr: ${MAN_TARGET}
 
 TARGET = ${HTML_TARGET} ${LATEX_TARGET} ${MAN_TARGET}
 
@@ -229,6 +230,9 @@ data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
 	utils/dbformat.sh ${DBFORMAT}/*.txt > $@
 
 data/m17n-config.txt: @M17NLIB@/m17n-config.in
+	sed -n -e '/\/\*\*\*/,/\*\// p' < $< > $@
+
+data/m17n-db.txt: @M17NDB@/m17n-db.in
 	sed -n -e '/\/\*\*\*/,/\*\// p' < $< > $@
 
 %/html/index.html: doxyfile-html.% header.%.html footer.%.html ${SRCALL} \
