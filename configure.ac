@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(m17n-docs, 1.1, bugs-m17n-lib@m17n.org)
-AM_INIT_AUTOMAKE(m17n-docs, 1.1)
+AC_INIT(m17n-docs, 1.2.0, bugs-m17n-lib@m17n.org)
+AM_INIT_AUTOMAKE(m17n-docs, 1.2.0)
 
 AM_MAINTAINER_MODE
 

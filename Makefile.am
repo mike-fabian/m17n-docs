@@ -292,7 +292,7 @@ man/man1/%: usr/man/man1/% sample/man3/SampleGroup.3 utils/mkman.rb
 man/man3/%: usr/man/man3/% sample/man3/SampleGroup.3 utils/mkman.rb 
 	$(mkinstalldirs) man/man3
 	rm -rf doxywork man/man3/*
-	ruby utils/mkman.rb 3m17n usr/man/man3 man/man3
+	ruby utils/mkman.rb 3m17n usr/man/man3m17n man/man3
 
 man/man5/%: usr/man/man5/% sample/man3/SampleGroup.3 utils/mkman.rb 
 	$(mkinstalldirs) man/man5

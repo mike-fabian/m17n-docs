@@ -103,7 +103,7 @@ The m17n library utilizes these external libraries.  They are not
 mandatory but several functions of the m17n library depend on them.
 
 <ul>
-<li> m17n-db -- http://www.m17n.org/m17n-lib/download/m17n-db-1.1.tar.gz
+<li> m17n-db -- http://www.m17n.org/m17n-lib/download/m17n-db-1.2.0.tar.gz
 
      Used by @ref m17nShell and @ref m17nGUI.
 
@@ -162,7 +162,7 @@ m17n ライブラリは以下の外部ライブラリを利用しています。必須ではありま
 せんが、m17n ライブラリの幾つかの関数はこれらに依存しています。
 
 <ul>
-<li> m17n-db -- http://www.m17n.org/m17n-lib/download/m17n-db-1.0.tar.gz
+<li> m17n-db -- http://www.m17n.org/m17n-lib/download/m17n-db-1.2.0.tar.gz
 
      @ref m17nShell と @ref m17nGUI が使います。
 
@@ -191,7 +191,7 @@ m17n ライブラリは以下の外部ライブラリを利用しています。必須ではありま
      カルフォントで表示するために使います。
 
 <li> GD
-     テキストをローカルフォントで bitmap/pixmal 上に表示するのに使いま
+     テキストをローカルフォントで bitmap/pixmap 上に表示するのに使いま
      す。
 
 <li> libotf  -- http://www.m17n.org/libotf/
@@ -220,23 +220,21 @@ Web: http://www.m17n.org/m17n-lib/
 
 Bug report: m17n-lib-bug@m17n.org
 
-Subscribe the mailing list 
-@li (English): http://www.m17n.org/m17n-lib/m17n-lib-archive/index.html
-@li (Japanese): http://www.m17n.org/m17n-lib/m17n-lib-ja-archive/index.html
+Mailing lists: http://www.m17n.org/m17n-lib/mailinglist.html
+
 */
 /***ja @section contact 連絡先:
 
 独立行政法人 産業技術総合研究所\n
-情報処理研究部門\n
+情報技術研究部門\n
 グローバル IT セキュリティグループ
 
 Web: http://www.m17n.org/m17n-lib/
 
 バグレポート: m17n-lib-bug@m17n.org
 
-メイリングリスト購読 (英語): http://www.m17n.org/m17n-lib/m17n-lib-archive/index.html
+メイリングリスト: http://www.m17n.org/m17n-lib-ja/mailinglist.htm
 
-メイリングリスト購読 (日本語): http://www.m17n.org/m17n-lib/m17n-lib-ja-archive/index.html
 */
 /***en @section ack Acknowledgements */
 /***ja @section ack 謝辞 */
