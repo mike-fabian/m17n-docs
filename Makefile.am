@@ -122,6 +122,10 @@ usr: usr-html usr-latex usr-man
 ja: ja-html ja-latex ja-man
 dev: dev-html dev-latex
 
+html: usr-html ja-html dev-html
+latex: usr-latex ja-latex dev-latex
+man: usr-man ja-man
+
 doxyfile-html: doxyfile
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
 	    -e 's|%INPUT%|${SRCALL}|' \
