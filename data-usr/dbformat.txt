@@ -14,7 +14,7 @@ unambiguously determined by the corresponding key.  If the key is
 
 A number of expressions are possible to represent a
 plist.  For instance, we can use the form <tt>(K1:V1, K2:V2,
-... ,Kn:Vn)</tt> to represent a plist whose first property key and
+..., Kn:Vn)</tt> to represent a plist whose first property key and
 value are K1 and V1, second key and value are K2 and V2, and so on.
 However, we can use a simpler expression here because the types of
 plists used in the m17n database are fairly restricted.
@@ -52,7 +52,7 @@ For instance, the element <tt>0xA0</tt> represents a property whose value is
 
 An element that matches the regular expression
 <tt>[^-0-9(]([^\\()]|\\.)+</tt> represents a property whose key is
-<tt> Msymbol</tt>.  In the element, <tt>\\t</tt> , <tt>\\n</tt>,
+<tt> Msymbol</tt>.  In the element, <tt>\\t</tt>, <tt>\\n</tt>,
 <tt>\\r</tt>, and <tt>\\e</tt> are replaced with tab (code 9), newline
 (code 10), carriage return (code 13), and escape (code 27)
 respectively.  Other characters following a backslash is interpreted
