@@ -313,12 +313,13 @@ clean-local:
 	rm -rf usr dev ja man doxywork
 
 WEBDIR = /project/web/extra/m17n-lib/m17n-docs
+FTPDIR = /ftp/pub/m17n-lib
 
-web: usr-html
+release: dist
 	[ -d ${WEBDIR} ] || mkdir ${WEBDIR}
-	[ -f ${distdir}.tar.gz ] || make dist
-	cp ${distdir}.tar.gz ${WEBDIR}
 	cp usr/html/* ${WEBDIR}
+	cp ${distdir}.tar.gz ${FTPDIR}
+
 
 .PRECIOUS: %/latex/m17n-lib.tex %/man/man3/m17nIntro.3m ${SRCALL}
 
