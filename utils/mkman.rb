@@ -94,12 +94,12 @@ def datastructure(struct)
    end
 
 # data fields
-    if dfline = text.index($fieldlheader)
-       buf.push("\\fBData Fields:\\fP\n")
-       nl = dfline + 1 
-       writeuntilsectionheader(buf, text, nl)
-       buf.push(".PP\n")
-   end
+#    if dfline = text.index($fieldlheader)
+#       buf.push("\\fBData Fields:\\fP\n")
+#       nl = dfline + 1 
+#       writeuntilsectionheader(buf, text, nl)
+#       buf.push(".PP\n")
+#   end
 
 # field documentation
    if fdline = text.index($fielddheader)

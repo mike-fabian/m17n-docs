@@ -152,6 +152,7 @@ doxyhead.txt: sample.c ${UTILPATH}/mkheaderlist.rb
 	echo "GENERATE_HTML = NO" >> doxytemp
 	echo "GENERATE_MAN = YES" >> doxytemp
 	echo "MAN_OUTPUT = sample" >> doxytemp
+	echo "OPTIMIZE_OUTPUT_FOR_C  = yes" >> doxytemp
 	${DOXYGEN} doxytemp
 	(cd sample/man3; ruby ${UTILPATH}/mkheaderlist.rb) > $@
 	rm -rf doxytemp sample
