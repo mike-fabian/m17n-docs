@@ -1,0 +1,204 @@
+%% -*- coding: euc-jp; -*-
+\item 「m17n基本Cライブラリ」の基本機能の設計
+
+本技術開発では、多言語テキスト用の C のデータ構造として M-text を提案
+し、この構造体を処理および利用するための基本機能を実現するための API 
+を設計した。これらの機能の目標は、各アプリケーションプログラムが、従来
+の C-string と同等に M-text を扱うこと、そして M-text の重要な性質であ
+るテキストプロパティを容易に操作すること、の２点を実現することである。
+
+アプリケーションプログラムが多言語文書を扱う場合には、常に必要となる基
+本的な機能が存在する。本ライブラリの設計にあたっては、標準的な C ライ
+ブラリのテキスト処理関数や、過去に我々自身が行なってきたエディタの多言語
+化の経験などから検討した結果、そのような基本機能の必要最低限のものとし
+て以下を洗い出した。「m17n基本Cライブラリ」は以下の基本機能をアプリケー
+ションプログラムに提供するものであり、本開発ではそのための API を設計
+した。
+
+     \begin{itemize}
+
+     \item 多言語テキストを表わすライブラリ内部の構造体M-text、ならび
+     にM-textの処理に関わるライブラリ内部の構造体。
+
+     \item M-textの生成、管理及び内部の文字へのアクセス機能。
+
+     \item テキストプロパティの処理機能。テキストプロパティとは、多言
+     語テキストに関するさまざまな属性を表わす情報であり、構造体 M-text 
+     を使って多言語テキストに付加される。
+
+     \item C-string及びM-text間におけるデコーダ及びエンコーダ機能。
+     多様なフォーマットでエンコードされたテキストと M-text の間で
+     変換を行なう。
+
+     \item 従来のCライブラリ においてC-stringを扱う処理に相当する、
+     M-textを扱う処理機能。
+
+     \item 多言語処理に必要な情報をM-textに付加する機能。
+
+     \end{itemize}
+
+m17n ライブラリは文字を 21 ビット以上の非負整数で表わす。そのうち 0 から 
+0x10FFFF までは Unicode をそのままマップしたものである。すなわち、
+Unicode のすべての文字の他、それと同じだけの数の非 Unicode 文字を扱う
+ことができる巨大な文字空間を扱うことができる。この巨大空間内で、文字毎
+の情報を効率良く格納するために特別な構造体 CharTable を設計した。
+
+
+以下では、上記各機能実現のために開発した内容について説明する。
+
+\begin{enumerate}
+
+\item 多言語テキストを表わすライブラリ内部の構造体M-text、ならびに 
+M-textの処理に関わるライブラリ内部の構造体
+
+m17n ライブラリは、通常 C 言語で用いられる C-string (\texttt{char *} や 
+\texttt{unsigned char *}) ではなく、 M-text と呼ぶ特別なオブジェクトを使ってテ
+キストを表現する。M-text は長さ0以上の文字の列からなり、さまざまな文字
+のソース（例えば C-string、ファイル、文字等）から作成できる。
+
+M-text は C-string とは異なり、非常に多くの種類の文字を、同時に、混在
+させて、同等に扱うことができる。これは多言語テキストを扱う上では必須の
+機能である。このために以下の構造体を設計した。
+
+     \begin{itemize}
+     \item M-text構造体\par 構造体 \IPAref{MText}を設計した。
+     \item M-textの中のテキストプロパティの構造体\par 構造体 \IPAref{MText->MPlist}を設計した。
+     \item C-stringからM-textへの変換のための構造体\par 構造体 \IPAref{MCodingSystem} と \IPAref{MConverter}を設計した。
+     \item M-textからC-stringへの変換のための構造体\par 構造体 \IPAref{MCodingSystem} と \IPAref{MConverter}を設計した。
+     \end{itemize}
+
+\item M-textの生成、管理及び内部の文字へのアクセス機能
+
+M-text に対するもっとも基本的なレベルの機能を実現するため、以下を設計した。 
+
+     \begin{itemize}
+     \item 空のM-textを返す機能\par 関数 \IPAref{mtext}を設計した。
+     \item M-textとして割当られたメモリを解放する機能 \par 
+           関数\IPAref{mtext_free}を設計した。
+     \item M-text中の指定した位置の文字を返す機能 \par
+           関数 \IPAref{mtext_ref_char}を設計した。
+     \item M-text中の指定した位置に指定した文字を入れる機能 \par
+           関数 \IPAref{mtext_set_char}を設計した。
+     \item M-text中の指定した位置 \texttt{FROM} から、
+           指定した位置 \texttt{TO} の間のテキストを取り出す機能 \par
+	   関数 \IPAref{mtext_duplicate}を設計した。
+     \end{itemize}
+
+\item テキストプロパティの処理機能
+
+M-text 内の各文字は、テキストプロパティと呼ぶプロパティを持つことがで
+きる。テキストプロパティによって、テキストの各部位に関する様々な情報を
+M-text 内に保持することができる。そのため、それらの情報をアプリケーショ
+ン内で統一的に扱うことができる。また、M-text 自体が豊富な情報を持って
+いるため、アプリケーション中の各関数を簡素化することができる。
+
+テキストプロパティに関する処理機能を実現するために、以下を設計した。 
+
+     \begin{itemize}
+     \item テキストプロパティとして指定できるシンボルを返す機能\par 
+       関数 \IPAref{msymbol}を設計した。
+      \item M-text中の指定した位置における、指定したテキストプロパティのトップの値を返す機能\par 
+	関数 \IPAref{mtext_get_prop}を設計した。
+      \item M-text中の指定した位置における、指定したテキストプロパティの全ての値を返す機能\par 
+	関数 \IPAref{mtext_get_prop_values}を設計した。
+      \item M-text中の指定した位置に、指定したテキストプロパティの値を設定する機能\par 
+	関数 \IPAref{mtext_put_prop}を設計した。
+      \item M-text中の指定した位置に、指定したテキストプロパティの値を、複数まとめて設定する機能\par 
+	関数 \IPAref{mtext_put_prop_values}を設計した。
+      \item M-text中の指定した位置に、新たに指定したテキストプロパティの値を追加する機能\par 
+	関数 \IPAref{mtext_push_prop}を設計した。
+      \item M-text中の指定した位置における、指定したテキストプロパティのトップの値を削除する機能\par 
+	関数 \IPAref{mtext_pop_prop}を設計した。
+      \item M-text中の指定した位置における、指定したテキストプロパティの値を、指定した関数によって変更する機能\par 
+	関数 \IPAref{mtext_change_prop}を設計した。
+      \item M-text中の指定した位置以降で、指定したテキストプロパティの値が変わる位置を返す機能\par 
+	関数 \IPAref{mtext_prop_range}を設計した。
+      \item M-text中の指定した位置以前で、指定したテキストプロパティの値が変わる位置を返す機能\par 
+	関数 \IPAref{mtext_prop_range}を設計した。
+     \end{itemize}
+     
+\item C-string及びM-text間におけるデコーダ及びエンコーダ機能
+
+世界中でネットワークを流通し、ファイルに保存され、キーボードから入力さ
+れる文字は、さまざまな方法でエンコードされている。多言語処理のためには、
+特定のエンコーディングで表わされた文字列を M-text に、そして M-text を指
+定したエンコーディングでの表現へと変換する手法が必要である。
+
+このために、以下を設計した。
+
+     \begin{itemize}
+     \item デコーダを初期化する機能\par 
+	関数 \IPAref{mconverter}を設計した。
+      \item エンコーダを初期化する機能\par 
+	関数 \IPAref{mconverter}を設計した。
+      \item Cの文字列を指定したデコーダでM-textに変換する機能\par 
+	関数 \IPAref{mtext_decode}を設計した。
+      \item M-textを指定したエンコーダでCの文字列に変換する機能\par 
+	関数 \IPAref{mtext_encode}を設計した。
+     \end{itemize}
+     
+本ライブラリがサポートするエンコーディング方式は UTF-8、UTF-16、
+ISO-2022、DIRECT-CHARSET、その他に大別される。アプリケーションが独自に 
+エンコーディング方式を追加することもできる。個々のアプリケーションはバ
+イト列を指定されたエンコーディング方式によってデコードしてM-text を得
+ることができる。また逆に指定されたエンコーディング方式をによって 
+M-text をエンコードしバイト列を得ることができる。
+
+\item 従来のCライブラリ においてC-stringを扱う処理に相当する、M-textを扱う処理機能の設計
+
+C言語の標準ライブラリ関数として、一連の文字列処理関数が広く提供され、
+用いられている。これらは C-string を対象とするものであり、M-text にそ
+のまま適用することはできない。そこでM-textで表現された文字列に対して同
+等の処理機能を提供するものとして以下の関数を設計した。
+
+     \begin{itemize}
+     \item 文字列を連結する関数\texttt{strcat}に相当する機能\par 
+       関数 \IPAref{mtext_cat}を設計した。
+     \item 文字列を最大n個連結する関数\texttt{strncat}に相当する機能\par 
+       関数 \IPAref{mtext_ncat}を設計した。
+     \item 文字列をコピーする関数\texttt{strcpy}に相当する機能\par 
+       関数 \IPAref{mtext_cpy}を設計した。
+     \item 文字列を最大n個コピーする関数\texttt{strncpy}に相当する機能\par 
+       関数 \IPAref{mtext_ncpy}を設計した。
+     \item 文字列中で、特定の文字が最初に現れた位置を返す関数\texttt{strchr}に相当する機能\par 
+       関数 \IPAref{mtext_chr}を設計した。
+     \item 文字列中で、特定の文字が最後に現れた位置を返す関数\texttt{strrchr}に相当する機能\par 
+       関数 \IPAref{mtext_rchr}を設計した。
+     \item 文字列を比較する関数\texttt{strcmp}に相当する機能\par 
+       関数 \IPAref{mtext_cmp}を設計した。
+     \item 文字列をｎ個目まで比較する関数\texttt{strncmp}に相当する機能\par 
+       関数 \IPAref{mtext_ncmp}を設計した。
+     \item 大文字／小文字を区別しないで、文字列を比較する関数\texttt{strcasecmp}に相当する機能\par 
+       関数 \IPAref{mtext_casecmp}を設計した。
+     \item 大文字／小文字を区別しないで、文字列をｎ個目まで比較する関数\texttt{strcasencmp}に相当する機能\par 
+       関数 \IPAref{mtext_ncasecmp}を設計した。
+     \item 指定した文字セットの文字だけで構成される、最初の文字列の長さを返す関数\texttt{strspn}に相当する機能\par 
+       関数 \IPAref{mtext_spn}を設計した。
+     \item 指定した文字セット以外の文字だけで構成される、最初の文字列の長さを返す関数\texttt{strcspn}に相当する機能\par 
+       関数 \IPAref{mtext_cspn}を設計した。
+     \item 文字列を複製する関数\texttt{strdup}に相当する機能\par 
+       関数 \IPAref{mtext_dup}を設計した。
+     \item 文字列の長さを返す関数\texttt{strlen}に相当する機能\par 
+       マクロ \IPAref{MTEXT_NCHARS}を設計した。
+     \item 指定した文字セットの内、一つが文字列中に最初に現れる位置を返す関数\texttt{strpbrk}に相当する機能\par 
+       関数 \IPAref{mtext_pbrk}を設計した。
+     \item 文字列中で、別の文字列が最初に現れた位置を返す関数\texttt{strstr}に相当する機能\par 
+       関数 \IPAref{mtext_text}を設計した。
+     \item 文字列からトークンを切り出す関数\texttt{strtok}に相当する機能\par 
+       関数 \IPAref{mtext_tok}を設計した。
+     \end{itemize}
+     
+\item 多言語処理に必要な情報をM-textに付加する機能
+
+多言語テキストの入出力等の際には、言語やスクリプトに関する情報が必要と
+なることがある。必要な情報を必要な時点で、m17n言語情報ベースから取得してM-text 
+に付加するために、以下の関数を設計した。
+
+     \begin{itemize}
+     \item 「m17n 言語情報ベース」から得られる情報を元に、M-textにテキストプロパティとして言語タグを付加する機能\par 
+       関数 \IPAref{mtext_put_language_prop}を設計した。 
+     \item 「m17n 言語情報ベース」から得られる情報を元に、M-textにテキストプロパティとしてスクリプトタグを付加する機能\par 
+	関数 \IPAref{mtext_put_script_prop}を設計した。
+     \end{itemize}
+     
+\end{enumerate}

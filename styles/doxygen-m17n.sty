@@ -1,0 +1,82 @@
+%	-*- coding: euc-jp; -*-
+\ProvidesPackage{doxygen-m17n}
+
+%\usepackage{times}
+
+%% Don't leave the space for marginal notes.
+\setlength{\textwidth}{\paperwidth}
+\addtolength{\textwidth}{-2in}
+\setlength{\headwidth}{\textwidth}
+\setlength{\oddsidemargin}{0pt}
+\setlength{\evensidemargin}{0pt}
+\setlength{\marginparsep}{0pt}
+\setlength{\marginparwidth}{0pt}
+\addtolength{\textheight}{\footskip}
+
+\def\sectionmark#1{\markboth
+{\MakeUppercase{\ifnum \c@secnumdepth>\z@
+ \thesection\hskip 1em\relax \fi #1}}{}}
+\def\sectionmark#1{\markboth{\MakeUppercase{#1}}{}}
+
+%% Don't write footers.
+\rfoot[]{}
+\lfoot[]{}
+
+%% Fixing incorrest indentation of the original `CompactItemize'
+%% environment.
+\renewenvironment{CompactItemize}
+{
+  \bgroup
+  \def\@listi{\leftmargin\leftmargini
+            \parsep 0\p@  \@plus2.5\p@ \@minus\p@
+            \topsep 10\p@ \@plus4\p@   \@minus6\p@
+            \itemsep0\p@  \@plus2.5\p@ \@minus\p@}
+  \def\@listii {\leftmargin\leftmarginii
+              \labelwidth\leftmarginii
+              \advance\labelwidth-\labelsep
+              \topsep    5\p@   \@plus2.5\p@ \@minus\p@
+              \parsep    0\p@ \@plus\p@    \@minus\p@
+              \itemsep   \parsep}
+  \begin{itemize}
+  \setlength{\leftskip}{-1.5em}
+}
+{\end{itemize}\egroup}
+
+\renewenvironment{Desc}
+{\begin{list}{}
+  {
+    \settowidth{\labelwidth}{40pt}
+    \setlength{\leftmargin}{\labelwidth}
+%    \setlength{\parsep}{0pt}
+    \setlength{\itemsep}{-4pt}
+    \renewcommand{\makelabel}{\entrylabel}
+  }
+}
+{\end{list}}
+
+
+%% Use arabic numbers in the second level `enumerate' environment.
+\renewcommand\theenumii{\@arabic\c@enumii}
+
+%% Treat `_' as a normal letter.
+\catcode`\_11\relax
+
+%% Make each section start with a new page.
+\let\origsection\section
+\def\newsection{\cleardoublepage\origsection}
+\def\sectionOnNewpage{\let\section\newsection}
+
+%% Cross reference for IPA document.
+\def\IPAlabel#1{\label{IPA:#1}}
+\def\IPAref#1{\texttt{#1} (P.\pageref{IPA:#1})}
+\def\IPApage#1{(P.\pageref{IPA:#1})}
+
+\let\origtt\tt
+\let\origbf\bf
+\newif\iftt
+\def\tt{\tttrue\origtt}
+\def\bf{\iftt\else\origbf\fi}
+\def\em{\ttfamily\bfseries}
+%{\catcode`"=\active\gdef"{{\catcode`"=12\verb+"+}}}
+%\catcode`"=\active
+%\def\includegraphics[#1]#2{}
