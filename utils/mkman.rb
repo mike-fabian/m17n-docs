@@ -123,9 +123,11 @@ end
 
 def documentfunc2 (dstart, title, func_text, short_text)
  #func_textの最初の行中の関数名
+
    dstart =~ /\s([a-z_]+)\s\(/
    return if $1 == nil
    fname = $1
+
    ffname = "\\fB".concat($1.concat("\\fP"))
  #short_textの関数名の２行後がbrief。
    brief =  short_text[short_text.index(short_text.find{|i| i.index(ffname)}) + 2]
@@ -135,7 +137,8 @@ def documentfunc2 (dstart, title, func_text, short_text)
  #ヘッダ
    /^\.TH \"([^"]*)\"\s/ =~ title
    oname = $1
-   newtitle = title.gsub(oname, fname.chop.chop)
+##?????   newtitle = title.gsub(oname, fname.chop.chop)
+   newtitle = title.gsub(oname, fname)
    file.puts(newtitle)
  #@brief
    file.print("@brief ") 
@@ -419,4 +422,4 @@ end
 
 Dir.chdir($doxywork)
 
-Dir.open(".").each{|f|  File.delete(f) if FileTest.file?(f)}
+#Dir.open(".").each{|f|  File.delete(f) if FileTest.file?(f)}
