@@ -92,8 +92,8 @@ library by -lm17n.  See @ref m17nIntro for the detail.  */
 
 /***ja @section usage 利用方法 
 
-<m17n.h> をプログラムに include し、-lm17n で m17n ライブラリとリンク
-してください。 @ref m17nIntro を参照。  */
+<m17n<EM></EM>.h> をプログラムに include し、-lm17n で m17n ライブラリ
+とリンクしてください。 @ref m17nIntro を参照。  */
 
 /***en @section extralib External libraries and data 
 
