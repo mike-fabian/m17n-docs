@@ -59,7 +59,16 @@ AC_CONFIG_FILES(Makefile)
 AC_OUTPUT
 
 # Print configuration message.
-echo "-------------------------------------------------------------"
-echo "Configure to make documentations from the source files under:"
-echo "  $M17NLIB/src/"
-echo "-------------------------------------------------------------"
+if test $USE_MAINTAINER_MODE = yes; then
+  AC_MSG_NOTICE([Find documentation source in "$M17NLIB"])
+fi
+
+eval dir=${datadir}
+AC_MSG_NOTICE([-------------------------------------------])
+AC_MSG_NOTICE([Install documentations in these directories])
+AC_MSG_NOTICE([-------------------------------------------])
+AC_MSG_NOTICE([  m17n-lib.dvi:  ${dir}/m17n-lib])
+AC_MSG_NOTICE([  m17n-lib.ps:   ${dir}/m17n-lib])
+AC_MSG_NOTICE([  html files:    ${dir}/m17n-lib/html])
+eval dir=${mandir}
+AC_MSG_NOTICE([  man files:     ${dir}])

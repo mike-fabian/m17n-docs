@@ -6,6 +6,18 @@ pkgdata_DATA = \
 	usr/man3m/m17nIntro.3m \
 	usr/latex/m17n-lib.dvi usr/latex/m17n-lib.ps
 
+pkgdatadir = $(datadir)/m17n-lib
+
+EXTRA_DIST = usr/html usr/man3m usr/latex/m17n-lib.dvi usr/latex/m17n-lib.ps
+
+install-pkgdataDATA: $(pkgdata_DATA)
+	$(mkinstalldirs) $(pkgdatadir)/html $(mandir)/man3m
+	$(INSTALL_DATA) usr/latex/m17n-lib.dvi $(pkgdatadir)/m17n-lib.dvi
+	$(INSTALL_DATA) usr/latex/m17n-lib.ps $(pkgdatadir)/m17n-lib.ps
+	cd usr/html; \
+	  for f in *.html; do $(INSTALL_DATA) $$f $(pkgdatadir)/html/$$f; done
+	cd usr/man3m; \
+	  for f in *.3m; do $(INSTALL_DATA) $$f $(mandir)/man3m/$$f; done
 
 if MAINTAINER_MODE
 
@@ -152,7 +164,5 @@ ja/man3m/%.3m: ja/man/man3/%.3m sample-ja.c utils/mkman.rb
 	rm -rf ja/man3m/index.*
 	ruby utils/mkman.rb ja
 	rm -rf doxytemp sample
-
-EXTRA_DIST = usr/html usr/man3m usr/latex/m17n-lib.dvi usr/latex/m17n-lib.ps
 
 endif
