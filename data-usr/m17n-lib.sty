@@ -54,3 +54,8 @@ Boston, MA 02111-1307, USA.
 %% Add Index section to the table of contents.
 \let\origprintindex\printindex
 \def\printindex{\addcontentsline{toc}{chapter}{Index}\origprintindex}
+
+\renewcommand{\entrylabel}[1]{%
+\parbox[b]{\labelwidth}{\makebox[0pt][l]{\textbf{#1}}\\\hspace*{1mm}}}
+
+\raggedright

@@ -71,9 +71,10 @@ Special thanks to:
 
 <ul>
 
-<li> Dimitri van Heesch <dimitri@stack.nl>, author of Doxygen
-(<http://www.stack.nl/~dimitri/doxygen/>).  Without this tool, it
-would have been impossible to create this document.
+<li> Dimitri van Heesch <dimitri@stack.nl>
+
+Author of Doxygen (<http://www.stack.nl/~dimitri/doxygen/>).  Without
+this tool, it would have been impossible to create this document.
 
 </ul>
 
