@@ -1,31 +1,31 @@
-/***@page m17nDatabaseFormat DatabaseFormat
+/***@page m17nDatabaseFormat Data Format of the m17n database
 
-This section describes the data formats used in the m17n database.
+This section describes formats of data in the m17n database.
 
 @section dbformat General format
 
-The mdatabase_load () function receives a set of tags and returns the
-contents of database in the form of plist.  The keys of the returned
-plist are limited to <tt>Minteger</tt>, <tt>Msymbol</tt>,
-<tt>Mtext</tt>, and <tt>Mplist</tt>.  The type of the value is
-unambiguously determined by the corresponding key.  If the key is
-<tt>Minteger</tt>, the value is an integer.  If the key is
-<tt>Msymbol</tt>, the value is a symbol.  And so on.
+The mdatabase_load () function returns the data specified by tags in
+the form of plist if the first tag is not @c Mchartable nor @c
+Mcharset.  The keys of the returned plist are limited to
+<tt>Minteger</tt>, <tt>Msymbol</tt>, <tt>Mtext</tt>, and
+<tt>Mplist</tt>.  The type of the value is unambiguously determined by
+the corresponding key.  If the key is <tt>Minteger</tt>, the value is
+an integer.  If the key is <tt>Msymbol</tt>, the value is a symbol.
+And so on.
 
-A number of expressions are possible to represent a
-plist.  For instance, we can use the form <tt>(K1:V1, K2:V2,
-..., Kn:Vn)</tt> to represent a plist whose first property key and
-value are K1 and V1, second key and value are K2 and V2, and so on.
-However, we can use a simpler expression here because the types of
-plists used in the m17n database are fairly restricted.
+A number of expressions are possible to represent a plist.  For
+instance, we can use the form <tt>(K1:V1, K2:V2, ..., Kn:Vn)</tt> to
+represent a plist whose first property key and value are K1 and V1,
+second key and value are K2 and V2, and so on.  However, we can use a
+simpler expression here because the types of plists used in the m17n
+database are fairly restricted.
 
-Hereafter, we use an expression, which is similar to
-S-expression, to represent a plist.  (Actually, the default database
-loader of the m17n library is designed to read data files written in
-this expression.)
+Hereafter, we use an expression, which is similar to S-expression, to
+represent a plist.  (Actually, the default database loader of the m17n
+library is designed to read data files written in this expression.)
 
-The expression consists of one or more <i>elements</i>.  Each
-element represents a property, i.e. a single element of a plist.
+The expression consists of one or more <i>elements</i>.  Each element
+represents a property, i.e. a single element of a plist.
 
 Elements are separated by one or more <i>whitespaces</i>, i.e. a space
 (code 32), a tab (code 9), or a newline (code 10).  Comments begin
@@ -138,14 +138,15 @@ XLFD font name fields.  Omitted symbols are regarded as @c nil, and
 should be applied to all fonts whose family is "alice0 lao", and
 registry is "iso8859-1".
 
-@c ENCODING is a charset symbol.  A font matching @c FONT-SPEC
-supports all characters of the charset, and a character code is mapped
-to the corresponding glyph code of the font by this charset.
+@c ENCODING is a symbol representing a charset.  A font matching @c
+FONT-SPEC supports all characters of the charset, and a character code
+is mapped to the corresponding glyph code of the font by this charset.
+
 
 @section fontsize Font Resizing
 
 In some case, a font contains incorrect information about its size
-(typically in the case of a hacked TrueType font), and results in a
+(typically in the case of a hacked TrueType font), which results in a
 bad text layout when such a font is used in combination with the other
 fonts.  To overcome this problem, the m17n library loads information
 about font-size correction from the m17n database by the tags \<font,
@@ -201,7 +202,7 @@ FONT-SPEC ::=
     ')'
 @endverbatim    
 
-@c SCRIPT is a symbol of script name (e.g. latin, han), or @c nil.  @c
+@c SCRIPT is a symbol of script name (e.g. latin, han) or @c nil.  @c
 LANGUAGE is a two-letter symbol of language name code defined by ISO
 639 (e.g. ja, zh) or @c nil.  The meanings of @c FOUNDRY to @c
 REGISTRY are the same as @e Font @e Encoding.  @c FLT-NAME is a name
@@ -223,7 +224,7 @@ instructs the rendering engine to use a font of registry
 "jisx0208.1983-0" for a "han" character that has @c Mlanguage text
 propert "ja" if the character is in the repertories of such fonts.
 Otherwise, try a font of registry "gb2312.1980-0" or "big5-0".  If a
-"han" character doesn not have @c Mlangauge text property, try all
+"han" character does not have @c Mlangauge text property, try all
 three fonts.
 
 @section flt Font Layout Table
