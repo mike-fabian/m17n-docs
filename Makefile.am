@@ -95,7 +95,7 @@ SRCALL = \
 	data/m17n-config.txt data/exprog.txt data/exmim.txt data/dbformat.txt \
 	data/dbdata.txt
 
-DBDATA = $(shell echo @M17NDB@/*.mim @M17NDB@/*.flt @M17NDB@/*.tab @M17NDB@/*.tbl)
+DBDATA = $(shell echo @M17NDB@/*.{dir,mim,flt,fst,tbl})
 
 HTML_USR_TARGET = usr/html/index.html usr/html/parrot.png
 HTML_JA_TARGET = ja/html/index.html ja/html/parrot.png
@@ -223,8 +223,8 @@ data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
 data/exmim.txt: ${EXAMPLE_MIMS} utils/exmim.sh
 	utils/exmim.sh ${EXAMPLE_MIMS} > $@
 
-data/dbdata.txt: ${DBDATA} utils/dbdata.sh
-	utils/dbdata.sh @M17NDB@ > $@
+data/dbdata.txt: ${DBDATA} utils/dbdata.awk
+	gawk -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
 	utils/dbformat.sh ${DBFORMAT}/*.txt > $@

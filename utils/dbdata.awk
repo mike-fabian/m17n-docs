@@ -1,17 +1,20 @@
 BEGIN {
+  
   print "/***";
 }
 
-/".*\.(tbl|mim|tab|flt)"/ {
-  FROM=match($0, "\".*\.(tbl|mim|tab|flt)\"") + 1;
+/".*\.(mim|flt|fst|tbl)"/ {
+  FROM=match($0, "\".*\\.(mim|flt|fst|tbl)\"") + 1;
   LEN=RLENGTH-2;
   FILE=substr($0, FROM, LEN);
-  system("sed -n '/^[;#][;#]* <li>/,/^$/s/^[;#][;#]* *//p' "FILE);
+  DIR=FILENAME;
+  gsub("/[^/]*$", "", DIR)
+  system("sed -n '/^;;;/s/^;;; *//p' "DIR"/"FILE);
   printf "\n";
 }
 
-/^;; / {
-  print substr($0, 4);
+/^;;;/ {
+  print substr($0, 5);
 }
 
 END {
