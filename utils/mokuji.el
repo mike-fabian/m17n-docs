@@ -8,7 +8,7 @@
 	section-type
 	title pos current-section current-subsection)
     (save-excursion
-      (find-file (expand-file-name "refman.toc" latex-dir))
+      (find-file (expand-file-name "m17nlib.toc" latex-dir))
       (while (re-search-forward "{\\(sub\\)*section}" nil t)
 	(goto-char (1+ (match-beginning 0)))
 	(setq section-type (intern (buffer-substring

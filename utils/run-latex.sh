@@ -13,10 +13,10 @@ if [ "$2" = "ja" ] ; then
 else
   LATEX=platex
 fi
-${LATEX} refman.tex
+${LATEX} m17nlib.tex
 if [ "$2" = "ja" ] ; then
-  nkf -e < refman.idx > temp.idx; mv temp.idx refman.idx
+  nkf -e < m17nlib.idx > temp.idx; mv temp.idx refman.idx
 fi
-makeindex refman.idx
-${LATEX} refman.tex
-dvips ${PAPER} -o refman.ps refman.dvi
+makeindex m17nlib.idx
+${LATEX} m17nlib.tex
+dvips ${PAPER} -o m17nlib.ps m17nlib.dvi
