@@ -49,7 +49,7 @@ while gets
      when /\/\*\*\*\s.*\*\//	#one liner
         buf.push($_.gsub!(/\/\*+/, " ").gsub!(/\*\//, " ")).push("\n")
 
-     when /\/\*{1,2}\s|\/\*{2,3}ja|\/\*\*en/
+     when /\/\*{1,2}\s|\/\*{2,3}ja|\/\*\*en/  #this is not for En nor users
 	doxy = -1
      when /\/\*\*\*en/
         buf.push($_.gsub!(/\/\*+en/, " "))
@@ -59,7 +59,7 @@ while gets
 	doxy = 1
 
      when /EXAMPLE_CODE/ 
-        buf.push($_.gsub!(/#if EXAMPLE_CODE/, "@code \n"))
+        buf.push($_.gsub!(/#if EXAMPLE_CODE/, "\n \n @par Example:\n @code"))
 	doxy = 1
 
      when /#endif/
@@ -88,3 +88,5 @@ while gets
         end
    end
 end
+
+commentblock(buf)
