@@ -6,12 +6,17 @@
 %% Don't leave the space for marginal notes.
 \setlength{\textwidth}{\paperwidth}
 \addtolength{\textwidth}{-2in}
+\setlength{\textheight}{\paperheight}
+\addtolength{\textheight}{-2in}
+\addtolength{\textheight}{-\headheight}
+\addtolength{\textheight}{-\headsep}
 \setlength{\headwidth}{\textwidth}
-\setlength{\oddsidemargin}{0pt}
-\setlength{\evensidemargin}{0pt}
+\setlength{\topmargin}{0in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
 \setlength{\marginparsep}{0pt}
 \setlength{\marginparwidth}{0pt}
-\addtolength{\textheight}{\footskip}
+\setlength{\footskip}{0pt}
 
 %\def\sectionmark#1{\markboth
 %{\MakeUppercase{\ifnum \c@secnumdepth>\z@
@@ -21,6 +26,7 @@
 %% Don't write footers.
 \rfoot[]{}
 \lfoot[]{}
+\cfoot[]{}
 
 %% Fixing incorrest indentation of the original `CompactItemize'
 %% environment.
@@ -83,9 +89,5 @@
 %\def\includegraphics[#1]#2{}
 
 \let\origtableofcontents\tableofcontents
-\def\tableofcontents{\setcounter{tocdepth}{2}
-\pagenumbering{roman}
-\origtableofcontents
-\pagenumbering{arabic}}
-
-\setcounter{tocdepth}{2}
+\def\tableofcontents{\setcounter{tocdepth}{2}\origtableofcontents\clearpage}
+\def\footrule{}
