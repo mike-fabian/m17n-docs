@@ -1,4 +1,4 @@
-/***@mainpage The m17n library documentation
+/***@mainpage The M17N Library Documentation
 
 @section what What is the m17n library?
 
@@ -52,7 +52,7 @@ m17nIntro Introduction \endlink for the detail.
 @section contact Contact us:
 
 Global IT Security Group\n
-Information Technology Research Institute\n
+National Information Technology Research Institute\n
 Institute of Advanced Industrial Science and Technology
 
 E-mail: mule-aist@m17n.org 
