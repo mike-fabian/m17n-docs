@@ -7,7 +7,7 @@
 This section describes the formats of predefined @e plist @e type data
 in the m17n database.
 
-@section general General format
+@section dbformat General format
 
 The m17n library expects that the function mdatabase_load () returns a
 plist of a specific format on loading data identified by a specific
@@ -103,6 +103,76 @@ of this syntax from the database file.
 
 Here after we describes the plist format of each data by this syntax.
 
+@section fontset Fontset
+
+@section fontenc Font Encoding
+
+The m17n library loads information about the encoding of each font
+form the m17n database by the tags \<font, encoding\>.  The plist
+format of the data is as follows:
+
+@verbatim
+FONT-ENCODING ::=
+    '(' PER-FONT-INFO * ')'
+
+PER-FONT-INFO ::=
+    '(' FONT-SPEC ENCODING ')'
+
+FONT-SPEC ::=
+    '(' 
+    [ FOUNDRY FAMILY [ WEIGHT [ STYLE [ STRETCH [ ADSTYLE ] ] ] ] ] REGISTRY
+    ')'
+@endverbatim
+
+@c FOUNDRY to @c REGISTRY are symbols specifying the corresponding
+XLFD font name fields.  Omitted symbols are regarded as @c nil, and
+@c nil means a wild card.  For instance, this @c FONT-SPEC:
+
+@verbatim
+    (nil alice0\ lao iso8859-1)
+@endverbatim
+
+should be applied to all fonts whose family is "alice0 lao", and
+registry is "iso8859-1".
+
+@c ENCODING is a charset symbol.  A font matching @c FONT-SPEC
+supports all characters of the charset, and a character code is mapped
+to the corresponding glyph code of the font by this charset.
+
+@section fontsize Font Resizing
+
+In some case, a font contains incorrect information about its size
+(typically in the case of a hacked TrueType font), and results in a
+bad text layout when such a font is used in combination with the other
+fonts.  To overcome this problem, the m17n library loads information
+about font-size correction from the m17n database by the tags \<font,
+resize\>.  The plist format of the data is as follows:
+
+@verbatim
+FONT-RESIZE ::=
+    '(' PER-FONT-INFO * ')'
+
+PER-FONT-INFO ::=
+    '(' FONT-SPEC RESIZE-RATIO ')'
+
+FONT-SPEC ::=
+    '(' 
+    [ FOUNDRY FAMILY [ WEIGHT [ STYLE [ STRETCH [ ADSTYLE ] ] ] ] ] REGISTRY
+    ')'
+@endverbatim
+
+The meanings of @c FOUNDRY to @c REGISTRY are the same as @e Font @e
+Encoding.  @c RESIZE-RATIO is an integer number specifying by
+percentage how much the font-size must be adjusted.  For instance,
+this @c PER-FONT-INFO:
+
+@verbatim
+    ((devanagari-cdac) 150)
+@endverbatim
+
+means that, to use a font of registry "devanagari-cdac" with a
+specific size, we have to open an 1.5 times bigger one.
+
 @section flt Font Layout Table
 
 @verbinclude flt.txt
@@ -110,6 +180,7 @@ Here after we describes the plist format of each data by this syntax.
 @section im Input Method
 
 @verbinclude im.txt */
+
 ////
 /*** @} */
 ////
