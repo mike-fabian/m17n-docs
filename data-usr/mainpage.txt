@@ -25,7 +25,8 @@ multilingual text.
 
 <li> @e M-text: A data structure for a multilingual text.  It is
 basically a string but with attributes called text property, and
-is designed to substitute for the C string.
+is designed to substitute for the C string.  It is the most important
+object of the m17n library.
 
 <li> Functions for creating and processing M-texts.
 
@@ -55,7 +56,9 @@ Global IT Security Group\n
 National Information Technology Research Institute\n
 Institute of Advanced Industrial Science and Technology
 
-E-mail: mule-aist@m17n.org 
+Web: http://www.m17n.org/m17n-lib/\n
 
+E-mail: m17n-lib@m17n.org (English)\n
+	m17n-lib-ja@m17n.org (Japanese)
 */
 ////
