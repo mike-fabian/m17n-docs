@@ -23,7 +23,7 @@ PROJECT_NAME           = %PROJECT_NAME%
 # This could be handy for archiving the generated documentation or 
 # if some version control system is used.
 
-PROJECT_NUMBER         = @PACKAGE_VERSION@
+PROJECT_NUMBER         = %PROJECT_NUMBER%
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) 
 # base path where the generated documentation will be put. 
@@ -309,14 +309,14 @@ WARN_LOGFILE           = warning
 # with spaces.
 
 INPUT                  = "data-%USR_JA_DEV%/mainpage.txt"
-INPUT		       += "@M17NLIB@/src/m17n-core.h"
-INPUT		       += "@M17NLIB@/src/m17n.h"
-INPUT		       += "@M17NLIB@/src/m17n-gui.h"
-INPUT		       += "@M17NLIB@/src/m17n-X.h"
-INPUT		       += "@M17NLIB@/src/m17n-err.h"
-INPUT		       += "@M17NLIB@/src/"
+INPUT		       += "%M17NLIB%/src/m17n-core.h"
+INPUT		       += "%M17NLIB%/src/m17n.h"
+INPUT		       += "%M17NLIB%/src/m17n-gui.h"
+INPUT		       += "%M17NLIB%/src/m17n-X.h"
+INPUT		       += "%M17NLIB%/src/m17n-err.h"
+INPUT		       += "%M17NLIB%/src/"
 INPUT		       += "data-%USR_JA_DEV%/dbformat.txt"
-INPUT		       += "@M17NLIB@/example/README.txt"
+INPUT		       += "%M17NLIB%/example/README.txt"
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
@@ -370,7 +370,7 @@ IMAGE_PATH             = /project/mule/m17n-lib/docs/doxygen/images
 # input file. Doxygen will then use the output that the filter program writes 
 # to standard output.
 
-INPUT_FILTER           = @abs_srcdir@/utils/%USR_JA_DEV%_filter.rb
+INPUT_FILTER           = utils/%USR_JA_DEV%_filter.rb
 
 # If the FILTER_SOURCE_FILES tag is set to YES, the input filter (if set using 
 # INPUT_FILTER) will be used to filter the input files when producing source 
@@ -420,20 +420,20 @@ HTML_OUTPUT            =
 # each generated HTML page. If it is left blank doxygen will generate a 
 # standard header.
 
-HTML_HEADER            = @abs_srcdir@/header.html
+HTML_HEADER            = header.html
 
 # The HTML_FOOTER tag can be used to specify a personal HTML footer for 
 # each generated HTML page. If it is left blank doxygen will generate a 
 # standard footer.
 
-HTML_FOOTER            = @abs_srcdir@/footer.html
+HTML_FOOTER            = footer.html
 
 # The HTML_STYLESHEET tag can be used to specify a user defined cascading 
 # style sheet that is used by each HTML page. It can be used to 
 # fine-tune the look of the HTML output. If the tag is left blank doxygen 
 # will generate a default style sheet
 
-HTML_STYLESHEET        = @abs_srcdir@/m17n-lib.css
+HTML_STYLESHEET        = m17n-lib.css
 
 # If the HTML_ALIGN_MEMBERS tag is set to YES, the members of classes, 
 # files or namespaces will be aligned in HTML using tables. If set to 
@@ -820,7 +820,7 @@ DOC_URL                = http://mule.m17n.org/m17n-lib/%USR_JA_DEV%/html/
 # documentation is located. If left blank the directory on the local machine 
 # will be used.
 
-DOC_ABSPATH            = @abs_srcdir@/%USR_JA_DEV%/html
+DOC_ABSPATH            = %USR_JA_DEV%/html
 
 # The BIN_ABSPATH tag must point to the directory where the doxysearch binary 
 # is installed.

@@ -2,8 +2,7 @@
     @brief 
 
     long group document
-    @{
-  */
+    @{ */
 
 /** @brief 
 
@@ -23,4 +22,4 @@ typedef struct
 int
 SampleFunction () {}
 
-/**   @}  */
+/** @} */

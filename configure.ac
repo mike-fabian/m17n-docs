@@ -7,6 +7,8 @@ AM_MAINTAINER_MODE
 # Checks for programs.
 AC_PROG_INSTALL
 
+if test $USE_MAINTAINER_MODE = yes; then
+
 # Checks for source program files.
 AC_ARG_WITH(m17nlib,
   [  --with-m17n-lib=DIR     directory of m17n-lib source files],
@@ -16,9 +18,9 @@ if test "x$M17NLIB" = "x"; then
   if test -d ../m17n-lib; then
     M17NLIB=../m17n-lib
   elif test -d /usr/local/src/m17n-lib; then
-    CHARMAPS=/usr/local/src/m17n-lib
+    M17NLIB=/usr/local/src/m17n-lib
   else
-    CHARMAPS=
+    M17NLIB=.
   fi
 else :
 fi
@@ -51,7 +53,9 @@ if test "$OK" = "no"; then
   exit 1
 fi
 
-AC_CONFIG_FILES([Makefile doxyfile])
+fi
+
+AC_CONFIG_FILES(Makefile)
 AC_OUTPUT
 
 # Print configuration message.

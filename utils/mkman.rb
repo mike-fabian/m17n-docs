@@ -13,9 +13,9 @@ $currentdir = Dir.pwd+"/"
 $doxywork = $currentdir+"doxywork/"
 $srcman3 = $currentdir+usr_or_ja+"/man/man3/"
 if usr_or_ja == "usr"
-  $dstman3m = $currentdir+"/man/man3m/"
+  $dstman3m = $currentdir+"/usr/man3m/"
 else
-  $dstman3m = $currentdir+"/man/ja/man3m/"
+  $dstman3m = $currentdir+"/ja/man3m/"
 end
 $sampledir="sample/man3/"
 
