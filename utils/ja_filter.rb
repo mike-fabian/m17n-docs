@@ -31,9 +31,14 @@ while gets
     	commentblock(buf)
     	buf = []
    
-     when /\/\*\s.*\*\//	# /* comment */ type comment
+     when /^\/\*\s.*\*\//	# /* comment */ type comment
 	if doxy == 1		
 	buf.push($_.gsub!(/\*\//, " ").gsub!(/\/\*/, "//")) # should be included only in the example code
+	end
+
+     when /\/\*\s.*\*\//	# code + /* comment */ type comment
+	if doxy == 1		
+	buf.push($_.gsub!(/\*\//, " ").gsub!(/\/\*/, "//")) # should be included in the example code
 	else
           if doxy == 0 
     	  commentblock(buf)
@@ -41,10 +46,11 @@ while gets
 	  print $_.gsub!(/\/\*\s.*\*\//," ")	            # should be omiited in code
 	  end
 	end
+
      when /\/\*{2,3}en.*\*\//	#english one liner is omitted
      when /\/\*\*ja.*\*\//	#one liner
      when /\/\*\*\*ja.*\*\//	#one liner
-        buf.push($_.gsub!(/\/\*+ja/, " ").gsub!(/\*\//, " "))
+        buf.push($_.gsub!(/\/\*+ja/, " ").gsub!(/\*\//, " ")).push("\n")
      when /\/\*\*\s.*\*\//	#one liner
      when /\/\*\*\*\s.*\*\//	#one liner
         buf.push($_.gsub!(/\/\*+/, " ").gsub!(/\*\//, " ")).push("\n")

@@ -13,8 +13,6 @@ def commentblock(buf)
 
 while gets
 
-#  print "****",  $_, "\n"
-
   gsub!("@seealso", "@par See Also:")
   gsub!("@errors", "@par Errors:")
   gsub!("@returns", "@par Return value:")
@@ -42,7 +40,7 @@ while gets
 	if doxy == 1		
 	buf.push($_.gsub!(/\*\//, " ").gsub!(/\/\*/, "//")) # should be included in the example code
 	else
-         if doxy == 0 
+          if doxy == 0 
     	  commentblock(buf)
     	  buf = []
 	  print $_.gsub!(/\/\*\s.*\*\//," ")	            # should be omiited in code
