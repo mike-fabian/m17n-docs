@@ -63,15 +63,20 @@ PROJECT_VERSION = @PACKAGE_VERSION@
 
 DOXYGEN = doxygen
 
-SRC_MAN1 = \
-	data/m17n-config.txt \
-	data/mconv.txt \
-	data/mview.txt \
-	data/mdate.txt \
-	data/mdump.txt \
-	data/medit.txt
+EXAMPLE = \
+	@M17NLIB@/example/mconv.c \
+	@M17NLIB@/example/mview.c \
+	@M17NLIB@/example/mdate.c \
+	@M17NLIB@/example/mdump.c \
+	@M17NLIB@/example/medit.c
 
-SRC_MAN3 = \
+DBFORMAT = \
+	@M17NDB@/FORMATS/
+
+MAN1 = \
+	data/m17n-config.txt ${EXAMPLE}
+
+MAN3 = \
 	@M17NLIB@/src/m17n-core.h \
 	@M17NLIB@/src/m17n.h \
 	@M17NLIB@/src/m17n-gui.h \
@@ -79,11 +84,14 @@ SRC_MAN3 = \
 	@M17NLIB@/src/m17n-err.h \
 	@M17NLIB@/src
 
-SRC_MAN5 = \
+MAN5 = \
 	data/dbformat.txt
 
-SRC_ALL = \
-	data/mainpage.txt ${SRC_MAN3} ${SRC_MAN1} ${SRC_MAN5}
+MANALL = \
+	data/mainpage.txt ${MAN3} ${MAN1} ${MAN5}
+
+SRCALL = \
+	data/mainpage.txt ${MAN3} data/m17n-config.txt data/example.txt ${MAN5}
 
 usr-html html-usr: usr/html/index.html usr/html/parrot.png
 ja-html html-ja: ja/html/index.html ja/html/parrot.png
@@ -102,7 +110,7 @@ dev: html-dev latex-dev
 
 doxyfile-html: doxyfile
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
-	    -e 's|%INPUT%|${SRC_ALL}|' \
+	    -e 's|%INPUT%|${SRCALL}|' \
 	    -e 's|%GENERATE_HTML%|YES|' \
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|NO|' \
@@ -128,7 +136,7 @@ doxyfile-html.ja: doxyfile-html
 
 doxyfile-latex: doxyfile
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
-	    -e 's|%INPUT%|${SRC_ALL}|' \
+	    -e 's|%INPUT%|${SRCALL}|' \
 	    -e 's|%GENERATE_HTML%|NO|' \
 	    -e 's|%GENERATE_LATEX%|YES|' \
 	    -e 's|%GENERATE_MAN%|NO|' \
@@ -154,7 +162,7 @@ doxyfile-latex.ja: doxyfile-latex
 
 doxyfile-man1: doxyfile
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
-	    -e 's|%INPUT%|${SRC_MAN1}|' \
+	    -e 's|%INPUT%|${MAN1}|' \
 	    -e 's|%GENERATE_HTML%|NO|' \
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|YES|' \
@@ -163,7 +171,7 @@ doxyfile-man1: doxyfile
 
 doxyfile-man3: doxyfile
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
-	    -e 's|%INPUT%|${SRC_MAN3}|' \
+	    -e 's|%INPUT%|${MAN3}|' \
 	    -e 's|%GENERATE_HTML%|NO|' \
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|YES|' \
@@ -172,7 +180,7 @@ doxyfile-man3: doxyfile
 
 doxyfile-man5: doxyfile
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
-	    -e 's|%INPUT%|${SRC_MAN5}|' \
+	    -e 's|%INPUT%|${MAN5}|' \
 	    -e 's|%GENERATE_HTML%|NO|' \
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|YES|' \
@@ -189,13 +197,13 @@ data/mainpage.txt:
 
 data/dbformat.txt:
 
+data/example.txt: ${MAN1} utils/example.sh
+	cat ${EXAMPLE} | utils/example.sh > $@
+
 data/m17n-config.txt: @M17NLIB@/m17n-config.in
-	sed -n -e '/BEG-DOXYGEN/,/END-DOXYGEN/ p' < $< > $@
+	sed -n -e '/\/\*\*\*/,/\*\// p' < $< > $@
 
-data/%.txt: @M17NLIB@/example/%.c
-	sed -n -e '/BEG-DOXYGEN/,/END-DOXYGEN/ p' < $< > $@
-
-%/html/index.html: doxyfile-html.% ${SRC_ALL} \
+%/html/index.html: doxyfile-html.% ${SRCALL} \
 			header.html footer.html \
 			utils/%_filter.rb m17n-lib.css
 	rm -rf `dirname $@`
@@ -204,7 +212,7 @@ data/%.txt: @M17NLIB@/example/%.c
 %/html/parrot.png: parrot.png
 	cp $< $@
 
-%/latex/refman.tex: doxyfile-latex.% ${SRC_ALL} utils/%_filter.rb
+%/latex/refman.tex: doxyfile-latex.% ${SRCALL} utils/%_filter.rb
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
@@ -221,15 +229,15 @@ data/%.txt: @M17NLIB@/example/%.c
 %/latex/m17n-lib.pdf: %/latex/m17n-lib.tex data-%/m17n-lib.sty utils/latex.sh
 	utils/latex.sh `dirname $@` pdflatex
 
-%/man/man1/m17n-config.1: doxyfile-man1.% ${SRC_MAN1} utils/%_filter.rb
+%/man/man1/m17n-config.1: doxyfile-man1.% ${MAN1} utils/%_filter.rb
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
-%/man/man3/m17nIntro.3m17n: doxyfile-man3.% ${SRC_MAN3} utils/%_filter.rb
+%/man/man3/m17nIntro.3m17n: doxyfile-man3.% ${MAN3} utils/%_filter.rb
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
-%/man/man5/m17nDatabaseFormat.5: doxyfile-man5.% ${SRC_MAN5} utils/%_filter.rb
+%/man/man5/m17nDatabaseFormat.5: doxyfile-man5.% ${MAN5} utils/%_filter.rb
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
@@ -288,6 +296,6 @@ web: usr-html
 	cp ${distdir}.tar.gz ${WEBDIR}
 	cp usr/html/* ${WEBDIR}
 
-.PRECIOUS: %/latex/m17n-lib.tex %/man/man3/m17nIntro.3m ${SRC_ALL}
+.PRECIOUS: %/latex/m17n-lib.tex %/man/man3/m17nIntro.3m ${SRCALL}
 
 endif
