@@ -55,7 +55,7 @@ ja: html-ja latex-ja
 dev: html-dev latex-dev
 man: man/man3/m17nIntro.3
 
-doxyfile-html.usr: @abs_srcdir@/doxyfile ${SRCFILES}
+doxyfile-html.usr: doxyfile ${SRCFILES}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
 	    -e 's/%USR_JA_DEV_MAN%/usr/' \
 	    -e 's/%INPUT_FILTER%/usr/' \
@@ -65,7 +65,7 @@ doxyfile-html.usr: @abs_srcdir@/doxyfile ${SRCFILES}
 	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-html.dev: @abs_srcdir@/doxyfile ${SRCFILES}
+doxyfile-html.dev: doxyfile ${SRCFILES}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
 	    -e 's/%USR_JA_DEV_MAN%/dev/' \
 	    -e 's/%INPUT_FILTER%/dev/' \
@@ -75,7 +75,7 @@ doxyfile-html.dev: @abs_srcdir@/doxyfile ${SRCFILES}
 	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-html.ja: @abs_srcdir@/doxyfile ${SRCFILES}
+doxyfile-html.ja: doxyfile ${SRCFILES}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_JA}|' \
 	    -e 's/%USR_JA_DEV_MAN%/ja/' \
 	    -e 's/%INPUT_FILTER%/ja/' \
@@ -85,7 +85,7 @@ doxyfile-html.ja: @abs_srcdir@/doxyfile ${SRCFILES}
 	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-html.man: @abs_srcdir@/doxyfile ${SRCFILES}
+doxyfile-html.man: doxyfile ${SRCFILES}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
 	    -e 's/%USR_JA_DEV_MAN%/man/' \
 	    -e 's/%INPUT_FILTER%/usr/' \
@@ -95,7 +95,7 @@ doxyfile-html.man: @abs_srcdir@/doxyfile ${SRCFILES}
 	    -e 's|%GENERATE_MAN%|YES|' \
 	  < $< >$@
 
-doxyfile-latex.usr: @abs_srcdir@/doxyfile ${SRCFILES}
+doxyfile-latex.usr: doxyfile ${SRCFILES}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
 	    -e 's/%USR_JA_DEV_MAN%/usr/' \
 	    -e 's/%INPUT_FILTER%/usr/' \
@@ -105,7 +105,7 @@ doxyfile-latex.usr: @abs_srcdir@/doxyfile ${SRCFILES}
 	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-latex.dev: @abs_srcdir@/doxyfile ${SRCFILES}
+doxyfile-latex.dev: doxyfile ${SRCFILES}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
 	    -e 's/%USR_JA_DEV_MAN%/dev/' \
 	    -e 's/%INPUT_FILTER%/dev/' \
@@ -115,7 +115,7 @@ doxyfile-latex.dev: @abs_srcdir@/doxyfile ${SRCFILES}
 	    -e 's|%GENERATE_MAN%|NO|' \
 	  < $< >$@
 
-doxyfile-latex.ja: @abs_srcdir@/doxyfile ${SRCFILES}
+doxyfile-latex.ja: doxyfile ${SRCFILES}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_JA}|' \
 	    -e 's/%USR_JA_DEV_MAN%/ja/' \
 	    -e 's/%INPUT_FILTER%/ja/' \
@@ -153,7 +153,7 @@ man/man3/m17nIntro.3: tmp/man3/m17nIntro.3 ${UTILPATH}/mkman2.rb
 
 .PRECIOUS: %/latex/refman.tex
 
-CLEANFILES = doxyfile doxyfile-latex.* doxyfile-html.* m17n.tag warning \
+CLEANFILES = doxyfile doxyfile-*.* m17n.tag warning \
 	*/html/index.html */latex/refman.*
 
 DISTCLEANFILES = doxyfile *~
