@@ -3,9 +3,9 @@
 # $2: ja or usr or dev
 
 umask 002
-CURDIR=`pwd`
-TEXINPUTS=${CURDIR}/$1/styles:${CURDIR}/$1/data-$2:.:
+TEXINPUTS=$1/styles:$1/data-$2:.:
 export TEXINPUTS
+echo ${TEXINPUTS}
 cd $2/latex
 if [ "$2" = "ja" ] ; then
   LATEX=platex

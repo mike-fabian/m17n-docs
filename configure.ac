@@ -25,13 +25,13 @@ fi
 
 AC_SUBST(M17NLIB)
 
-AC_CHECK_PROG(DOXYGEN, doxygen, yes, no)
+AC_CHECK_PROG(HAVEDOXYGEN, doxygen, yes, no)
 AC_CHECK_PROG(RUBY, ruby, yes, no)
 AC_CHECK_PROG(LATEX, platex, yes, no)
 AC_CHECK_PROG(PLATEX, platex, yes, no)
 
 OK=yes
-if test "$DOXYGEN" = "no"; then
+if test "$HAVEDOXYGEN" = "no"; then
   echo "Can't find a program \"doxygen\"!"
   OK=no
 fi
@@ -47,7 +47,7 @@ if test "$PLATEX" = "no"; then
   echo "Can't find a program \"platex\"!"
   OK=no
 fi
-if test "$OK" = "no; then
+if test "$OK" = "no"; then
   exit 1
 fi
 
