@@ -63,7 +63,7 @@ PROJECT_VERSION = @PACKAGE_VERSION@
 
 DOXYGEN = doxygen
 
-EXAMPLE = \
+EXAMPLE_PROGS = \
 	@M17NLIB@/example/mconv.c \
 	@M17NLIB@/example/mview.c \
 	@M17NLIB@/example/mdate.c \
@@ -72,10 +72,14 @@ EXAMPLE = \
 	@M17NLIB@/example/mimx-anthy.c \
 	@M17NLIB@/example/mimx-ispell.c
 
+EXAMPLE_MIMS = \
+	@M17NLIB@/example/anthy.mim \
+	@M17NLIB@/example/ispell.mim
+
 DBFORMAT = \
 	@M17NDB@/FORMATS
 
-MAN1 =	data/m17n-config.txt ${EXAMPLE}
+MAN1 =	data/m17n-config.txt ${EXAMPLE_PROGS}
 
 MAN3 =	@M17NLIB@/src/m17n-core.h \
 	@M17NLIB@/src/m17n.h \
@@ -89,7 +93,7 @@ MAN5 = ${DBFORMAT}
 SRCALL = \
 	mainpage.txt \
 	${MAN3} \
-	data/m17n-config.txt data/example.txt data/dbformat.txt
+	data/m17n-config.txt data/exprog.txt data/exmim.txt data/dbformat.txt
 
 HTML_USR_TARGET = usr/html/index.html usr/html/parrot.png
 HTML_JA_TARGET = ja/html/index.html ja/html/parrot.png
@@ -211,8 +215,11 @@ doxyfile-man%.usr: doxyfile-man%
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
 	  < $< >$@
 
-data/example.txt: ${EXAMPLE} utils/example.sh
-	utils/example.sh ${EXAMPLE} > $@
+data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
+	utils/exprog.sh ${EXAMPLE_PROGS} > $@
+
+data/exmim.txt: ${EXAMPLE_MIMS} utils/exmim.sh
+	utils/exmim.sh ${EXAMPLE_MIMS} > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
 	utils/dbformat.sh ${DBFORMAT}/*.txt > $@
@@ -278,12 +285,12 @@ man/man1/%: usr/man/man1/% sample/man3/SampleGroup.3 utils/mkman.rb
 
 man/man3/%: usr/man/man3/% sample/man3/SampleGroup.3 utils/mkman.rb 
 	$(mkinstalldirs) man/man3
-	rm -rf doxywork usr/man3/*
+	rm -rf doxywork man/man3/*
 	ruby utils/mkman.rb 3m17n usr/man/man3 man/man3
 
 man/man5/%: usr/man/man5/% sample/man3/SampleGroup.3 utils/mkman.rb 
 	$(mkinstalldirs) man/man5
-	rm -rf doxywork usr/man5/*
+	rm -rf doxywork man/man5/*
 	ruby utils/mkman.rb 5 usr/man/man5 man/man5
 
 ja/man3m/%.3m: ja/man/man3/%.3m sample-ja.c utils/mkman.rb 

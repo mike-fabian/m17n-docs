@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cat <<EOF
-/***en @page m17nExample Example Programs
+/***en @page m17nExProg Example Programs
 
 This section describes these example programs.  They are to demonstrate
 the usage of the m17n library, not for practical use.

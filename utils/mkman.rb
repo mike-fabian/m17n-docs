@@ -408,9 +408,13 @@ Dir.open(".").each{|filename|
 	next
      end   
 
-     #if filename =~ /\.c\./
-     #   next
-     #end   
+     if filename =~ /\.[ch]\./
+        next
+     end   
+
+     if filename =~ /\.txt\./
+        next
+     end   
 
      file = open(filename,"r") 
      text = file.readlines
