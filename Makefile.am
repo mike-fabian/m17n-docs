@@ -154,8 +154,6 @@ doxyfile-man.usr: doxyfile-man
 %/latex/m17n-lib.tex: %/latex/refman.tex utils/refman-filter.sed
 	sed -f utils/refman-filter.sed < $< > $@
 
-.PRECIOUS: %/latex/m17n-lib.tex
-
 %/latex/m17n-lib.dvi: %/latex/m17n-lib.tex data-%/m17n-lib.sty utils/latex.sh
 	utils/latex.sh `dirname $@` latex
 
@@ -205,9 +203,11 @@ clean-local:
 
 WEBDIR = /project/web/extra/m17n-lib/m17n-docs
 
-web: dist
+web: $(pkgdata_DATA)
 	[ -d ${WEBDIR} ] || mkdir ${WEBDIR}
 	cp ${distdir}.tar.gz ${WEBDIR}
 	cp usr/html/* ${WEBDIR}
+
+.PRECIOUS: %/latex/m17n-lib.tex %/man/man3/m17nIntro.3m
 
 endif
