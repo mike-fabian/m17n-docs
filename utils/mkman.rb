@@ -261,6 +261,7 @@ def desrewrite(text)
 # ? ad hoc 
   line.gsub!(/^\.TP/,"")
 
+
 #headers
   if line =~ /Return\svalue:/
      returndescribed = true
@@ -346,6 +347,17 @@ def orewrite(text)
      
      ### let verbatim end in place
         line.gsub!(/^.nf/,".NF")
+
+     ### test1/16/2004   changes the type of list, and indentation
+        if line =~ /^.IP/
+           line = ".TP"
+	   text[i+2] = ""
+	   end
+
+        if line =~ /^.TP/
+	   text[i+2] = ""
+	   end
+     ### end of test1/20/2004
 
      # let the library name appear in the header 
               if line =~ /^.TH/
