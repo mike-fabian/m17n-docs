@@ -228,17 +228,17 @@ three fonts.
 
 @section flt Font Layout Table
 
-Usually, the rendering engine converts character codes of a text into
-glyph codes one by one by consulting information about encoding of
-each selected font.  But, for rendering a text that requires
-complicated layouting (e.g. Thai and Indic), such an one to one
-conversion is not sufficient.  In addition, some glyphs must be
-shifted 2-dimensionally on the screen.  For such a case, a font layout
-table (FLT in short) must be used.
+Usually, the rendering engine converts character codes of into glyph
+codes one by one by consulting information about encoding of each
+selected font.  But, for rendering a text that requires complicated
+layouting (e.g. Thai and Indic), such an one to one conversion is not
+sufficient.  In addition, some glyphs must be shifted 2-dimensionally
+on the screen.  For such a case, a font layout table (FLT in short)
+must be used.
 
-A FLT can contain all the information in OpenType Layout Table (CMAP,
-GSUB, and GPOS) in addition to the information about how to extract a
-grapheme cluster and how to re-order characters.
+A FLT can contain the information equivarent to OpenType Layout Table
+(CMAP, GSUB, and GPOS) in addition to the information about how to
+extract a grapheme cluster and how to re-order characters.
 
 The m17n library loads a FLT from the m17n database by the tags
 \<font, layouter, FLT-NAME\>.  The plist format of the data is as
