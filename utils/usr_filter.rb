@@ -13,6 +13,8 @@ def commentblock(buf)
 
 while gets
 
+#  print "****",  $_, "\n"
+
   gsub!("@seealso", "@par See Also:")
   gsub!("@errors", "@par Errors:")
   gsub!("@returns", "@par Return value:")
@@ -23,7 +25,7 @@ while gets
   gsub!(/\$[A-Z_]+/) {|m| m.delete!("$").reverse.downcase!.concat(" b@").reverse}
 
    case  $_
-     when /^$/
+     when /^\s*$/
 	if doxy == 1 
            buf.push($_)
 	   end
