@@ -92,7 +92,12 @@ MAN5 = ${DBFORMAT}
 SRCALL = \
 	mainpage.txt \
 	${MAN3} \
-	data/m17n-config.txt data/exprog.txt data/exmim.txt data/dbformat.txt
+	data/m17n-config.txt data/exprog.txt data/exmim.txt data/dbformat.txt \
+	data/db-mim.txt data/db-flt.txt
+
+DB_MIM = $(shell echo @M17NDB@/*.mim)
+
+DB_FLT = $(shell echo @M17NDB@/*.flt)
 
 HTML_USR_TARGET = usr/html/index.html usr/html/parrot.png
 HTML_JA_TARGET = ja/html/index.html ja/html/parrot.png
@@ -219,6 +224,12 @@ data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
 
 data/exmim.txt: ${EXAMPLE_MIMS} utils/exmim.sh
 	utils/exmim.sh ${EXAMPLE_MIMS} > $@
+
+data/db-mim.txt: ${DB_MIM} utils/db-mim.sh
+	utils/db-mim.sh ${DB_MIM} > $@
+
+data/db-flt.txt: ${DB_FLT} utils/db-flt.sh
+	utils/db-flt.sh ${DB_FLT} > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
 	utils/dbformat.sh ${DBFORMAT}/*.txt > $@
