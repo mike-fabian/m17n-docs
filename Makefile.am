@@ -71,24 +71,23 @@ EXAMPLE = \
 	@M17NLIB@/example/medit.c
 
 DBFORMAT = \
-	@M17NDB@/FORMATS/
+	@M17NDB@/FORMATS
 
-MAN1 = \
-	data/m17n-config.txt ${EXAMPLE}
+MAN1 =	data/m17n-config.txt ${EXAMPLE}
 
-MAN3 = \
-	@M17NLIB@/src/m17n-core.h \
+MAN3 =	@M17NLIB@/src/m17n-core.h \
 	@M17NLIB@/src/m17n.h \
 	@M17NLIB@/src/m17n-gui.h \
 	@M17NLIB@/src/m17n-X.h \
 	@M17NLIB@/src/m17n-err.h \
 	@M17NLIB@/src
 
-MAN5 = \
-	data/dbformat.txt
+MAN5 = ${DBFORMAT}
 
 SRCALL = \
-	data/mainpage.txt ${MAN3} data/m17n-config.txt data/example.txt ${MAN5}
+	data/mainpage.txt \
+	${MAN3} \
+	data/m17n-config.txt data/example.txt data/dbformat.txt
 
 usr-html html-usr: usr/html/index.html usr/html/parrot.png
 ja-html html-ja: ja/html/index.html ja/html/parrot.png
@@ -193,10 +192,11 @@ doxyfile-man%.usr: doxyfile-man%
 data/mainpage.txt: data-usr/mainpage.txt
 	cp $< $@
 
-data/dbformat.txt:
-
 data/example.txt: ${MAN1} utils/example.sh
 	cat ${EXAMPLE} | utils/example.sh > $@
+
+data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
+	cat ${DBFORMAT}/*.txt | utils/dbformat.sh > $@
 
 data/m17n-config.txt: @M17NLIB@/m17n-config.in
 	sed -n -e '/\/\*\*\*/,/\*\// p' < $< > $@

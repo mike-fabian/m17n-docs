@@ -315,7 +315,7 @@ INPUT                  = %INPUT%
 # and *.h) to filter out the source-files in the directories. If left 
 # blank all files are included.
 
-FILE_PATTERNS          = *.c
+FILE_PATTERNS          = *.c *.txt
 
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories 
