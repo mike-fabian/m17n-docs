@@ -270,7 +270,6 @@ def desrewrite(text)
 #  line.gsub!(/^\\fBErrors:\\fP/,"\n.SH ERRORS\n.PP")
   line.gsub!(/^\\fBSee Also:\\fP/,"\n.SH \"SEE ALSO\"\n.PP")
 
-
   line.gsub!(/^\\fB(.+)\\fP/){"\n.SS " << $1}
 
 #removing indentation
