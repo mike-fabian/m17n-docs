@@ -49,7 +49,7 @@ usr-latex latex-usr: usr/latex/refman.ps
 ja-latex latex-ja: ja/latex/refman.ps
 dev-latex latex-dev: dev/latex/refman.ps
 
-usr-man man-usr: man/man3/m17nIntro.3
+usr-man man-usr: man/man3m/m17nIntro.3m
 
 usr: html-usr latex-usr man-usr
 ja: html-ja latex-ja
@@ -156,11 +156,16 @@ doxyhead.txt: sample.c ${UTILPATH}/mkheaderlist.rb
 	(cd sample/man3; ruby ${UTILPATH}/mkheaderlist.rb) > $@
 	rm -rf doxytemp sample
 
-%/man/man3/m17nIntro.3: doxyfile-man.% ${SRCFILES}
+%/man/man3/m17nIntro.3m: doxyfile-man.% ${SRCFILES}
 	${DOXYGEN} $<
 
-%/man/man3m/m17nIntro.3: %/man/man3/m17nIntro.3 doxyhead.txt ${UTILPATH}/mkman.rb 
-	ruby ${UTILPATH}/mkman.rb 
+man/man3m/m17nIntro.3m: usr/man/man3/m17nIntro.3m doxyhead.txt ${UTILPATH}/mkman.rb 
+	[ -d "man/man3m" ] || mkdir -p man/man3m
+	ruby ${UTILPATH}/mkman.rb usr
+
+man/ja/man3m/m17nIntro.3m: ja/man/man3/m17nIntro.3m doxyhead.txt ${UTILPATH}/mkman.rb 
+	[ -d "man/ja/man3m" ] || mkdir -p man/ja/man3m
+	ruby ${UTILPATH}/mkman.rb ja
 
 .PRECIOUS: %/latex/refman.tex
 

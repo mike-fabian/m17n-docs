@@ -3,12 +3,16 @@
 #もとのdirectoryにかきなおす。
 # see also の中身を woman 向けに書き換える。
 
-usr_dev_ja=$1
+usr_or_ja=$*[0]
 
-currentdir = Dir.pwd
-doxywork = currentdir+"doxywork"+usr_dev_ja+"man3"
-doxyman3 = currentdir+usr_dev_ja+"man/man3"
-doxyman3m = currentdir+usr_dev_ja+"man/man3m"
+currentdir = Dir.pwd+"/"
+$doxywork = currentdir+"doxywork/"
+$srcman3 = currentdir+usr_or_ja+"/man/man3/"
+if usr_or_ja == "usr"
+  $dstman3m = currentdir+"/man/man3m/"
+else
+  $dstman3m = currentdir+"/man/ja/man3m/"
+end
 
 headertexts = open("doxyhead.txt","r").readlines
  $fdheader = headertexts[0]
@@ -45,7 +49,7 @@ def  writedocumentation(buf, text, index)
 
 def datastructure(struct)
 
-   text = open(struct.concat(".3"),"r").readlines
+   text = open(struct.concat(".3m"),"r").readlines
 
    buf = []
 
@@ -126,7 +130,7 @@ def documentfunc2 (dstart, title, func_text, short_text)
  #short_textの関数名の２行後がbrief。
    brief =  short_text[short_text.index(short_text.find{|i| i.index(ffname)}) + 2]
  #関数ごとのファイルを作る。
-   file = open(doxywork+fname+".3", "w")
+   file = open($doxywork+fname+".3m", "w")
    file.puts("@function")
  #ヘッダ
    /^\.TH \"([^"]*)\"\s/ =~ title
@@ -334,11 +338,9 @@ end
 
 #############################dividing files
 
-Dir.mkdir "doxywork/man3" unless FileTest.directory? "doxywork/man3"
-Dir.mkdir "man" unless FileTest.directory? "man"
-Dir.mkdir "man/man3m" unless FileTest.directory? "man/man3m"
+Dir.mkdir $doxywork unless FileTest.directory? $doxywork
 
-Dir.chdir("usr/man/man3")
+Dir.chdir($srcman3)
 
 Dir.open(".").each{|filename|
      if FileTest.directory? filename 
@@ -382,16 +384,18 @@ Dir.open(".").each{|filename|
   
   end
    
-  filetowrite = open("../../../doxywork/man3/".concat(filename),"w")
-  print "filetowrite=", filetowrite
+  filetowrite = open($doxywork+filename,"w")
   filetowrite.puts(group_text)
   filetowrite.flush
 }
 
-Dir.chdir(currentdir)
 #############################rewriting files
 
-Dir.chdir("doxywork/man3")
+Dir.chdir($dstman3m)
+
+Dir.open(".").each{|f|  File.delete(f) if FileTest.file?(f)}
+
+Dir.chdir($doxywork)
 
 Dir.open(".").each{|filename|
 unless FileTest.directory? filename
@@ -406,14 +410,13 @@ unless FileTest.directory? filename
     else buf = orewrite(text)
  end
 
-  filetowrite = open("../../man/man3m/".concat(filename).concat("m"),"w")
+  filetowrite = open($dstman3m+filename,"w")
   filetowrite.puts(buf)
   filetowrite.flush
 
 end
 }
 
+Dir.chdir($doxywork)
 
-# Dir.chdir("/tmp/doxyman")
-
-# Dir.open(".").each{|f|  File.delete(f) if FileTest.file?(f)}
+Dir.open(".").each{|f|  File.delete(f) if FileTest.file?(f)}
