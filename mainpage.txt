@@ -87,15 +87,13 @@ m17n ライブラリは多言語を扱うため、以下の機能を提供します。
 */
 /***en @section usage How to use it? 
 
-Simply include <m17n.h> in your program, and link it with the m17n
-library by -lm17n.  See @ref m17nIntro @latexonly
-(P.\pageref{group__m17nIntro}) @endlatexonly for the detail.  */
+Simply include <m17n<EM></EM>.h> in your program, and link it with the m17n
+library by -lm17n.  See @ref m17nIntro for the detail.  */
 
 /***ja @section usage 利用方法 
 
 <m17n.h> をプログラムに include し、-lm17n で m17n ライブラリとリンク
-してください。 @ref m17nIntro を参照。@latexonly
-(P.\pageref{group__m17nIntro}) @endlatexonly  */
+してください。 @ref m17nIntro を参照。  */
 
 /***en @section extralib External libraries and data 
 
