@@ -146,7 +146,7 @@ dev/latex/refman.ps: dev/latex/refman.tex ${UTILPATH}/run-latex.sh ${LATEX_DEV}
 	emacs -batch -q -l ${UTILPATH}/mokuji.el -f write-mokuji dev
 
 doxyhead.txt: sample.c ${UTILPATH}/mkheaderlist.rb
-	${DOXYGEN} -g doxytemp
+	-${DOXYGEN} -g doxytemp
 	echo "INPUT = sample.c" >> doxytemp
 	echo "GENERATE_LATEX = NO" >> doxytemp
 	echo "GENERATE_HTML = NO" >> doxytemp
