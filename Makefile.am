@@ -243,7 +243,10 @@ data/m17n-config.txt: @M17NLIB@/m17n-config.in
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
 
-%/latex/m17n-lib.dvi: %/latex/refman.tex data-%/m17n-lib.sty utils/latex.sh
+ja/latex/m17n-lib.dvi: ja/latex/refman.tex styles/m17n-lib.sty utils/latex.sh
+	utils/latex.sh `dirname $@` platex
+
+%/latex/m17n-lib.dvi: %/latex/refman.tex styles/m17n-lib.sty utils/latex.sh
 	utils/latex.sh `dirname $@` latex
 
 %/latex/m17n-lib.ps: %/latex/m17n-lib.dvi utils/dvips.sh

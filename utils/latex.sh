@@ -5,7 +5,7 @@
 
 umask 002
 USR_JA_DEV=`dirname $1`
-TEXINPUTS=`pwd`/styles:`pwd`/data-${USR_JA_DEV}:.:
+TEXINPUTS=`pwd`/styles:.:
 export TEXINPUTS
 cd $1
 LATEX=$2
