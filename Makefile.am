@@ -92,6 +92,7 @@ SRCALL = \
 	data/dbdata.txt fdl.txt
 
 DBDATA = $(shell echo @M17NDB@/*.{dir,mim,flt,fst,tbl})
+DBIMAGE = $(shell echo @M17NDB@/FORMATS/*.png)
 
 HTML_USR_TARGET = usr/html/index.html usr/html/parrot.png
 HTML_JA_TARGET = ja/html/index.html ja/html/parrot.png
@@ -221,7 +222,7 @@ doxyfile-man%.usr: doxyfile-man%
 data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
 	utils/exprog.sh ${EXAMPLE_PROGS} > $@
 
-data/dbdata.txt: ${DBDATA} @M17NDB@/mdb.dir utils/dbdata.awk
+data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.dir utils/dbdata.awk
 	@AWK@ -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh

@@ -111,6 +111,3 @@ EOF
 # Local Variables:
 # coding: euc-jp
 # End:
-
-
-

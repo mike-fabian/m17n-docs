@@ -4,18 +4,38 @@ cat <<EOF
 /***en @page m17nDBFormat Data format of the m17n database
 
 This section describes formats of these data supplied by the m17n
-database. */
+database.
 
-/***ja @page m17nDBFormat M17N データベースのデータ・フォーマット
-
-ここでは、M17N データベースで提供される各データのフォーマットを解説す
-る。 */
-
-/***
 <ul>
 EOF
 
-cat $* | grep '@page' | sed -e 's/@page mdb\([^ ]*\)/<li> @ref mdb\1 "\1" --/'
+for f in $*; do
+  case $f in
+  *.ja.txt) ;;
+  *) cat $f | grep '@page' | sed -e 's/@page mdb\([^ ]*\)/<li> @ref mdb\1 "\1" --/';;
+  esac
+done
+
+cat <<EOF
+</ul>
+*/
+EOF
+
+cat <<EOF
+/***ja @page m17nDBFormat M17N データベースのデータ・フォーマット
+
+ここでは、M17N データベースで提供される各データのフォーマットを解説す
+る。
+
+<ul>
+EOF
+
+for f in $*; do
+  case $f in
+  *.ja.txt) cat $f | grep '@page' | sed -e 's/@page mdb\([^ ]*\)/<li> @ref mdb\1 "\1" --/';;
+  *) ;;
+  esac
+done
 
 cat <<EOF
 </ul>
