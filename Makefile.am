@@ -232,8 +232,7 @@ data/m17n-config.txt: @M17NLIB@/m17n-config.in
 			utils/%_filter.rb m17n-lib.css
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
-	echo 'code { font-weight: bold; font-size: larger }' \
-		>> `dirname $@`/doxygen.css
+	echo 'code { font-weight: bold }' >> `dirname $@`/doxygen.css
 
 %/html/parrot.png: parrot.png
 	cp $< $@
