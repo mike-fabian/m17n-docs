@@ -89,7 +89,7 @@ mandatory but several functions of the m17n library depend on them.
 
 <li> wordcut -- http://thaiwordseg.sourceforge.net/
 
-     Used to find Thai word boundary in the example program
+     Used for finding Thai word boundary in the example program
      example/linebreak.c.
 
 </ul>

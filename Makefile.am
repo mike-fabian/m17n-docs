@@ -128,7 +128,7 @@ html: usr-html ja-html dev-html
 latex: usr-latex ja-latex dev-latex
 man: usr-man ja-man
 
-doxyfile-html: doxyfile Makefile
+doxyfile-html: doxyfile ${SRCALL}
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
 	    -e 's|%INPUT%|${SRCALL}|' \
 	    -e 's|%GENERATE_HTML%|YES|' \
@@ -154,7 +154,7 @@ doxyfile-html.ja: doxyfile-html
 	    -e 's/%OUTPUT_LANGUAGE%/Japanese/' \
 	  < $< >$@
 
-doxyfile-latex: doxyfile
+doxyfile-latex: doxyfile ${SRCALL}
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
 	    -e 's|%INPUT%|${SRCALL}|' \
 	    -e 's|%GENERATE_HTML%|NO|' \
@@ -180,7 +180,7 @@ doxyfile-latex.ja: doxyfile-latex
 	    -e 's/%OUTPUT_LANGUAGE%/Japanese/' \
 	  < $< >$@
 
-doxyfile-man1: doxyfile
+doxyfile-man1: doxyfile ${SRCALL}
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
 	    -e 's|%INPUT%|${MAN1}|' \
 	    -e 's|%GENERATE_HTML%|NO|' \
@@ -189,7 +189,7 @@ doxyfile-man1: doxyfile
 	    -e 's|%MAN_EXTENSION%|.1|' \
 	  < $< >$@
 
-doxyfile-man3: doxyfile
+doxyfile-man3: doxyfile ${SRCALL}
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
 	    -e 's|%INPUT%|${MAN3}|' \
 	    -e 's|%GENERATE_HTML%|NO|' \
@@ -198,7 +198,7 @@ doxyfile-man3: doxyfile
 	    -e 's|%MAN_EXTENSION%|.3m17n|' \
 	  < $< >$@
 
-doxyfile-man5: doxyfile
+doxyfile-man5: doxyfile ${SRCALL}
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
 	    -e 's|%INPUT%|${MAN5}|' \
 	    -e 's|%GENERATE_HTML%|NO|' \
@@ -312,7 +312,7 @@ WEBDIR = /project/web/extra/m17n-lib/m17n-docs
 
 release: dist
 	[ -d ${WEBDIR} ] || mkdir ${WEBDIR}
-	cp usr/html/* ${WEBDIR}
+	cd usr/html; for f in *; do case $$f in *8c*);; *8h*);; *8txt*);; *) echo $$f;; esac; done
 	cp ${distdir}.tar.gz ${WEBDIR}
 
 

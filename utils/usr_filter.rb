@@ -29,7 +29,7 @@ while gets
 	if doxy == 1 
            buf.push($_)
 	   end
-     when /\/\/\/\// 
+     when /\/\*=\*\// 
     	commentblock(buf)
     	buf = []
    
