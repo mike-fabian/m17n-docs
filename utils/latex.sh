@@ -12,9 +12,9 @@ LATEX=$2
 if [ $USR_JA_DEV = "ja" ] ; then
   LATEX=platex
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
-      -e '/M17N ライブラリ モジュール索引/,/pages/ d' \
-      -e '/M17N ライブラリ ファイルの解説/,/textprop_8c/ d' \
-      -e 's/M17N ライブラリ ページの解説/Appendix/' \
+      -e '/m17n ライブラリ モジュール索引/,/pages/ d' \
+      -e '/m17n ライブラリ ファイルの解説/,/textprop_8c/ d' \
+      -e 's/m17n ライブラリ ページの解説/Appendix/' \
     < refman.tex > m17n-lib.tex
 else
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
