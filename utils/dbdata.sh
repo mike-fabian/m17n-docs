@@ -13,6 +13,8 @@ M17N データベースは以下のデータを提供する。 */
 <ul>
 <li> @ref mim-list
 <li> @ref flt-list
+<li> @ref charprop-list
+<li> @ref misc-list
 </ul>
 */
 
@@ -60,8 +62,55 @@ done
 cat <<EOF
 </ul>
 */
+
+/***en @section charprop-list Character Property
+
+List of character properties provided by the m17n databasse and their
+brief descriptions.  */
+
+/***ja @section charprop-list 文字プロパティ
+
+M17N データベースが提供する文字プロパティのリストとそれぞれの簡単な説明。 */
+
+/***
+<ul>
+EOF
+
+for file in $1/*.tab; do
+  sed -n '/^# <li>/,/^$/ s/^# *//p' < $file
+  echo
+done
+
+cat <<EOF
+</ul>
+*/
+
+/***en @section misc-list The other data
+
+List of the other data provided by the m17n databasse and their brief
+descriptions.  */
+
+/***ja @section misc-list その他のデータ
+
+M17N データベースが提供するその他のデータとそれぞれの簡単な説明。 */
+
+/***
+<ul>
+EOF
+
+for file in $1/*.tbl; do
+  sed -n '/^;; <li>/,/^$/ s/^;; *//p' < $file
+  echo
+done
+
+cat <<EOF
+</ul>
+*/
 EOF
 
 # Local Variables:
 # coding: euc-jp
 # End:
+
+
+
