@@ -259,15 +259,13 @@ def desrewrite(text)
 
 #headers
   if line =~ /Return\svalue:/
-     line = "\n.SH RETURNS\n.PP"
      returndescribed = true
   end 
-#  line.gsub!(/^\\fBReturn value:\\fP/,"\n.SH RETURNS\n.PP")
+  line.gsub!(/^\\fBReturn value:\\fP/,"\n.SH RETURNS\n.PP")
   if line =~ /Errors:/  
-     line = "\n.SH ERRORS\n.PP"
      errordescribed = true
   end
-#  line.gsub!(/^\\fBErrors:\\fP/,"\n.SH ERRORS\n.PP")
+  line.gsub!(/^\\fBErrors:\\fP/,"\n.SH ERRORS\n.PP")
   line.gsub!(/^\\fBSee Also:\\fP/,"\n.SH \"SEE ALSO\"\n.PP")
 
   line.gsub!(/^\\fB(.+)\\fP/){"\n.SS " << $1}
