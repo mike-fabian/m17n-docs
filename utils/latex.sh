@@ -41,3 +41,4 @@ if [ "${USR_JA_DEV}" = "ja" ] ; then
 fi
 makeindex ${SOURCE}.idx
 ${LATEX} ${SOURCE}.tex
+${LATEX} ${SOURCE}.tex
