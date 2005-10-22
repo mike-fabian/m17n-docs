@@ -224,7 +224,7 @@ doxyfile-man%.usr: doxyfile-man%
 data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
 	utils/exprog.sh ${EXAMPLE_PROGS} > $@
 
-data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.dir utils/dbdata.awk
+data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.dir utils/dbdata.awk utils/dbdata.sh
 	@AWK@ -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh

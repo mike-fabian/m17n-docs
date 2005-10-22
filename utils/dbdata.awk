@@ -1,5 +1,4 @@
 BEGIN {
-  
   print "/***";
 }
 
@@ -9,7 +8,7 @@ BEGIN {
   FILE=substr($0, FROM, LEN);
   DIR=FILENAME;
   gsub("/[^/]*$", "", DIR)
-  system("sed -n '/^;;;/s/^;;; *//p' "DIR"/"FILE);
+  system("utils/dbdata.sh "DIR" "FILE);
   printf "\n";
 }
 
