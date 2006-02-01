@@ -1,0 +1,2499 @@
+/* -*- coding: euc-jp; -*- */
+/***en @page m17nDBFormat Data format of the m17n database
+
+This section describes formats of these data supplied by the m17n
+database.
+
+<ul>
+<li> @ref mdbGeneral "General" -- General Format
+<li> @ref mdbCharsetList "CharsetList" -- List of character set definitions 
+<li> @ref mdbCodingList "CodingList" -- List of coding system definitions
+<li> @ref mdbDir "Dir" -- List of data in a database directory.
+<li> @ref mdbFLT "FLT" -- Font Layout Table
+<li> @ref mdbFontEncoding "FontEncoding" -- Font Encoding
+<li> @ref mdbFontSize "FontSize" -- Font Size
+<li> @ref mdbFontset "Fontset" -- Fontset
+<li> @ref mdbIM "IM" -- Input Method
+</ul>
+*/
+/***ja @page m17nDBFormat M17N •«°º•ø•Ÿ°º•π§Œ•«°º•ø°¶•’•©°º•ﬁ•√•»
+
+§≥§≥§«§œ°¢M17N •«°º•ø•Ÿ°º•π§«ƒÛ∂°§µ§Ï§Î≥∆•«°º•ø§Œ•’•©°º•ﬁ•√•»§Ú≤Ú¿‚§π
+§Î°£
+
+<ul>
+<li> @ref mdbGeneral "General" -- ∞Ï»Ã≈™§ •’•©°º•ﬁ•√•»
+<li> @ref mdbCharsetList "CharsetList" --  ∏ª˙•ª•√•»ƒÍµ¡§Œ•Í•π•»
+<li> @ref mdbCodingList "CodingList" -- •≥°º•…∑œƒÍµ¡§Œ•Í•π•»
+<li> @ref mdbDir "Dir" -- •«°º•ø•Ÿ°º•π•«•£•Ï•Ø•»•Í√Ê§Œ•«°º•ø§Œ•Í•π•»
+<li> @ref mdbFLT "FLT" -- •’•©•Û•»•Ï•§•¢•¶•»•∆°º•÷•Î
+<li> @ref mdbFontEncoding "FontEncoding" -- •’•©•Û•»•®•Û•≥°º•«•£•Û•∞
+<li> @ref mdbFontSize "FontSize" -- •’•©•Û•»•µ•§•∫
+<li> @ref mdbFontset "Fontset" -- •’•©•Û•»•ª•√•»
+<li> @ref mdbIM "IM" -- •§•Û•◊•√•»•·•Ω•√•…
+</ul>
+*/
+/***ja
+
+@section mdbGeneral ∞Ï»Ã≈™§ •’•©°º•ﬁ•√•»
+
+@subsection general-description ¿‚Ã¿
+
+¥ÿøÙ mdatabase_load () §œ°¢¬Ë∞Ï•ø•∞§¨ @c Mchartable §´ @c Mcharset §«
+§ §§∏¬§Í°¢•ø•∞§«ªÿƒÍ§µ§Ï§ø•«°º•ø§Ú•◊•Ì•—•∆•£•Í•π•»§Œ∑¡§« ÷§π°£ ÷§µ§Ï§Î
+•◊•Ì•—•∆•£•Í•π•»§Œ•≠°º§œ<tt>Minteger</tt>, <tt>Msymbol</tt>,
+<tt>Mtext</tt>, <tt>Mplist</tt> §À∏¬§Î°£√Õ§Œ∑ø§œ•≠°º§À§Ë§√§∆€£ÀÊ¿≠§ §Ø
+∑ËƒÍ§µ§Ï§Î°£•≠°º§¨ <tt>Minteger</tt> § §È§–√Õ§œ¿∞øÙ√Õ§«§¢§Í°¢•≠°º§¨ 
+<tt>Msymbol</tt> § §È√Õ§œ•∑•Û•‹•Î°¢<tt>Mtext</tt> § §È§– M-text°¢
+<tt>Mplist</tt> § §È§–•◊•Ì•—•∆•£•Í•π•»§«§¢§Î°£
+
+•◊•Ì•—•∆•£•Í•π•»§Úº®§π§ø§·§À§œ§µ§ﬁ§∂§ﬁ§ …Ω∏Ω∑¡º∞§¨≤ƒ«Ω§«§¢§Î°£§ø§»§®§–
+<tt>(K1:V1, K2:V2, ..., Kn:Vn)</tt> §»§§§¶∑¡§«°¢∫«ΩÈ§ŒK1 §» V1°¢∆Û§ƒÃ‹
+§Œ•≠°º§»√Õ§¨K2 §» V2 §»§§§√§ø•◊•Ì•—•∆•£•Í•π•»§Ú…Ω∏Ω§π§Î§≥§»§‚§«§≠§Î°£
+§∑§´§∑°¢m17n •«°º•ø•Ÿ°º•π§«Õ—§§§È§Ï§Î•◊•Ì•—•∆•£•Í•π•»§Œ•ø•§•◊§œ§´§ §Í
+∏¬ƒÍ§µ§Ï§∆§§§Î§Œ§«°¢§‚§√§»√±Ω„§ …Ω∏Ω∑¡º∞§ÚÕ—§§§Î§≥§»§¨§«§≠§Î°£
+
+§≥§Ï∞ πﬂ°¢•◊•Ì•—•∆•£•Í•π•»§Œº®§π§ø§·§À§œ S º∞§ÀŒ‡ª˜§∑§ø…Ω∏Ω§ÚÕ—§§§Î°£
+(º¬∫› m17n •È•§•÷•È•Í§Œ•«•’•©•Î•»§Œ•«°º•ø•Ÿ°º•π•Ì°º•¿§œ§≥§Œ…Ω∏Ω§«ΩÒ§´
+§Ï§ø•«°º•ø•’•°•§•Î§Ú∆…§‡§Ë§¶§À¿ﬂ∑◊§µ§Ï§∆§§§Î°£)
+
+§≥§Œ…Ω∏Ω∑¡º∞§œ 1 § §§§∑§Ω§Ï∞ æÂ§Œ <i>Õ◊¡« (element)</i> §´§È§ §Î°£∏ƒ°π
+§ŒÕ◊¡«§œ•◊•Ì•—•∆•£§π§ §Ô§¡•◊•Ì•—•∆•£•Í•π•»§Œ∞Ï§ƒ§ŒÕ◊¡«§Ú…Ω§π°£
+
+Õ◊¡«¥÷§œ 1 § §§§∑§Ω§Ï∞ æÂ§Œ <i> ∂ı«Ú (whitespace)</i> §π§ §Ô§¡•π•⁄°º•π
+(code 32)°¢•ø•÷ (code 9)°¢≤˛π‘ (code 10) §Œ§§§∫§Ï§´§«∂Ë¿⁄§È§Ï§Î°£•ª•ﬂ
+•≥•Ì•Û(<tt>;</tt>) §«ªœ§ﬁ§Îπ‘§œ•≥•·•Û•»§«§¢§Î°£
+
+≥∆•◊•Ì•—•∆•£§Œ•≠°º§»√Õ§œ°¢Õ◊¡«§Œ•ø•§•◊§À¥§≈§§§∆∞ ≤º§Œ§Ë§¶§À∑ËƒÍ§µ§Ï§Î°£
+
+<ul>
+
+<li> ¿∞øÙ
+
+¿µµ¨…Ω∏Ω<tt>-?[0-9]+</tt> §ﬁ§ø§œ<tt>0[xX][0-9A-Fa-f]+</tt> §ÀπÁ√◊§π§Î
+Õ◊¡«§œ°¢•≠°º§¨<tt>Minteger</tt>§«§¢§Î•◊•Ì•—•∆•£§Úº®§π°£∫«ΩÈ§Œ¿µµ¨…Ω∏Ω
+§»πÁ√◊§π§Î§‚§Œ§œ 10 ø §Œ¿∞øÙ°¢∏Â§Œ¿µµ¨…Ω∏Ω§»πÁ√◊§π§Î§‚§Œ§œ 16 ø §Œ¿∞øÙ
+§»≤Úº·§∑°¢§Ω§Œ≤Úº·§Œ∑Î≤Ã§¨•◊•Ì•—•∆•£§Œ√Õ§«§¢§Î°£
+
+§ø§»§®§–°¢Õ◊¡« <tt>0xA0</tt> §œ10 ø §« 160 §Ú√Õ§»§π§Î•◊•Ì•—•∆•£§«§¢§Î°£
+
+<li> •∑•Û•‹•Î
+
+¿µµ¨…Ω∏Ω<tt>[^-0-9(]([^\\()]|\\.)+</tt> §ÀπÁ√◊§π§ÎÕ◊¡«§œ°¢•≠°º§¨<tt>
+Msymbol</tt>§«§¢§Î•◊•Ì•—•∆•£§Úº®§π°£Õ◊¡«√Ê§Œ <tt>\\t</tt>,
+<tt>\\n</tt>, <tt>\\r</tt>, <tt>\\e</tt> §œ§Ω§Ï§æ§Ï°¢•ø•÷ (code 9)°¢≤˛
+π‘ (code 10)°¢…¸µ¢(code 13)°¢•®•π•±°º•◊ (code 27) §À√÷§≠¥π§®§È§Ï§Î°£•–•√
+•Ø•π•È•√•∑•Â§À¬≥§Ø¬æ§Œ ∏ª˙§œ§Ω§Ïº´ø»§»≤Úº·§µ§Ï§Î°£•◊•Ì•—•∆•£§Œ√Õ§œ°¢∑Î
+≤Ã§»§∑§∆∆¿§È§Ï§Î ∏ª˙ŒÛ§ÚÃæ¡∞§»§∑§∆ª˝§ƒ•∑•Û•‹•Î§«§¢§Î°£
+
+§ø§»§®§–°¢Õ◊¡« <tt>abc\ def</tt> §œ "abc def" §ÚÃæ¡∞§»§∑§∆ª˝§ƒ•∑•Û•‹•Î
+§Ú√Õ§»§π§Î•◊•Ì•—•∆•£§«§¢§Î°£
+
+<li> MTEXT
+
+¿µµ¨…Ω∏Ω <tt>"([^"]|\\")*"</tt> §ÀπÁ√◊§π§ÎÕ◊¡«§œ°¢•≠°º <tt>Mtext</tt> 
+§«§¢§Î•◊•Ì•—•∆•£§Úº®§π°£æÂµ≠§Œ•–•√•Ø•π•È•√•∑•Â§À§Ë§Î•®•π•±°º•◊§œ§≥§≥§«
+§‚Õ≠∏˙§«§¢§Î°£§µ§È§À°¢Õ◊¡«√Ê§Œ¿µµ¨…Ω∏Ω
+<tt>\\[xX][0-9A-Fa-f][0-9A-Fa-f]</tt> §ÀπÁ√◊§π§Î…Ù ¨§œ°¢16ø §«≤Úº·§∑§ø
+∑Î≤Ã§À√÷§≠¥π§®§È§Ï§Î°£
+
+•–•√•Ø•π•È•√•∑•Â•®•π•±°º•◊§ÚΩËÕ˝§∑§øæÂ§«°¢•¿•÷•Î•Ø•™°º•»§À§œ§µ§ﬁ§Ï§ø•–
+•§•»ŒÛ§ÚUTF-8 ŒÛ§»§∑§∆≤Úº·§∑°¢M-text §À•«•≥°º•…§π§Î°£§≥§Œ M-text §¨•◊
+•Ì•—•∆•£§Œ√Õ§«§¢§Î°£
+
+<li> PLIST
+
+¬–±˛§π§Î≥Á∏Ã§À§œ§µ§ﬁ§Ï§ø 0 ∏ƒ∞ æÂ§ŒÕ◊¡«§œ<tt>Mplist</tt> §Ú•≠°º§»§π§Î
+•◊•Ì•—•∆•£§Úº®§π°£≥Á∏Ã§Œ¡∞∏Â§Œ∂ı«Ú§œºË§ÍΩ¸§´§Ï§Î°£•◊•Ì•—•∆•£§Œ√Õ§œ°¢•◊
+•Ì•—•∆•£•Í•π•»§«§¢§Í°¢§Ω§Œ≥Á∏Ã∆‚§Œ≥∆Õ◊¡«§Ú∫∆µ¢≈™§À≤Úº·§∑§ø∑Î≤Ã§«§¢§Î°£
+
+</ul>
+
+@subsection general-syntax  ∏À°§Œ…Ωµ≠
+
+•«°º•ø§Œ•◊•Ì•—•∆•£•Í•π•»•’•©°º•ﬁ•√•»§Œ¿‚Ã¿§«§œ°¢BNF…˜§Œµ≠À°§¨Õ—§§§È§Ï
+§Î°£§≥§Œµ≠À°§«§œ°¢»ÛΩ™√º§œ¬Á ∏ª˙° ¥÷§À'-'§¨∆˛§√§∆§‚§Ë§§°À §«°¢Ω™√º§œ " 
+§«∞œ§√§∆…Ω§µ§Ï§Î°£∆√ Ã§ »ÛΩ™√º INTEGER, SYMBOL,
+MTEXT, PLIST §œ§Ω§Ï§æ§Ï¬–±˛§π§Î•◊•Ì•—•∆•£§Ú∞’Ã£§π§Î°£
+
+@subsection general-example Œ„
+
+º°§Œ√±Ω„§ ∑¡º∞§Œ•◊•Ì•—•∆•£•Í•π•»§À∆…§ﬂπ˛§ﬁ§Ï§Î°¢•«°º•ø•Ÿ°º•π§Œ•«°º•ø§Œ
+∞ÏŒ„§Úº®§π°ß
+
+@verbatim
+DATA-FORMAT ::=
+    [ INTEGER | SYMBOL | MTEXT | FUNC ] *
+
+FUNC ::=
+    '(' FUNC-NAME FUNC-ARG * ')'
+
+FUNC-NAME ::=
+    SYMBOL
+
+FUNC-ARG ::=
+    INTEGER | SYMBOL | MTEXT | '(' FUNC-ARG ')'
+@endverbatim
+
+§ø§»§®§–°¢º°§Œ•∆•≠•π•»§Ú¥ﬁ§‡•«°º•ø•’•°•§•Î§œæÂ§Œ ∏À°§ÀπÁ√◊§π§Î°ß
+
+@verbatim
+abc 123 (pqr 0xff) "m\"text" (_\\_ ("string" xyz) -456)
+@endverbatim
+
+§Ω§∑§∆º°§Œ§Ë§¶§ •◊•Ì•—•∆•£•Í•π•»§»§∑§∆∆…§ﬂπ˛§ﬁ§Ï§Î°ß
+
+@verbatim
+¬Ë£±Õ◊¡«: •≠°º: Msymbol,  √Õ: abc
+¬Ë£≤Õ◊¡«: •≠°º: Minteger, √Õ: 123
+¬Ë£≥Õ◊¡«: •≠°º: Mplist,   √Õ: º°§ŒÕ◊¡«§´§È§ §Î•◊•Ì•—•∆•£•Í•π•»
+    ¬Ë£±Õ◊¡«: •≠°º Msymbol,  √Õ: pgr
+    ¬Ë£≤Õ◊¡«: •≠°º Minteger, √Õ: 255
+¬Ë£¥Õ◊¡«: •≠°º: Mtext,    √Õ: m"text
+¬Ë£µÕ◊¡«: •≠°º: Mplist,   √Õ: º°§ŒÕ◊¡«§´§È§ §Î•◊•Ì•—•∆•£•Í•π•»
+    ¬Ë£±Õ◊¡«: •≠°º: Msymbol, √Õ: _\_
+    ¬Ë£≤Õ◊¡«: •≠°º: Mplist,  √Õ: º°§ŒÕ◊¡«§´§È§ §Î•◊•Ì•—•∆•£•Í•π•»
+        ¬Ë£±Õ◊¡«: •≠°º: Mtext,    √Õ: string
+	¬Ë£≤Õ◊¡«: •≠°º: Msymbol,  √Õ: xyz
+	¬Ë£≥Õ◊¡«: •≠°º: Minteger, √Õ: -456
+@endverbatim
+*/
+/***en
+
+@section mdbGeneral General Format
+
+@subsection general-description DESCRIPTION
+
+The mdatabase_load () function returns the data specified by tags in
+the form of plist if the first tag is not @c Mchartable nor @c
+Mcharset.  The keys of the returned plist are limited to
+<tt>Minteger</tt>, <tt>Msymbol</tt>, <tt>Mtext</tt>, and
+<tt>Mplist</tt>.  The type of the value is unambiguously determined by
+the corresponding key.  If the key is <tt>Minteger</tt>, the value is
+an integer.  If the key is <tt>Msymbol</tt>, the value is a symbol.
+And so on.
+
+A number of expressions are possible to represent a plist.  For
+instance, we can use the form <tt>(K1:V1, K2:V2, ..., Kn:Vn)</tt> to
+represent a plist whose first property key and value are K1 and V1,
+second key and value are K2 and V2, and so on.  However, we can use a
+simpler expression here because the types of plists used in the m17n
+database are fairly restricted.
+
+Hereafter, we use an expression, which is similar to S-expression, to
+represent a plist.  (Actually, the default database loader of the m17n
+library is designed to read data files written in this expression.)
+
+The expression consists of one or more <i>elements</i>.  Each element
+represents a property, i.e. a single element of a plist.
+
+Elements are separated by one or more <i>whitespaces</i>, i.e. a space
+(code 32), a tab (code 9), or a newline (code 10).  Comments begin
+with a semicolon (<tt>;</tt>) and extend to the end of the line.
+
+The key and the value of each property are determined based on the
+type of the element as explained below.
+
+<ul>
+
+<li> INTEGER
+
+An element that matches the regular expression <tt>-?[0-9]+</tt> or
+<tt>0[xX][0-9A-Fa-f]+</tt> represents a property whose key is
+<tt>Minteger</tt>.  An element matching the former expression is
+interpreted as an integer in decimal notation, and one matching the
+latter is interpreted as an integer in hexadecimal notation.  The
+value of the property is the result of interpretation.
+
+For instance, the element <tt>0xA0</tt> represents a property whose
+value is 160 in decimal.
+
+<li> SYMBOL
+
+An element that matches the regular expression
+<tt>[^-0-9(]([^\\()]|\\.)+</tt> represents a property whose key is
+<tt> Msymbol</tt>.  In the element, <tt>\\t</tt>, <tt>\\n</tt>,
+<tt>\\r</tt>, and <tt>\\e</tt> are replaced with tab (code 9), newline
+(code 10), carriage return (code 13), and escape (code 27)
+respectively.  Other characters following a backslash is interpreted
+as it is.  The value of the property is the symbol having the
+resulting string as its name.
+
+For instance, the element <tt>abc\ def</tt> represents a property
+whose value is the symbol having the name "abc def".
+
+<li> MTEXT
+
+An element that matches the regular expression <tt>"([^"]|\\")*"</tt>
+represents a property whose key is <tt>Mtext</tt>.  The backslash
+escape explained above also applies here.  Moreover, each part in the
+element matching the regular expression <tt>
+\\[xX][0-9A-Fa-f][0-9A-Fa-f]</tt> is replaced with its hexadecimal
+interpretation.
+
+After having resolved the backslash escapes, the byte sequence between
+the double quotes is interpreted as a UTF-8 sequence and decoded into
+an M-text.  This M-text is the value of the property.
+
+<li> PLIST
+
+Zero or more elements surrounded by a pair of parentheses represent a
+property whose key is <tt>Mplist</tt>.  Whitespaces before and after a
+parenthesis can be omitted.  The value of the property is a plist,
+which is the result of recursive interpretation of the elements
+between the parentheses.
+
+</ul>
+
+@subsection general-syntax SYNTAX NOTATION
+
+In an explanation of a plist format of data, a BNF-like notation is
+used.  In the notation, non-terminals are represented by a string of
+uppercase letters (including '-' in the middle), terminals are
+represented by a string surrounded by '"'.  Special non-terminals
+INTEGER, SYMBOL, MTEXT and PLIST represents property integer, symbol,
+M-text, or plist respectively.
+
+@subsection general-example EXAMPLE
+
+Here is an example of database data that is read into a plist of this
+simple format:
+
+@verbatim
+DATA-FORMAT ::=
+    [ INTEGER | SYMBOL | MTEXT | FUNC ] *
+
+FUNC ::=
+    '(' FUNC-NAME FUNC-ARG * ')'
+
+FUNC-NAME ::=
+    SYMBOL
+
+FUNC-ARG ::=
+    INTEGER | SYMBOL | MTEXT | '(' FUNC-ARG ')'
+@endverbatim
+
+For instance, a data file that contains this text matches the above
+syntax:
+
+@verbatim
+abc 123 (pqr 0xff) "m\"text" (_\\_ ("string" xyz) -456)
+@endverbatim
+
+and is read into this plist:
+
+@verbatim
+1st element: key: Msymbol,  value: abc
+2nd element: key: Minteger, value: 123
+3rd element: key: Mplist,   value: a plist of these elements:
+    1st element: key Msymbol,  value: pgr
+    2nd element: key Minteger, value: 255
+4th element: key: Mtext,    value: m"text
+5th element: key: Mplist,   value: a plist of these elements:
+    1st element: key: Msymbol, value: _\_
+    2nd element: key: Mplist,  value: a plist of these elements:
+        1st element: key: Mtext,    value: string
+	2nd element: key: Msymbol,  value: xyz
+	3rd element: key: Minteger, value: -456
+@endverbatim
+*/
+/***ja
+
+@section mdbCharsetList  ∏ª˙•ª•√•»ƒÍµ¡§Œ•Í•π•»
+
+@subsection cslist-description ¿‚Ã¿
+
+m17n •È•§•÷•È•Í§œ°¢•ø•∞ \<charset-list\> §Úª˝§ƒ•«°º•ø§´§È ∏ª˙•ª•√•»ƒÍµ¡
+§Œ•Í•π•»§Ú•Ì°º•…§π§Î°£•«°º•ø§œ∞ ≤º§Œ•’•©°º•ﬁ•√•»§Œ•◊•Ì•—•∆•£•Í•π•»§»§∑
+§∆•Ì°º•…§µ§Ï§Î°£
+
+@verbatim
+CHARSET-LIST ::= DEFINITION *
+
+DEFINITION ::= '(' NAME ( KEY VALUE ) * ')'
+
+NAME ::= SYMBOL
+
+KEY ::= SYMBOL
+
+VALUE ::= SYMBOL | INTEGER | MTEXT | PLIST
+@endverbatim
+
+@c NAME §œƒÍµ¡§π§Î ∏ª˙•ª•√•»§ŒÃæ¡∞§«§¢§Î°£
+
+@c KEY §» @c VALUE §Œ•⁄•¢§œ°¢¥ÿøÙ mchar_define_charset () §À¬Ë£≤∞˙øÙ
+$PLIST §ŒÕ◊¡«§»§∑§∆Õø§®§È§Ï§Î•◊•Ì•—•∆•£§«§¢§Î°£
+
+@subsection cslist-seealso SEE ALSO
+
+@ref mdbGeneral "mdbGeneral(5)", mchar_define_charset ()
+*/
+/***en
+
+@section mdbCharsetList List of character set definitions 
+
+@subsection cslist-description DESCRIPTION
+
+The m17n library loads a list of charset definitions from the data of
+tag \<charset-list\>.  The data is loaded as a plist of this format.
+
+@verbatim
+CHARSET-LIST ::= DEFINITION *
+
+DEFINITION ::= '(' NAME ( KEY VALUE ) * ')'
+
+NAME ::= SYMBOL
+
+KEY ::= SYMBOL
+
+VALUE ::= SYMBOL | INTEGER | MTEXT | PLIST
+@endverbatim
+
+@c NAME is a name of a charset to define.
+
+@c KEY and @c VALUE pair is a property given to the function
+mchar_define_charset () as an element of the second argument $PLIST.
+
+@subsection cslist-seealso SEE ALSO
+
+@ref mdbGeneral "mdbGeneral(5)", mchar_define_charset ()
+*/
+/***ja
+
+@section mdbCodingList •≥°º•…∑œƒÍµ¡§Œ•Í•π•»
+
+@subsection coding-list-description ¿‚Ã¿
+
+m17n •È•§•÷•È•Í§œ°¢ΩÈ¥¸≤Ω§Œ∫› m17n •«°º•ø•Ÿ°º•π§Œ•ø•∞ \<coding-list\> 
+§Œ§ƒ§§§ø•«°º•ø§´§È•≥°º•…∑œƒÍµ¡§Œ•Í•π•»§Ú•Ì°º•…§π§Î°£§≥§Œ•«°º•ø§œ∞ ≤º§Œ
+•’•©°º•ﬁ•√•»§Œ•◊•Ì•—•∆•£•Í•π•»§»§∑§∆•Ì°º•…§µ§Ï§Î°£
+
+@verbatim
+CODING-LIST ::= DEFINITION *
+
+DEFINITION ::= '(' NAME ( KEY VALUE ) * ')'
+NAME ::= SYMBOL
+
+KEY ::= SYMBOL
+
+VALUE ::= SYMBOL | INTEGER | MTEXT | PLIST
+@endverbatim
+
+@c NAME §œƒÍµ¡§π§Î•≥°º•…∑œ§ŒÃæ¡∞§«§¢§Î°£
+
+@c KEY §» @c VALUE §Œ•⁄•¢§œ°¢¥ÿøÙ mchar_define_coding () §À£≤»÷Ã‹§Œ∞˙
+øÙ§»§∑§∆Õø§®§È§Ï§Î•◊•Ì•—•∆•£§«§¢§Î°£
+
+@subsection coding-list-seealso ª≤æ»
+
+@ref mdbGeneral "mdbGeneral(5)", mconv_define_coding ()
+*/
+/***en
+
+@section mdbCodingList List of coding system definitions
+
+@subsection coding-list-description DESCRIPTION
+
+The m17n library loads a list of coding system definitions from the
+m17n database by the tags \<coding-list\> at initialization time.  The
+data is loaded as a plist of this format.
+
+@verbatim
+CODING-LIST ::= DEFINITION *
+
+DEFINITION ::= '(' NAME ( KEY VALUE ) * ')'
+NAME ::= SYMBOL
+
+KEY ::= SYMBOL
+
+VALUE ::= SYMBOL | INTEGER | MTEXT | PLIST
+@endverbatim
+
+@c NAME is a name of a coding system to define.
+
+@c KEY and @c VALUE pair is a property given to the function
+mconv_define_coding () as the second argument.
+
+@subsection coding-list-seealso SEE ALSO
+
+@ref mdbGeneral "mdbGeneral(5)", mconv_define_coding ()
+*/
+/***ja
+
+@section mdbDir •«°º•ø•Ÿ°º•π•«•£•Ï•Ø•»•Í√Ê§Œ•«°º•ø§Œ•Í•π•»
+
+@subsection dir-description ¿‚Ã¿
+
+m17n •È•§•÷•È•Í§œΩÈ¥¸≤Ω§Œ∫›°¢m17n •«°º•ø•Ÿ°º•π√Ê§Œ•«°º•øƒÍµ¡§Œ•Í•π•»§Ú
+≥∆•«°º•ø•Ÿ°º•π•«•£•Ï•Ø•»•Í√Ê§Œ "mdb.dir" §»§§§¶Ãæ¡∞§Úª˝§ƒ•’•°•§•Î§´§È•Ì°º
+•…§π§Î°£§≥§Œ•’•°•§•Î§À§™§±§Î•◊•Ì•—•∆•£•Í•π•»§Œ•’•©°º•ﬁ•√•»§œ∞ ≤º§«§¢§Î°£
+
+@verbatim
+MDB-DIR ::= DEFINITION *
+
+DEFINITION ::= '(' TAG [ TAG [ TAG [ TAG ] ] ] FILE ')'
+
+TAG ::= SYMBOL
+
+FILE ::= MTEXT
+@endverbatim
+*/
+/***en
+
+@section mdbDir List of data in a database directory.
+
+@subsection dir-description DESCRIPTION
+
+The m17n library loads a list of definitions of data of the m17n
+database from files of name "mdb.dir" in each database directory at
+initialization time.  The plist format of this file is as follows:
+
+@verbatim
+MDB-DIR ::= DEFINITION *
+
+DEFINITION ::= '(' TAG [ TAG [ TAG [ TAG ] ] ] FILE ')'
+
+TAG ::= SYMBOL
+
+FILE ::= MTEXT
+@endverbatim
+*/
+/***ja
+
+@section mdbFLT •’•©•Û•»•Ï•§•¢•¶•»•∆°º•÷•Î
+
+@subsection flt-description ¿‚Ã¿
+
+√±Ω„§ •π•Ø•Í•◊•»§ŒæÏπÁ°¢…Ωº®•®•Û•∏•Û§œ¡™¬Ú§∑§ø•’•©•Û•»§Œ•®•Û•≥°º•«•£•Û
+•∞§À±˛§∏§∆ ∏ª˙•≥°º•…§Ú•∞•Í•’•≥°º•…§À∞Ï ∏ª˙§∫§ƒ —¥π§π§Î°£§∑§´§∑°¢ £ª®§ 
+•Ï•§•¢•¶•»§ÚÕ◊µ·§π§Î ∏ΩÒ°¢§ø§»§®§–•ø•§§‰•§•Û•…∑œ§Œ•π•Ø•Í•◊•»§ §…§ŒæÏπÁ°¢
+£±¬–£±§Œ —¥π§«§œ…‘ΩΩ ¨§«§¢§Î°£ £øÙ§Œ ∏ª˙§¨∞Ï§ƒ§Œ•Í•¨•¡•„§»§∑§∆…¡§´§Ï§ø§Í°¢
+£≤º°∏µ≈™§À§∫§È§∑§ø∞Ã√÷§À…¡§´§ §Ø§∆§œ§ §È§ §§•∞•Í•’§¨§¢§√§ø§Í§π§Î°£
+
+§≥§Œ§Ë§¶§  £ª®§ •π•Ø•Í•◊•»§ÚΩËÕ˝§π§Î§ø§·°¢m17n •È•§•÷•È•Í§œ•’•©•Û•»•Ï
+•§•¢•¶•»•∆°º•÷•Î (√ªΩÃ§∑§∆ FLT §»∏∆§÷§≥§»§À§π§Î) §ÚÕ—§§§Î°£FLT •…•È•§
+•–§œ FLT §Ú≤Úº·§∑°¢ ∏ª˙ŒÛ§Ú…Ωº®•®•Û•∏•Û§À≈œ§π§≥§»§Œ§«§≠§Î•∞•Í•’ŒÛ§À —
+¥π§π§Î°£
+
+FLT §œ OpenType Layout Table §À∏´§È§Ï§Îæ Û (CMAP, GSUB, and GPOS) §À
+≤√§®§∆°¢ ∏ª˙ŒÛ§´§ÈΩÒµ≠¡« (grapheme) •Ø•È•π•ø§Ú√ÍΩ–§∑§ø§Í°¢•Ø•È•π•ø∆‚§«
+ ∏ª˙§Ú ¬§Ÿ —§®§ø§Í§π§Î§ø§·§Œæ Û§Úª˝§ƒ§≥§»§¨§«§≠§Î°£
+
+FLT §œ 1 §ƒ∞ æÂ§Œ —¥π•π•∆°º•∏§¨¬≥§§§ø§‚§Œ§«§¢§Î°£≥∆•π•∆°º•∏§«•≥°º•…ŒÛ
+§œ Ã§Œ§‚§Œ§À —¥π§µ§Ï°¢º°§Œ•π•∆°º•∏§À∆…§ﬁ§Ï§Î°£ŒÛ§Œƒπ§µ§œ•π•∆°º•∏ÀË§À∞€
+§ §Î§≥§»§¨§¢§Î°£•≥°º•…ŒÛ§Œ≥∆Õ◊¡«§œ∞ ≤º§Œ¿∞øÙ√Õ§Œ¬∞¿≠§Úª˝§ƒ°£
+
+<ul>
+<li> •≥°º•…
+
+ —¥π§Œ∫«ΩÈ§Œ•π•∆°º•∏§«§œ°¢∏µ§Œ ∏ª˙ŒÛ§Œ ∏ª˙•≥°º•…°£∫«∏Â§Œ•π•∆°º•∏§«§œ°¢
+…Ωº®•®•Û•∏•Û§À≈œ§µ§Ï§Î•∞•Í•’•≥°º•…°£§Ω§Ï∞ ≥∞§«§œ√Ê¥÷≈™§ •∞•Í•’•≥°º•…°£
+
+<li> •´•∆•¥•Í
+
+§Ω§Œ•π•∆°º•∏§Œ @c CATEGORY-TABLE §«ƒÍµ¡§µ§Ï§ø•´•∆•¥•Í°º•≥°º•…°£
+
+<li> ∑ÎπÁµ¨¬ß
+
+0 §«§ §±§Ï§–°¢§≥§Œ° √Ê¥÷°À•∞•Í•’§Ú¡∞§Œ§‚§Œ§»§…§¶∑ÎπÁ§π§Î§´§ÚªÿƒÍ§π§Î°£
+
+<li> ∫∏•—•«•£•Û•∞•’•È•∞
+
+0 §«§ §±§Ï§–°¢…Ωº®¥ÿøÙ§À§≥§Œ° √Ê¥÷°À•∞•Í•’§Œ¡∞§À•π•⁄°º•π§Ú¡ﬁ∆˛§∑§∆°¢¡∞
+§Œ•∞•Í•’§»Ω≈§ §È§ §§§Ë§¶§À§π§Î§Ë§¶ªÿº®§π§Î°£
+
+<li> ±¶•—•«•£•Û•∞•’•È•∞
+
+0 §«§ §±§Ï§–°¢…Ωº®¥ÿøÙ§À§≥§Œ° √Ê¥÷°À•∞•Í•’§Œ∏Â§À•π•⁄°º•π§Ú¡ﬁ∆˛§∑§∆°¢∏Â
+§Œ•∞•Í•’§»Ω≈§ §È§ §§§Ë§¶§À§π§Î§Ë§¶ªÿº®§π§Î°£
+
+</ul>
+
+•Ï•§•¢•¶•»•®•Û•∏•Û§¨•∆•≠•π•»§Ú…¡§Ø∫›§À§œ°¢§ﬁ§∫•∆•≠•π•»§Œ≥∆ ∏ª˙§À¬–§∑§∆
+§Ω§Ï§æ§Ï•’•©•Û•»§»FLT §Ú∑ËƒÍ§π§Î°£∆±§∏•’•©•Û•»§» FLT §ÚÕ—§§§Î…Ù ¨ ∏ª˙
+ŒÛ§À¥ÿ§∑§∆°¢•Ï•§•¢•¶•»•®•Û•∏•Û§œ¬–±˛§π§Î√Ê¥÷≈™§ •∞•Í•’§ŒŒÛ§Ú¿∏¿Æ§π§Î°£
+√Ê¥÷≈™§ •∞•Í•’•≥°º•…§Œ≥∆Õ◊¡«§œ°¢•≥°º•…§Œ¬∞¿≠§»§∑§∆¬–±˛§π§Î ∏ª˙•≥°º•…°¢
+¬æ§Œ¬∞¿≠§»§∑§∆ 0 §Úª˝§ƒ°£§≥§ŒŒÛ§œFLT §Œ∫«ΩÈ§Œ•π•∆°º•∏§«∏Ωπ‘§Œ @e •È•Û 
+(…Ù ¨ŒÛ) §»§∑§∆ΩËÕ˝§µ§Ï§Î°£
+
+≥∆•π•∆°º•∏§œ∞ ≤º§Œ§Ë§¶§À∆Ø§Ø°£
+
+§ﬁ§∫§≥§Œ•π•∆°º•∏§À @c CATEGORY-TABLE §¨§¢§Ï§–°¢∏Ωπ‘§Œ•È•Û§Œ§π§Ÿ§∆§Œ•∞
+•Í•’§Œ•´•∆•¥•Í§¨ππø∑§µ§Ï§Î°£•´•∆•¥•Í§ŒÃµ§§•∞•Í•’§¨§¢§Ï§–°¢•È•Û§œ§Ω§Œ•∞
+•Í•’§Œ¡∞§«Ω™§Î°£
+
+º°§À§≥§Œ•π•∆°º•∏§Œ•≥°º•…•™•’•ª•√•»°¢∑ÎπÁµ¨¬ß°¢∫∏•—•«•£•Û•∞•’•È•∞§¨ 0 
+§ÀΩÈ¥¸≤Ω§µ§Ï§Î°£
+
+º°§§§«°¢§≥§Œ•π•∆°º•∏§Œ∫«ΩÈ§Œ —¥πµ¨¬ß§¨∏Ωπ‘§Œ•È•Û§À≈¨Õ—§µ§Ï§Î°£
+
+∫«∏Â§À∏Ωπ‘§Œ•È•Û§œø∑§∑§Ø∫Ó§È§Ï§ø° √Ê¥÷°À•∞•Í•’ŒÛ§À√÷§≠¥π§®§È§Ï§Î°£
+
+@subsection flt-syntax  ∏À°§»∞’Ã£
+
+m17n •È•§•÷•È•Í §œ m17n •«°º•ø•Ÿ°º•π§´§È•ø•∞ \<font, layouter,
+FLT-NAME\> §ÚÕ—§§§∆ FLT §Ú•Ì°º•…§π§Î°£FLT §Œ•«°º•ø§Œ•’•©°º•ﬁ•√•»§œ∞ ≤º§ŒƒÃ§Í°ß
+
+@verbatim
+FONT-LAYOUT-TABLE ::= STAGE0 STAGE *
+
+STAGE0 ::= CATEGORY-TABLE GENERATOR
+
+STAGE ::= CATEGORY-TABLE ? GENERATOR
+
+CATEGORY-TABLE ::= '(' 'category' CATEGORY-SPEC + ')'
+
+CATEGORY-SPEC ::= '(' CODE CATEGORY ')'
+                  | '(' CODE CODE CATEGORY ')'
+
+CODE ::= INTEGER
+
+CATEGORY ::= INTEGER
+@endverbatim
+
+@c CATEGORY-SPEC §ŒƒÍµ¡√Ê§«°¢ @c CODE §œ•∞•Í•’•≥°º•… @c CATEGORY §œ¬Á
+ ∏ª˙§¢§Î§§§œæÆ ∏ª˙§Œ ASCII code°¢§π§ §Ô§¡ 'A', ... 'Z', 'a', .. 'z' §Œ
+§§§∫§Ï§´§«§¢§Î°£
+
+@c CATEGORY-SPEC §Œ∫«ΩÈ§Œ∑¡º∞§œ°¢@c CATEGORY §Ú•≥°º•… @c CODE §Úª˝§ƒ•∞
+•Í•’§À≥‰§Í≈ˆ§∆°¢∆Û§ƒÃ‹§Œ∑¡º∞§œ @c CATEGORY §Ú∆Û§ƒ§Œ @c CODE §Œ¥÷§Œ•≥°º
+•…§Úª˝§ƒ•∞•Í•’§À≥‰§Í≈ˆ§∆§Î°£
+
+@verbatim
+GENERATOR ::= '(' 'generator' RULE MACRO-DEF * ')'
+
+RULE ::= REGEXP-BLOCK | MATCH-BLOCK | SUBST-BLOCK | COND-BLOCK
+         | DIRECT-CODE | COMBINING-SPEC | OTF-SPEC
+         | PREDEFINED-RULE | MACRO-NAME
+
+MACOR-DEF ::= '(' MACRO-NAME RULE + ')'
+@endverbatim
+
+≥∆ @c RULE §œ°¢æ√»Ò§π§Î•∞•Í•’§»¿∏¿Æ§π§Î•∞•Í•’§ÚªÿƒÍ§π§Î°£°÷æ√»Ò§µ§Ï§ø°◊
+•∞•Í•’§œ∏Ωπ‘§Œ•È•Û§´§ÈºË§ÍΩ¸§´§Ï§Î°£•Î°º•Î§œæı∂∑§À§Ë§√§∆§œº∫«‘§π§Î°£Ã¿
+º®≈™§Àº∫«‘§»ΩÒ§´§Ï§∆§§§ÎæÏπÁ§Ú§Œ§æ§≠°¢¿Æ∏˘§»§ﬂ§ §π°£
+
+@verbatim
+DIRECT-CODE ::= INTEGER
+@endverbatim
+
+§≥§Œ•Î°º•Î§œ•∞•Í•’§Úæ√»Ò§ª§∫°¢∞ ≤º§Œ¬∞¿≠§Úª˝§ƒ•∞•Í•’§Ú¿∏¿Æ§π§Î°£
+
+<ul>
+<li> •≥°º•… : @c INTEGER °‹ •«•’•©•Î•»§Œ•≥°º•…•™•’•ª•√•»
+<li> ∑ÎπÁµ¨¬ß : •«•’•©•Î•»√Õ
+<li> ∫∏•—•«•§•Û•∞•’•È•∞ : •«•’•©•Î•»√Õ
+<li> ±¶•—•«•§•Û•∞•’•È•∞ : 0
+</ul>
+
+•∞•Í•’¿∏¿Æ∏Â°¢•«•’•©•Î•»§Œ•≥°º•…•™•’•ª•√•»°¢∑ÎπÁµ¨¬ß, ∫∏•—•«•£•Û•∞•’•È
+•∞ §œ§π§Ÿ§∆ 0 §À•Í•ª•√•»§µ§Ï§Î°£
+
+@verbatim
+PREDEFINED-RULE ::= '=' | '*' | '<' | '>' | '|' | '[' | ']'
+@endverbatim
+
+§≥§Ï§È§œ∞ ≤º§Œ§Ë§¶§À∆Ø§Ø°£
+
+<ul>
+<li> @c =
+
+∏Ωπ‘§Œ•È•Û§Œ∫«ΩÈ§Œ•∞•Í•’§Úæ√»Ò§∑°¢∆±§∏•∞•Í•’§Ú¿∏¿Æ§π§Î°£∏Ωπ‘§Œ•È•Û§¨∂ı
+§ §È§–º∫«‘§π§Î°£
+
+<li> @c *
+
+¡∞§Œ•Î°º•Î§Ú∑´§Í ÷§∑º¬π‘§π§Î°£¡∞§Œ•Î°º•Î§¨º∫«‘§π§Ï§–°¢≤ø§‚§ª§∫º∫«‘§π§Î°£
+
+<li> @c @<
+
+ΩÒµ≠¡«•Ø•È•π•ø§Œªœ§·§Úº®§π°£
+
+<li> @c @>
+
+ΩÒµ≠¡«•Ø•È•π•ø§ŒΩ™§Í§Úº®§π°£
+
+<li> @c @[
+
+§≥§Œµ¨¬ß§œ•«•’•©•Î•»§Œ∫∏•—•«•£•Û•∞•’•È•∞§Ú 1 §À§π§Î°£•∞•Í•’§Œæ√»Ò§‰¿∏
+¿Æ§œ§∑§ §§°£
+
+<li> @c @]
+
+§≥§Œµ¨¬ß§œ∫«∂·¿∏¿Æ§µ§Ï§ø•∞•Í•’§Œ±¶•—•«•£•Û•∞•’•È•∞§Ú 1 §À§π§Î°£•∞•Í•’
+§Œæ√»Ò§‰¿∏¿Æ§œ§∑§ §§°£
+
+<li> @c |
+
+•∞•Í•’§Úæ√»Ò§ª§∫°¢•´•∆•¥•Í§¨ ' ' §«¬æ§Œ¬∞¿≠§¨ 0 §«§¢§Î∆√ Ã§ •∞•Í•’§Ú¿∏
+¿Æ§π§Î°£§≥§Œµ¨¬ß§¿§±§¨§≥§Œ∆√ Ã§ •∞•Í•’§Ú¿∏¿Æ§π§Î°£
+
+</ul>
+
+@verbatim
+REGEXP-BLOCK ::= '(' REGEXP RULE * ')'
+
+REGEXP ::= MTEXT
+@endverbatim
+
+@c MTEXT §œ∏Ωπ‘§Œ•È•Û§Œ•´•∆•¥•ÍŒÛ§ÀπÁ√◊§π§Ÿ§≠¿µµ¨…Ω∏Ω§«§¢§Î°£πÁ√◊§π§Ï
+§–°¢§≥§Œµ¨¬ß§œ∞Ïª˛≈™§À∏Ωπ‘§Œ•È•Û§ÚπÁ√◊§∑§ø…Ù ¨§¿§±§À∏¬ƒÍ§∑§øæÂ§«°¢@c
+RULE §Úº¬π‘§π§Î°£πÁ√◊§∑§ø…Ù ¨§œ§≥§Œµ¨¬ß§À§Ë§√§∆æ√»Ò§µ§Ï§Î°£
+
+≥Á∏Ã§Œ§ƒ§§§ø…Ù ¨…Ω∏Ω§¨§¢§Ï§–°¢@c RULE §Œ√Ê§ÀΩ–∏Ω§π§Î§´§‚§∑§Ï§ §§ @c
+MATCH-BLOCK §À§Ë§√§∆ª»Õ—§π§Î§ø§·§Àµ≠œø§µ§Ï§Î°£
+
+πÁ√◊§π§Î…Ù ¨§¨Ãµ§±§Ï§–°¢§≥§Œµ¨¬ß§œº∫«‘§π§Î°£
+
+@verbatim
+MATCH-BLOCK ::= '(' MATCH-INDEX RULE * ')'
+
+MATCH-INDEX ::= INTEGER
+@endverbatim
+
+@c MATCH-INDEX §œƒæ¡∞§Œ @c REGEXP-BLOCK §À§Ë§√§∆µ≠œø§µ§Ï§ø…Ù ¨…Ω∏Ω§Úªÿ
+ƒÍ§π§Î¿∞øÙ§«§¢§Î°£§≥§Œ§Ë§¶§ …Ù ¨…Ω∏Ω§¨§¢§Ï§–°¢§≥§Œµ¨¬ß§œ∞Ïª˛≈™§À∏Ωπ‘§Œ
+•È•Û§ÚπÁ√◊§∑§ø…Ù ¨…Ω∏Ω§¿§±§À∏¬ƒÍ§∑§øæÂ§«°¢@c RULE §Úº¬π‘§π§Î°£πÁ√◊§∑§ø
+…Ù ¨§œ§≥§Œµ¨¬ß§À§Ë§√§∆æ√»Ò§µ§Ï§Î°£
+
+πÁ√◊§π§Î…Ù ¨§¨Ãµ§±§Ï§–°¢§≥§Œµ¨¬ß§œº∫«‘§π§Î°£
+
+§≥§Œµ¨¬ß§¨•π•∆°º•∏§Œ∫«ΩÈ§Àµ¨¬ß§«§¢§Ï§–°¢@c MATCH-INDEX §œ 0 §«§¢§Í°¢∏Ω
+π‘§Œ•È•Û¡¥¬Œ§ÀπÁ√◊§π§Î°£
+
+@verbatim
+SUBST-BLOCK ::= '(' SOURCE-PATTERN RULE * ')'
+
+SOURCE-PATTERN ::= '(' CODE + ')'
+                   | (' 'range' CODE CODE ')'
+@endverbatim
+
+∏Ωπ‘§Œ•È•Û§Œ•≥°º•…ŒÛ§¨ @c SOURCE-PATTERN §»πÁ√◊§π§Ï§–°¢§≥§Œµ¨¬ß§œ∞Ïª˛
+≈™§À∏Ωπ‘§Œ•È•Û§ÚπÁ√◊§∑§ø…Ù ¨§¿§±§À∏¬ƒÍ§∑§øæÂ§«°¢@c RULE §Úº¬π‘§π§Î°£
+πÁ√◊§∑§ø…Ù ¨§œæ√»Ò§µ§Ï§Î°£
+
+@c SOURCE-PATTERN §Œ∫«ΩÈ§Œ∑¡º∞§œ°¢πÁ√◊§π§Î•∞•Í•’•≥°º•…§ŒŒÛ§ÚªÿƒÍ§π§Î°£
+§≥§ŒæÏπÁ°¢§≥§Œµ¨¬ß§œ•«•’•©•Î•»§Œ•≥°º•…•™•’•ª•√•»§Ú 0 §À•Í•ª•√•»§π§Î°£
+
+∆Û§ƒ§·§Œ∑¡º∞§œ°¢•≥°º•…ŒÛ§Œ∫«ΩÈ§Œ•∞•Í•’•≥°º•…§Œ»œ∞œ§ÚªÿƒÍ§π§Î°£§≥§ŒæÏπÁ°¢
+§≥§Œµ¨¬ß§œ•«•’•©•Î•»§Œ•≥°º•…•™•’•ª•√•»§Ú∫«ΩÈ§Œ•∞•Í•’•≥°º•…§´§È»œ∞œ§Úªÿ
+ƒÍ§π§ÎΩÈ§·§Œ @c CODE §Ú∞˙§§§ø§‚§Œ§À¿ﬂƒÍ§π§Î°£
+
+πÁ√◊§π§Î…Ù ¨§¨Ãµ§±§Ï§–°¢§≥§Œµ¨¬ß§œº∫«‘§π§Î°£
+
+@verbatim
+COND-BLOCK ::= '(' 'cond' RULE + ')'
+@endverbatim
+
+§≥§Œµ¨¬ß§œ @c RULE §ÚΩÁ§À°¢§…§Ï§´§¨¿Æ∏˘§π§Î§ﬁ§«º¬π‘§π§Î°£§…§Œ•Î°º•Î§‚
+¿Æ∏˘§∑§ §±§Ï§–°¢§≥§Œµ¨¬ß§œº∫«‘§π§Î°£§Ω§¶§«§ §±§Ï§–¿Æ∏˘§«§¢§Î°£
+
+@verbatim
+OTF-SPEC ::= SYMBOL
+@endverbatim
+
+@c OTF-SPEC §œ°¢OTF •…•È•§•–§ÿ§Œªÿº®§ÚªÿƒÍ§π§ÎÃæ¡∞§Úª˝§ƒ•∑•Û•‹•Î§«§¢§Î°£
+Ãæ¡∞§œ∞ ≤º§Œ ∏À°§ÀΩæ§¶°£
+
+@verbatim
+  OTF-SPEC-NAME ::= 'otf:' SCRIPT LANGSYS ? GSUB-FEATURES ? GPOS-FEATURES ?
+
+  SCRIPT ::= SYMBOL
+
+  LANGSYS ::= '/' SYMBOL
+
+  GSUB-FEATURES ::= '=' FEATURE-LIST ?
+
+  GPOS-FEATURES ::= '+' FEATURE-LIST ?
+
+  FEATURE-LIST ::= ( SYMBOL ',' ) * [ SYMBOL | '*' ]
+
+@endverbatim
+
+≥∆ @c SYMBOL §œ OpenType specification √Ê§«§Œ•ø•∞Ãæ§ÚªÿƒÍ§π§Î°£
+
+@c SCRIPT §À§ƒ§§§∆§œ°¢@c SYMBOL §œ•π•Ø•Í•◊•»•ø•∞Ãæ§Ú…Ω§π°£Devanagari 
+§œ deva § §…°£)
+
+@c LANGSYS §ŒæÏπÁ§œ°¢@c SYMBOL §œ∏¿∏Ï•∑•π•∆•‡•ø•∞Ãæ§ÚªÿƒÍ§π§Î°£@c
+LANGSYS §¨æ Œ¨§µ§Ï§Ï§–°¢•«•’•©•Î•»§Œ∏¿∏Ï•∑•π•∆•‡•∆°º•÷•Î§¨ª»Õ—§µ§Ï§Î°£
+
+@c GSUB-FEATURES §«§œ°¢ @c FEATURE LIST √Ê§Œ≥∆ @c SYMBOL §œ ≈¨Õ—§π§Î 
+GSUB feature •ø•∞Ãæ§ÚªÿƒÍ§π§Î°£'*' §œªƒ§Í§π§Ÿ§∆§Œ feature §ÚªÿƒÍ§π§Î§ø
+§·§À∫«∏Â§ŒÕ◊¡«§»§∑§∆Õ—§§§Î§≥§»§¨§«§≠§Î°£ @c SYMBOL §Œ¡∞§À'~' §¨§ƒ§§§∆
+§™§Í°¢∫«∏Â§ŒÕ◊¡«§¨ '*' § §È§–°¢@c SYMBOL §œ≈¨Õ—§π§Îfeature §´§ÈΩ¸§´§Ï
+§Î°£@c SYMBOL §¨ªÿƒÍ§µ§Ï§∆§§§ §±§Ï§–°¢GSUB feature §œ≈¨Õ—§µ§Ï§ §§°£@c
+GSUB-FEATURES º´¬Œ§¨æ Œ¨§µ§Ï§Ï§–§π§Ÿ§∆§Œ GSUB feature §¨≈¨Õ—§µ§Ï§Î°£
+
+@c GPOS-FEATURES §ŒªÿƒÍ§œ @c GSUB-FEATURES §ŒæÏπÁ§»∆±ÕÕ§«§¢§Î°£
+
+¡¥§∆§Œ•ø•∞Ãæ§œ ASCII §Œ£¥ ∏ª˙§«§¢§Î§≥§»°£
+
+OpenType §ŒªÿƒÍ ˝À°§À§ƒ§§§∆§œº°§Œ•⁄°º•∏§Úª≤æ»§Œ§≥§»°£\n
+    <http://www.microsoft.com/typography/otspec/default.htm>
+
+@verbatim
+COMBINING ::= SYMBOL
+@endverbatim
+
+@c COMBINING §œ°¢ º°§Œ•∞•Í•’§Ú¡∞§Œ§‚§Œ§»§…§¶∑ÎπÁ§π§Î§´§Œªÿº®§ÚÃæ¡∞§»§∑
+§∆ª˝§ƒ•∑•Û•‹•Î§«§¢§Î°£§≥§Œ•Î°º•Î§œ•«•’•©•Î•»§Œ∑ÎπÁµ¨¬ß§Ú•∑•Û•‹•ÎÃæ∏«Õ≠
+§Œ¿∞øÙ•≥°º•…§À•ª•√•»§π§Î°£Ãæ¡∞§œ∞ ≤º§Œ ∏À°§ÀΩæ§¶°£
+following syntax.
+
+@verbatim
+  COMBINING-NAME ::= VPOS HPOS OFFSET VPOS HPOS
+
+  VPOS ::= 't' | 'c' | 'b' | 'B'
+
+  HPOS ::= 'l' | 'c' | 'r'
+
+  OFFSET :: = '.' | XOFF | YOFF XOFF ?
+
+  XOFF ::= ('<' | '>') INTEGER ?
+
+  YOFF ::= ('+' | '-') INTEGER ?
+@endverbatim
+
+@c VPOS §» @c HPOS §œº°§Œ§Ë§¶§Àø‚ƒæ°¢øÂ ø∞Ã√÷§ÚªÿƒÍ§π§Î°£
+
+@verbatim
+                                POINT VPOS HPOS
+                                ----- ---- ----
+    0----1----2 <---- top       0     t    l
+    |         |                 1     t    c
+    |         |                 2     t    r
+    |         |                 3     B    l
+    9   10   11 <---- center    4     B    c
+    |         |                 5     B    r
+  --3----4----5-- <-- baseline  6     b    l
+    |         |                 7     b    c
+    6----7----8 <---- bottom    8     b    r
+                                9     c    l
+    |    |    |                10     c    c
+  left center right            11     c    r
+@endverbatim
+
+∫∏§Œøﬁ§œ§¢§Î•∞•Í•’§Œ 12 §Œª≤æ»≈¿§Ú 0 §´§È 11 §ﬁ§«§ŒøÙª˙§«º®§∑§∆§§§Î°£
+ªÕ≥—∑¡ 0-6-8-2 §œ•∞•Í•’§Œ…Ωº®ŒŒ∞Ë§«§¢§Í°¢∞Ã√÷3, 4, 5 §œ•Ÿ°º•π•È•§•ÛæÂ
+§À§¢§Î°£ 9 §» 11 §œ§Ω§Ï§æ§Ï¿˛0-6 §» 2-8 §Œ√Êø¥§«§¢§Î°£1, 10, 4, 7 §œ§Ω
+§Ï§æ§Ï¿˛1-2, 3-5, 9-11, 6-8 §Œ√Êø¥§«§¢§Î°£
+
+±¶§Œ…Ω§œ°¢≥∆ª≤æ»≈¿§¨@c VPOS §» @c HPOS §Œ¡»πÁ§ª§À§Ë§√§∆§…§Œ§Ë§¶§ÀªÿƒÍ
+§µ§Ï§Î§´§Úº®§∑§∆§§§Î°£
+
+@c COMBINING-NAME §ŒƒÍµ¡√Ê§Œ∫«ΩÈ§Œ @c VPOS §» @c HPOS §œ°¢¡∞§Œ•∞•Í•’§Œ
+ª≤æ»≈¿§Ú°¢∆Û§ƒÃ‹§Œ @c VPOS §» @c HPOS §œº°§Œ•∞•Í•’§Œª≤æ»≈¿§ÚªÿƒÍ§π§Î°£
+º°§Œ•∞•Í•’§œ§≥§Œ∆Û∏ƒ§Œª≤æ»≈¿§¨Ω≈§ §Î§Ë§¶§À…¡§´§Ï§Î°£
+
+@c OFFSET §œΩ≈§ §Í§´¬æ§Œæ‹∫Ÿ§ÚªÿƒÍ§π§Î°£'.' §«§¢§Ï§–°¢ª≤æ»≈¿∆Û§ƒ§œ∆±§∏
+∞Ã√÷§À§¢§Î°£
+
+@c XOFF §œ°¢º°§Œ•∞•Í•’§Œª≤æ»≈¿§Œ X ∫¬…∏§Ú°¢¡∞§Œª≤æ»≈¿§´§È§…§Ï§€§…±¶ 
+('<') §¢§Î§§§œ∫∏ ('>') §ÿ§∫§È§π§´ªÿƒÍ§π§Î°£
+
+@c YOFF §œ°¢º°§Œ•∞•Í•’§Œª≤æ»≈¿§Œ Y ∫¬…∏§Ú°¢¡∞§Œª≤æ»≈¿§´§È§…§Ï§€§…æÂ 
+('+') §¢§Î§§§œ≤º ('-') §ÿ§∫§È§π§´ªÿƒÍ§π§Î°£
+
+§…§¡§È§ŒæÏπÁ§À§‚°¢@c INTEGER §œ•’•©•Û•»•µ•§•∫§Œ≤ø°Û§∫§È§π§´§Úº®§π√Õ§«
+§¢§Î°£§π§ §Ô§¡°¢§‚§∑ @c INTEGER §¨ 10 § §È§–•’•©•Û•»•µ•§•∫§Œ10% (1/10) 
+§∫§È§π§≥§»§À§ §Î°£ @c INTEGER §¨æ Œ¨§µ§Ï§øæÏπÁ§À§œ°¢5 §¨ªÿƒÍ§µ§Ï§ø§‚§Œ
+§»§π§Î°£
+
+º°§Œ•∞•Í•’§¨¡∞§Œ•∞•Í•’§À∑ÎπÁ§µ§Ï§Î§»°¢§Ω§Ï§È§œ∞Ï§ƒ§Œ∑ÎπÁ•∞•Í•’§»§∑§∆∞∑
+§Ô§Ï§Î°£
+
+@verbatim
+MACRO-NAME ::= SYMBOL
+@endverbatim
+
+@c MACRO-NAME §œ @c MACRO-DEF §Œ§§§∫§Ï§´§À∏Ω§Ô§Ï§Î•∑•Û•‹•Î§«§¢§Í°¢¬–±˛
+§π§Î@c RULE §ŒŒÛ§À≈∏≥´§µ§Ï§Î°£
+
+@subsection flt-context-dependent  ∏ÃÆ§À∞Õ¬∏§π§Îø∂…Ò
+
+§≥§≥§ﬁ§«§œ°¢∆√ƒÍ§Œ•’•©•Û•»§«…¡§´§Ï§Î≥∆ ∏ª˙°ø•∞•Í•’ŒÛ§¨ ∏ÃÆº´Õ≥§«§¢§Î§≥
+§»°¢§π§ §Ô§¡¡∞∏Â§Œ•∞•Í•’§À±∆∂¡§µ§Ï§ §§§≥§»§Ú¡∞ƒÛ§»§∑§∆§≠§ø°£§≥§Ï§œ°¢ŒÛ 
+S1 §¨•’•©•Û•»F1 §À§Ë§√§∆…¡§´§Ï°¢¿Ëπ‘§π§ÎŒÛ S0 §¨æÔ§À•’•©•Û•» F0 §ÚÕ◊µ·
+§π§ÎæÏπÁ§À§œ¿µ§∑§§°£
+
+@verbatim
+  ŒÛ                            S0      S1
+  ∏Ωπ‘§Œ•’•©•Û•»                F0      F1
+  Õ¯Õ—≤ƒ«Ω§ •’•©•Û•»            F0      F1
+@endverbatim
+
+§∑§´§∑ª˛§À§œ°¢ŒÛ§ÚÃ¿≥Œ§À∂Ë¿⁄§Î§≥§»§¨§«§≠§ §§æÏπÁ§‚§¢§Î°£¿Ëπ‘§π§ÎŒÛ S0
+§¨ F0 §¿§±§«§ §Ø F1 §«§‚…¡§±§Î§»§∑§Ë§¶°£
+
+@verbatim
+  ŒÛ                            S0      S1
+  ∏Ωπ‘§Œ•’•©•Û•»                F0      F1
+  Õ¯Õ—≤ƒ«Ω§ •’•©•Û•»            F0,F1   F1
+@endverbatim
+
+§≥§ŒæÏπÁ°¢¿Ëπ‘§π§Î S0 §Ú…¡§Ø§ø§·§Àª»§Ô§Ï§ø•∞•Í•’§¨ S1 §Œ•∞•Í•’§Œ¿∏¿Æ§À
+±∆∂¡§ÚÕø§®§Î§≥§»§‚§¢§Î°£§Ω§≥§« S1 §ŒΩËÕ˝§Œ∫›§À§π§«§ÀΩËÕ˝§ŒΩ™§√§ø S0 §À
+¥ÿ§π§Îæ Û§À•¢•Ø•ª•π§π§Î…¨Õ◊§¨§¢§Î°£∫«ΩÈ§Œ•π•∆°º•∏° §≥§Œ•π•∆°º•∏§Œ§ﬂ°À
+§Œ¿∏¿Æµ¨¬ß§œ°¢ΩËÕ˝∫—§ﬂ§Œ…Ù ¨§ÿ•¢•Ø•ª•π§π§Î∆√ Ã§ ¿µµ¨…Ω∏Ω§Úµˆ§∑§∆§§§Î°£
+
+@verbatim
+  "RE0 RE1"
+@endverbatim
+
+@c RE0 §» @c RE1 §œ¿Ëπ‘§ŒŒÛ S0 §»∏Â¬≥§ŒŒÛ S1 §À§Ω§Ï§æ§Ï¬–±˛§π§Î¿µµ¨…Ω
+∏Ω§«§¢§Î°£
+
+∆Û§ƒ§Œ¿µµ¨…Ω∏Ω§Œ¥÷§Œ•π•⁄°º•π§À√Ì∞’°£§≥§Ï§œ∆√ Ã§ •´•∆•¥•Í ' ' §Úº®§∑§∆
+§§§Î (æÂµ≠ª≤æ») °£§≥§Œ¿µµ¨…Ω∏Ω§œ•’•©•Û•» F1 §Úª»Õ—§π§Î•∞•Í•’¿∏¿Æµ¨¬ß§À
+¬∞§∑§∆§™§Í°¢§∑§ø§¨§√§∆ RE1 §¿§±§«§ §ØRE0 §‚ F1 Õ—§Œ•´•∆•¥•Í§ÚÕ—§§§∆…Ω
+∏Ω§µ§Ï§ §±§Ï§–§ §È§ §§°£§ƒ§ﬁ§Í°¢¿Ëπ‘§π§ÎŒÛS0 §¨ F1 Õ—§Œ•´•∆•¥•Í§«…Ω§ª
+§ §§æÏπÁ§À§œ(æÂ§Œ∫«ΩÈ§ŒŒ„§Œ§Ë§¶§À) §≥§Œ•—•ø°º•Û§Úª˝§ƒ¿∏¿Æµ¨¬ß§À§œπÁ√◊
+§∑§ §§°£
+
+@subsection flt-seealso ª≤æ»
+
+@ref mdbGeneral "mdbGeneral(5)", 
+@ref flt-list "FLTs provided by the m17n database"
+*/
+/***en
+
+@section mdbFLT Font Layout Table
+
+@subsection flt-description DESCRIPTION
+
+For simple scripts, the rendering engine converts character codes into glyph
+codes one by one by consulting the encoding of each selected font.
+But, to render text that requires complicated layout (e.g. Thai and
+Indic scripts), one to one conversion is not sufficient.  A sequence
+of characters may have to be drawn as a single ligature.  Some
+glyphs may have to be drawn at 2-dimensionally shifted positions.
+
+To handle those complicated scripts, the m17n library uses Font Layout
+Tables (FLTs for short).  The FLT driver interprets an FLT and
+converts a character sequence into a glyph sequence that is ready to
+be passed to the rendering engine.
+
+An FLT can contain information to extract a grapheme cluster from a
+character sequence and to reorder the characters in the cluster, in
+addition to information found in OpenType Layout Tables (CMAP, GSUB,
+and GPOS).
+
+An FLT is a cascade of one or more conversion stages.  In each stage, a
+sequence is converted into another sequence to be read in the
+next stage.  The length of sequences may differ from stage to
+stage.  Each element in a sequence has the following integer attributes.
+
+<ul>
+<li> code
+
+In the first conversion stage, this is the character code in the
+original character sequence.  In the last stage, it is the glyph code
+passed to the rendering engine.  In other cases, it is an intermediate
+glyph code.
+
+<li> category
+
+This is the category code defined in the @c CATEGORY-TABLE
+of the current stage.
+
+<li> combining-spec
+
+If nonzero, it specifies how to combine this (intermediate) glyph
+with the previous one.
+
+<li> left-padding-flag
+
+If nonzero, it instructs the rendering function to insert a padding
+space before this (intermediate) glyph so that the glyph does not
+overlap with the previous one.
+
+<li> right-padding-flag
+
+If nonzero, it instructs the rendering function to insert a padding
+space after this (intermediate) glyph so that the glyph does not
+overlap with the next one.
+
+</ul>
+
+When the layout engine draws text, it at first determines a font and
+an FLT for each character in the text.  For each subsequence of
+characters that use use the same font and FLT, the layout engine
+generates an intermediate glyph sequence from the character
+subsequence.  Each element in the intermediate glyph sequence
+has the corresponding character code as the code attribute and zeroes
+for other attributes.  This sequence is processed in the
+first stage of FLT as the current @e run (substring).
+
+Each stage works as follows.
+
+At first, if the stage has a @c CATEGORY-TABLE, the category of each glyph
+in the current run is updated.  If there is a glyph that has no category,
+the current run ends before that glyph.
+
+Then, the default values of code-offset, combining-spec, and left-padding-flag
+of this stage are initialized to zero.
+
+Next, the initial conversion rule of the stage is applied to the
+current run.
+
+Lastly, the current run is replaced with the newly produced
+(intermediate) glyph sequence.
+
+@subsection flt-syntax SYNTAX and SEMANTICS
+
+The m17n library loads an FLT from the m17n database using the tag
+\<font, layouter, FLT-NAME\>.  The date format of an FLT is as follows:
+
+@verbatim
+FONT-LAYOUT-TABLE ::= STAGE0 STAGE *
+
+STAGE0 ::= CATEGORY-TABLE GENERATOR
+
+STAGE ::= CATEGORY-TABLE ? GENERATOR
+
+CATEGORY-TABLE ::= '(' 'category' CATEGORY-SPEC + ')'
+
+CATEGORY-SPEC ::= '(' CODE CATEGORY ')'
+                  | '(' CODE CODE CATEGORY ')'
+
+CODE ::= INTEGER
+
+CATEGORY ::= INTEGER
+@endverbatim
+
+In the definition of @c CATEGORY-SPEC, @c CODE is a glyph code, and @c
+CATEGORY is ASCII code of an upper or lower letter, i.e. one of 'A',
+... 'Z', 'a', .. 'z'.
+
+The first form of @c CATEGORY-SPEC assigns @c CATEGORY to a glyph
+whose code @c CODE.  The second form assigns @c CATEGORY to glyphs
+whose code falls between the two @c CODEs.
+
+@verbatim
+GENERATOR ::= '(' 'generator' RULE MACRO-DEF * ')'
+
+RULE ::= REGEXP-BLOCK | MATCH-BLOCK | SUBST-BLOCK | COND-BLOCK
+         | DIRECT-CODE | COMBINING-SPEC | OTF-SPEC
+         | PREDEFINED-RULE | MACRO-NAME
+
+MACOR-DEF ::= '(' MACRO-NAME RULE + ')'
+@endverbatim
+
+Each @c RULE specifies glyphs to be consumed and glyphs to be produced.  When
+some glyphs are consumed, they are taken away from the current run.  A
+rule may fail in some condition.  If not described explicitly to
+fail, it should be regarded that the rule succeeds.
+
+@verbatim
+DIRECT-CODE ::= INTEGER
+@endverbatim
+
+This rule consumes no glyph and produces a glyph which has the
+following attributes:
+
+<ul>
+<li> code : @c INTEGER plus the default code-offset
+<li> combining-spec : default value
+<li> left-padding-flag : default value
+<li> right-padding-flag : zero
+</ul>
+
+After having produced the glyph, the default code-offset,
+combining-spec, and left-padding-flag are all reset to zero.
+
+@verbatim
+PREDEFINED-RULE ::= '=' | '*' | '<' | '>' | '|' | '[' | ']'
+@endverbatim
+
+They perform actions as follows.
+
+<ul>
+<li> @c =
+
+This rule consumes the first glyph in the current run and produces the
+same glyph.  It fails if the current run is empty.
+
+<li> @c *
+
+This rule repeatedly executes the previous rule.
+If the previous rule fails, this rule does nothing and fails.
+
+<li> @c @<
+
+This rule specifies the start of a grapheme cluster.
+
+<li> @c @>
+
+This rule specifies the end of a grapheme cluster.
+
+<li> @c @[
+
+This rule sets the default left-padding-flag to 1.
+No glyph is consumed.  No glyph is produced.
+
+<li> @c @]
+
+This rule changes the right-padding-flag of the lastly generated
+glyph to 1.
+No glyph is consumed.  No glyph is produced.
+
+<li> @c |
+
+This rule consumes no glyph and produces a special glyph whose
+category is ' ' and other attributes are zero.  
+This is the only rule that produces that special glyph.
+
+</ul>
+
+@verbatim
+REGEXP-BLOCK ::= '(' REGEXP RULE * ')'
+
+REGEXP ::= MTEXT
+@endverbatim
+
+@c MTEXT is a regular expression that should match the sequence of
+categories of the current run.  If a match is found, this rule
+executes @c RULEs temporarily limiting the current run to the matched
+part.  The matched part is consumed by this rule.
+
+Parenthesized subexpressions, if any, are recorded to be used in @c
+MATCH-BLOCK that may appear in one of @c RULEs.
+
+If no match is found, this rule fails.
+
+@verbatim
+MATCH-BLOCK ::= '(' MATCH-INDEX RULE * ')'
+
+MATCH-INDEX ::= INTEGER
+@endverbatim
+
+@c MATCH-INDEX is an integer specifying a parenthesized subexpression
+recorded by the previous @c REGEXP-BLOCK.  If such a subexpression was
+found by the previous regular expression matching, this rule executes @c
+RULEs temporarily limiting the current run to the matched part
+of the subexpression.  The matched part is consumed by this rule.
+
+If no match was found, this rule fails.
+
+If this is the first rule of the stage, @c MATCH-INDEX must be 0, and
+it matches the whole current run.
+
+@verbatim
+SUBST-BLOCK ::= '(' SOURCE-PATTERN RULE * ')'
+
+SOURCE-PATTERN ::= '(' CODE + ')'
+                   | (' 'range' CODE CODE ')'
+@endverbatim
+
+If the sequence of codes of the current run matches @c SOURCE-PATTERN,
+this rule executes @c RULEs temporarily limiting the current run to
+the matched part.  The matched part is consumed.
+
+The first form of @c SOURCE-PATTERN specifies a sequence of glyph codes to be
+matched.  In this case, this rule resets the default code-offset to
+zero.
+
+The second form specifies a range of codes that should match the first
+glyph code of the code sequence.  In this case, this rule sets the
+default code-offset to the first glyph code minus the first @c CODE
+specifying the range.
+
+
+If no match is found, this rule fails.
+
+@verbatim
+COND-BLOCK ::= '(' 'cond' RULE + ')'
+@endverbatim
+
+This rule sequentially executes @c RULEs until one succeeds.  If no
+rule succeeds, this rule fails.  Otherwise, it succeeds.
+
+@verbatim
+OTF-SPEC ::= SYMBOL
+@endverbatim
+
+@c OTF-SPEC is a symbol whose name specifies an instruction to the OTF
+driver.  The name has the following syntax.
+
+@verbatim
+  OTF-SPEC-NAME ::= 'otf:' SCRIPT LANGSYS ? GSUB-FEATURES ? GPOS-FEATURES ?
+
+  SCRIPT ::= SYMBOL
+
+  LANGSYS ::= '/' SYMBOL
+
+  GSUB-FEATURES ::= '=' FEATURE-LIST ?
+
+  GPOS-FEATURES ::= '+' FEATURE-LIST ?
+
+  FEATURE-LIST ::= ( SYMBOL ',' ) * [ SYMBOL | '*' ]
+
+@endverbatim
+
+Each @c SYMBOL specifies a tag name defined in the OpenType
+specification.
+
+For @c SCRIPT, @c SYMBOL specifies a Script tag name (e.g. deva for
+Devanagari).
+
+For @c LANGSYS, @c SYMBOL specifies a Language System tag name.  If @c
+LANGSYS is omitted, the Default Language System
+table is used.
+
+For @c GSUB-FEATURES, each @c SYMBOL in @c FEATURE LIST specifies a GSUB Feature tag name
+to apply.  '*' is allowed as the last item to specify all remaining
+features.  If @c SYMBOL is preceded by '~' and the last item is '*',
+@c SYMBOL is excluded from the features to apply.  If no @c SYMBOL is
+specified, no GSUB feature is applied.  If @c GSUB-FEATURES itself is
+omitted, all GSUB features are applied.
+
+The specification of @c GPOS-FEATURES is analogous to that of @c
+GSUB-FEATURES.
+
+Please note that all the tags above must be 4 ASCII printable characters.
+
+See the following page for the OpenType specification.\n
+    <http://www.microsoft.com/typography/otspec/default.htm>
+
+@verbatim
+COMBINING ::= SYMBOL
+@endverbatim
+
+@c COMBINING is a symbol whose name specifies how
+to combine the next glyph with the previous one.  This rule sets the
+default combining-spec to an integer code that is unique to the symbol
+name.  The name has the following syntax.
+
+@verbatim
+  COMBINING-NAME ::= VPOS HPOS OFFSET VPOS HPOS
+
+  VPOS ::= 't' | 'c' | 'b' | 'B'
+
+  HPOS ::= 'l' | 'c' | 'r'
+
+  OFFSET :: = '.' | XOFF | YOFF XOFF ?
+
+  XOFF ::= ('<' | '>') INTEGER ?
+
+  YOFF ::= ('+' | '-') INTEGER ?
+@endverbatim
+
+@c VPOS and @c HPOS specify the vertical and horizontal positions
+as described below.
+
+@verbatim
+                                POINT VPOS HPOS
+                                ----- ---- ----
+    0----1----2 <---- top       0     t    l
+    |         |                 1     t    c
+    |         |                 2     t    r
+    |         |                 3     B    l
+    9   10   11 <---- center    4     B    c
+    |         |                 5     B    r
+  --3----4----5-- <-- baseline  6     b    l
+    |         |                 7     b    c
+    6----7----8 <---- bottom    8     b    r
+                                9     c    l
+    |    |    |                10     c    c
+  left center right            11     c    r
+@endverbatim
+
+The left figure shows 12 reference points of a glyph by numbers 0 to
+11.  The rectangle 0-6-8-2 is the bounding box of the glyph, the
+positions 3, 4, and 5 are on the baseline, 9 and 11 are on the center
+of the lines 0-6 and 2-8 respectively, 1, 10, 4, and 7 are on the
+center of the lines 1-2, 3-5, 9-11, and 6-8 respectively.
+
+The right table shows how those reference points are specified by a
+pair of @c VPOS and @c HPOS.
+
+The first @c VPOS and @c HPOS in the definition of @c COMBINING-NAME
+specify the
+reference point of the previous glyph, and the second @c VPOS and @c
+HPOS specify that of the next glyph.
+The next glyph is drawn so that these two reference points align.
+
+@c OFFSET specifies the way of alignment in detail.  If it is '.', the
+reference points are on the same position.
+
+@c XOFF specifies how much the X position of the reference point of
+the next glyph should be shifted to the right ('<') or left ('>') from
+the previous reference point.
+
+@c YOFF specifies how much the Y position of the reference point the
+next glyphshould be shifted upward ('+') or downward ('-') from the
+previous reference point.
+
+In both cases, @c INTEGER is the amount of shift expressed as a
+percentage of the font size, i.e., if @c INTEGER is 10, it means
+10% (1/10) of the font size.  If @c INTEGER is omitted, it is assumed that
+5 is specified.
+
+Once the next glyph is combined with the previous one, they
+are treated as a single combined glyph.
+
+@verbatim
+MACRO-NAME ::= SYMBOL
+@endverbatim
+
+@c MACRO-NAME is a symbol that appears in one of @c MACRO-DEF.  It is
+exapanded to the sequence of the correponding @c RULEs.
+
+@subsection flt-context-dependent CONTEXT DEPENDENT BEHAVIOR
+
+So far, it has been assumed that each sequence, which is drawn with a
+specific font, is context free, i.e. not affected by the glyphs
+preceding or following that sequence.  This is true when sequence S1
+is drawn with font F1 while the preceding sequence S0 unconditionally
+requires font F0.
+
+@verbatim
+  sequence                              S0      S1
+  currently used font                   F0      F1
+  usable font(s)                        F0      F1
+@endverbatim
+
+Sometimes, however, a clear separation of sequences is not possible.
+Suppose that the preceding sequence S0 can be drawn not only with F0
+but also with F1.
+
+@verbatim
+  sequence                              S0      S1
+  currently used font                   F0      F1
+  usable font(s)                        F0,F1   F1
+@endverbatim
+
+In this case, glyphs used to draw the preceding S0 may affect glyph
+generation of S1.  Therefore it is necessary to access information
+about S0, which has already been processed, when processing S1.
+Generation rules in the first stage (only in the first stage) accept a
+special regular expression to access already processed parts.
+
+@verbatim
+  "RE0 RE1"
+@endverbatim
+
+@c RE0 and @c RE1 are regular expressions that match the preceding
+sequence S0 and the following sequence S1, respectively.
+
+Pay attention to the space between the two regular expressions.  It
+represents the special category ' ' (see above).  Note that the
+regular expression above belongs to glyph generation rules using font
+F1, therefore not only RE1 but also RE0 must be expressed with the
+categories for F1.  This means when the preceding sequence S0 cannot
+be expressed with the categories for F1 (as in the first example
+above) generation rules having these patterns never match.
+
+@subsection flt-seealso SEE ALSO
+
+@ref mdbGeneral "mdbGeneral(5)", 
+@ref flt-list "FLTs provided by the m17n database"
+*/
+/***ja
+
+@section mdbFontEncoding •’•©•Û•»•®•Û•≥°º•«•£•Û•∞
+
+@subsection font-encoding-description ¿‚Ã¿
+
+m17n •È•§•÷•È•Í§œ°¢m17n •«°º•ø•Ÿ°º•π§´§È \<font, encoding\> •ø•∞§À§Ë§√
+§∆∏ƒ°π§Œ•’•©•Û•»§Œ•®•Û•≥°º•«•£•Û•∞§À¥ÿ§π§Îæ Û§Ú•Ì°º•…§π§Î°£§≥§Œ•«°º•ø
+§œ∞ ≤º§Œ•’•©°º•ﬁ•√•»§Œ•◊•Ì•—•∆•£•Í•π•»§»§∑§∆•Ì°º•…§µ§Ï§Î°£
+
+@verbatim
+FONT-ENCODING ::= PER-FONT *
+
+PER-FONT ::= '(' FONT-SPEC ENCODING [ REPERTORY ] ')'
+
+FONT-SPEC ::=
+    '(' [ FOUNDRY FAMILY
+    	  [ WEIGHT [ STYLE [ STRETCH [ ADSTYLE ]]]]]
+	REGISTRY ')'
+
+ENCODING ::= SYMBOL
+@endverbatim
+
+@c FONT-SPEC §œ•’•©•Û•»§Œ•◊•Ì•—•∆•£§ÚªÿƒÍ§π§Î°£@c FOUNDRY §´§È @c
+REGISTRY §œ•’•©•Û•»§Œ #Mfoundry §´§È #Mregistry •◊•Ì•—•∆•£§À¬–±˛§π§Î•∑
+•Û•‹•Î§«§¢§Î°£≥∆•◊•Ì•—•∆•£§Œ∞’Ã£§À§ƒ§§§∆§œ @ref m17nFont ª≤æ»°£
+
+§ø§»§®§–§≥§Œ @c FONT-SPEC:
+
+@verbatim
+    (nil alice0\ lao iso8859-1)
+@endverbatim
+
+§œ•’•©•Û•»§Œ•’•°•ﬂ•ÍÃæ§¨ "alice0 lao" §«•Ï•∏•π•»•Í§¨ "iso8859-1" §«§¢
+§Î§π§Ÿ§∆§Œ•’•©•Û•»§À≈¨Õ—§«§≠§Î°£
+
+@c ENCODING §œ ∏ª˙•ª•√•»§Úº®§π•∑•Û•‹•Î§«§¢§Î°£@c FONT-SPEC §ÀπÁ√◊§π§Î
+•’•©•Û•»§œ°¢§Ω§Œ ∏ª˙•ª•√•»§Œ¡¥ ∏ª˙§Ú•µ•›°º•»§∑°¢§Ω§Œ ∏ª˙•ª•√•»§À§Ë§√§∆
+ ∏ª˙•≥°º•…§œ§Ω§Œ•’•©•Û•»§Œ¬–±˛§π§Î•∞•Í•’•≥°º•…§À•ﬁ•√•◊§µ§Ï§Î°£
+
+@c REPERTORY §œ ∏ª˙•ª•√•»§Úº®§π•∑•Û•‹•Î§´ "nil" §«§¢§Î°£æ Œ¨§∑§øæÏπÁ§œ°¢
+@c ENCODING §Ú @c REPERTORY §ÀªÿƒÍ§∑§ø§Œ§»∆±§∏∞’Ã£§À§ §Î°£"nil" §«§ §±
+§Ï§–°¢ ∏ª˙•ª•√•»§œ•’•©•Û•»§Œ•Ï•—°º•»•Í°¢§π§ §Ô§¡•µ•›°º•»§π§Î ∏ª˙§Úº®§π°£
+§Ω§¶§«§ §±§Ï§–°¢∆√ƒÍ§Œ ∏ª˙§¨§Ω§Œ•’•©•Û•»§«•µ•›°º•»§µ§Ï§∆§§§Î§´§…§¶§´§œ
+∏ƒ°π§Œ•’•©•Û•»•…•È•§•–§ÀÃ‰§§πÁ§Ô§ª§Î°£
+
+§§§Ô§Ê§Î•Ê•À•≥°º•…•’•©•Û•» (•Ï•∏•π•»•Í§œ "iso10646-1") §À§ƒ§§§∆§œ°¢…·
+ƒÃ•Ê•À•≥°º•… ∏ª˙§Œ∞Ï…Ù§∑§´•µ•›°º•»§∑§∆§§§ §§§ø§·°¢@c REPERTORY §Ú 
+"nil" §À§π§Î§≥§»§¨Àæ§ﬁ§∑§§°£     */
+/***en
+
+@section mdbFontEncoding Font Encoding
+
+@subsection font-encoding-description DESCRIPTION
+
+The m17n library loads information about the encoding of each font
+form the m17n database by the tags \<font, encoding\>.  The data is
+loaded as a plist of this format.
+
+@verbatim
+FONT-ENCODING ::= PER-FONT *
+
+PER-FONT ::= '(' FONT-SPEC ENCODING [ REPERTORY ] ')'
+
+FONT-SPEC ::=
+    '(' [ FOUNDRY FAMILY
+    	  [ WEIGHT [ STYLE [ STRETCH [ ADSTYLE ]]]]]
+	REGISTRY ')'
+
+ENCODING ::= SYMBOL
+@endverbatim
+
+@c FONT-SPEC is to specify properties of a font.  @c FOUNDRY to @c
+REGISTRY are symbols corresponding to #Mfoundry to #Mregistry property
+of a font.  See @ref m17nFont for the meaning of each property.
+
+For instance, this @c FONT-SPEC:
+
+@verbatim
+    (nil alice0\ lao iso8859-1)
+@endverbatim
+
+should be applied to all fonts whose family name is "alice0 lao", and
+registry is "iso8859-1".
+
+@c ENCODING is a symbol representing a charset.  A font matching @c
+FONT-SPEC supports all characters of the charset, and a character code
+is mapped to the corresponding glyph code of the font by this charset.
+
+@c REPERTORY is a symbol representing a charset or "nil".  Omitting it
+is the same as specifying @c ENCODING as @c REPERTORY.  If it is not
+"nil", the charset specifies the repertory of the font, i.e, which
+character it supports.  Otherwise, whether a specific character is
+supported by the font or not is asked to each font driver.
+
+For so called Unicode fonts (registry is "iso10646-1"), it is
+recommended to specify "nil" as @c REPERTORY because such fonts
+usually supports only a subset of Unicode characters.  */
+/***ja
+
+@section mdbFontSize •’•©•Û•»•µ•§•∫
+
+@subsection font-size-description ¿‚Ã¿
+
+ª˛§À•’•©•Û•»§œ§Ω§Œ•µ•§•∫§À§ƒ§§§∆∏Ì§√§øæ Û§Ú¥ﬁ§Û§«§§§Î§≥§»§¨§¢§Î (≈µ∑ø
+≈™§ Œ„§»§∑§∆§œ hack §µ§Ï§ø TrueType •’•©•Û•»§ §…) °£§≥§Œ§Ë§¶§ •’•©•Û•»
+§¨¬æ§Œ•’•©•Û•»§»∞ÏΩÔ§Àª»§Ô§Ï§Î§»°¢•Ï•§•¢•¶•»§¨§™§´§∑§Ø§ §Î°£§≥§ŒÃ‰¬Í§Ú
+≤Ú∑Ë§π§Î§ø§·°¢m17n •È•§•÷•È•Í§œm17n •«°º•ø•Ÿ°º•π§´§È•ø•∞ \<font,
+resize\> §Úª˝§ƒ•«°º•ø§Ú•Ì°º•…§∑°¢•’•©•Û•»•µ•§•∫§Úƒ¥¿∞§π§Î§ø§·§Œæ Û§»§∑
+§∆Õ—§§§Î°£§≥§Œ•«°º•ø§œ∞ ≤º§Œ•’•©°º•ﬁ•√•»§Úª˝§ƒ•◊•Ì•—•∆•£•Í•π•»§»§∑§∆•Ì°º
+•…§µ§Ï§Î°£
+
+@verbatim
+FONT-SIZE-ADJUSTMENT ::= PER-FONT *
+
+PER-FONT ::= '(' FONT-SPEC ADJUST-RATIO ')'
+
+FONT-SPEC ::=
+    '(' [ FOUNDRY FAMILY
+    	  [ WEIGHT [ STYLE [ STRETCH [ ADSTYLE ]]]]]
+	REGISTRY ')'
+
+ADJUST-RATIO ::= INTEGER
+@endverbatim
+
+@c FONT-SPEC §œ•’•©•Û•»§Œ•◊•Ì•—•∆•£§ÚªÿƒÍ§π§Î°£@c FOUNDRY §´§È @c
+REGISTRY §ﬁ§«§œ°¢§Ω§Ï§æ§Ï•’•©•Û•»§Œ #Mfoundry §´§È #Mregistry •◊•Ì•—•∆•£
+§ﬁ§«§À¬–±˛§∑§∆§§§Î°£≥∆•◊•Ì•—•∆•£§Œ∞’Ã£§À§ƒ§§§∆§œ @ref m17nFont ª≤æ»§Œ§≥§»°£
+
+@c ADJUST-RATIO §œ°¢¿∞øÙ√Õ§«§¢§Í°¢•’•©•Û•»•µ•§•∫§Ú§…§Œ§Ë§¶§Àƒ¥¿∞§π§Ï§–
+§Ë§§§´§Ú•—°º•ª•Û•»§«§¢§È§Ô§π°£§ø§»§®§–∞ ≤º§Œ @c PER-FONT:
+
+@verbatim
+    ((devanagari-cdac) 150)
+@endverbatim
+
+§œ°¢m17n •È•§•÷•È•Í§Œ•’•©•Û•»•œ•Û•…•È§À°¢"devanagari-cdac" §»§§§¶•Ï•∏•π
+•»•Í§Úª˝§ƒ•’•©•Û•»§À§ƒ§§§∆§œ°¢Õ◊µ·§µ§Ï§ø¬Á§≠§µ§Œ 1.5 «‹§Œ•µ•§•∫§Œ•’•©•Û
+•»§Ú≥´§Ø§Ë§¶§Àªÿº®§π§Î§‚§Œ§«§¢§Î°£
+
+*/
+/***en
+
+@section mdbFontSize Font Size
+
+@subsection font-size-description DESCRIPTION
+
+In some case, a font contains incorrect information about its size
+(typically in the case of a hacked TrueType font), which results in a
+bad text layout when such a font is used in combination with the other
+fonts.  To overcome this problem, the m17n library loads information
+about font-size adjustment from the m17n database by the tags \<font,
+resize\>.  The data is loaded as a plist of this format.
+
+@verbatim
+FONT-SIZE-ADJUSTMENT ::= PER-FONT *
+
+PER-FONT ::= '(' FONT-SPEC ADJUST-RATIO ')'
+
+FONT-SPEC ::=
+    '(' [ FOUNDRY FAMILY
+    	  [ WEIGHT [ STYLE [ STRETCH [ ADSTYLE ]]]]]
+	REGISTRY ')'
+
+ADJUST-RATIO ::= INTEGER
+@endverbatim
+
+@c FONT-SPEC is to specify properties of a font.  @c FOUNDRY to @c
+REGISTRY are symbols corresponding to #Mfoundry to #Mregistry property
+of a font.  See @ref m17nFont for the meaning of each property.
+
+@c ADJUST-RATIO is an integer number specifying by percentage how much
+the font-size must be adjusted.  For instance, this @c PER-FONT:
+
+@verbatim
+    ((devanagari-cdac) 150)
+@endverbatim
+
+instructs the font handler of the m17n library to open a font of 1.5
+times bigger than a requested size on opening a font whose registry
+is "devanagari-cdac".
+*/
+/***ja
+
+@section mdbFontset •’•©•Û•»•ª•√•»
+
+@subsection fontset-description ¿‚Ã¿
+
+m17n •È•§•÷•È•Í§œ°¢m17n •«°º•ø•Ÿ°º•π§´§È \<fontset, FONTSET-NAME\> •ø
+•∞§À§Ë§√§∆•’•©•Û•»•ª•√•»§ŒƒÍµ¡§Ú•Ì°º•…§π§Î°£§≥§Œ•«°º•ø§œ∞ ≤º§Œ•’•©°º•ﬁ•√
+•»§Œ•◊•Ì•—•∆•£•Í•π•»§»§∑§∆•Ì°º•…§µ§Ï§Î°£
+
+@verbatim
+FONTSET ::= PER-SCRIPT * PER-CHARSET * FALLBACK *
+
+PER-SCRIPT ::= '(' SCRIPT PER-LANGUAGE + ')'
+
+PER-LANGUAGE ::= '(' LANGUAGE FONT-SPEC-ELEMENT + ')'
+
+PER-CHARSET ::= '(' CHARSET FONT-SPEC-ELEMENT + ')'
+
+FALLBACK ::= FONT-SPEC-ELEMENT
+
+FONT-SPEC-ELEMENT ::= '(' FONT-SPEC [ FLT-NAME ] ')'
+
+FONT-SPEC ::=
+     '(' [ FOUNDRY FAMILY
+           [ WEIGHT [ STYLE [ STRETCH [ ADSTYLE ]]]]]
+         REGISTRY ')'
+@endverbatim    
+
+@c SCRIPT §œ•π•Ø•Í•◊•»Ãæ (e.g. latin, han) §Úº®§π•∑•Û•‹•Î§´ @c nil§«§¢
+§Î°£@c LANGUAGE §œISO 639 §ÀƒÍµ¡§µ§Ï§ø∏¿∏ÏÃæ•≥°º•… (e.g. ja, zh) §«§¢
+§Î£≤ ∏ª˙§Œ•∑•Û•‹•Î§´ @c nil §«§¢§Î°£
+
+@c FONT-SPEC §œ•’•©•Û•»§Œ•◊•Ì•—•∆•£§ÚªÿƒÍ§π§Î°£@c FOUNDRY §´§È @c
+REGISTRY §œ•’•©•Û•»§Œ #Mfoundry §´§È #Mregistry •◊•Ì•—•∆•£§À¬–±˛§π§Î•∑
+•Û•‹•Î§«§¢§Î°£≥∆•◊•Ì•—•∆•£§Œ∞’Ã£§À§ƒ§§§∆§œ @ref m17nFont ª≤æ»°£
+
+@c FLT-NAME §œ•’•©•Û•»•Ï•§•¢•¶•»•∆°º•÷•Î§ŒÃæ¡∞§«§¢§Î°£(@ref mdbFLT).
+
+@subsection fontset-example Œ„
+
+§≥§Ï§œ @c PER_SCRIPT §ŒŒ„§«§¢§Î°£
+
+@verbatim
+(han
+  (ja
+    ((jisx0208.1983-0)))
+  (zh
+    ((gb2312.1980-0)))
+  (nil
+    ((big5-0))))
+@endverbatim
+
+§≥§Ï§À§Ë§√§∆•’•©•Û•»•ª•Ï•Ø•ø§œ°¢"han"  ∏ª˙ (§ƒ§ﬁ§Í#Mscript •◊•Ì•—•∆•£
+§¨ 'han' §«§¢§Î ∏ª˙)§Œ§¶§¡°¢ ∏ª˙§Œ M-text √Ê§«§Œ #Mlanguage •∆•≠•π•»•◊
+•Ì•—•∆•£§¨ "ja" §«§¢§Í§Ω§Œ ∏ª˙§¨•’•©•Û•»§Œ•Ï•—°º•»•Í°º§À¥ﬁ§ﬁ§Ï§∆§§§Ï§‚
+§Œ§À§ƒ§§§∆§œ°¢•Ï•∏•π•»•Í§¨"jisx0208.1983-0" §«§¢§Î•’•©•Û•»§Úª»§¶§≥§»§Ú
+ªÿº®§µ§Ï§Î°£§Ω§¶§«§ §±§Ï§–°¢•Ï•∏•π•»•Í§¨ "gb2312.1980-0" §‰"big5-0" §«
+§¢§Î§‚§Œ§¨ªÓ§µ§Ï§Î°£"han"  ∏ª˙§À #Mlanguage •∆•≠•π•»•◊•Ì•—•∆•£§¨Ãµ§±§Ï
+§–°¢£≥§ƒ§»§‚ªÓ§µ§Ï§Î°£
+
+•’•©•Û•»¡™¬Ú§Œæ‹∫Ÿ§À§ƒ§§§∆§œ¥ÿøÙ mdraw_text () ª≤æ»°£
+*/
+/***en
+
+@section mdbFontset Fontset
+
+@subsection fontset-description DESCRIPTION
+
+The m17n library loads a fontset definition from the m17n database by
+the tags \<fontset, FONTSET-NAME\>.  The plist format of the data is
+as follows:
+
+@verbatim
+FONTSET ::= PER-SCRIPT * PER-CHARSET * FALLBACK *
+
+PER-SCRIPT ::= '(' SCRIPT PER-LANGUAGE + ')'
+
+PER-LANGUAGE ::= '(' LANGUAGE FONT-SPEC-ELEMENT + ')'
+
+PER-CHARSET ::= '(' CHARSET FONT-SPEC-ELEMENT + ')'
+
+FALLBACK ::= FONT-SPEC-ELEMENT
+
+FONT-SPEC-ELEMENT ::= '(' FONT-SPEC [ FLT-NAME ] ')'
+
+FONT-SPEC ::=
+     '(' [ FOUNDRY FAMILY
+           [ WEIGHT [ STYLE [ STRETCH [ ADSTYLE ]]]]]
+         REGISTRY ')'
+@endverbatim    
+
+@c SCRIPT is a symbol of script name (e.g. latin, han) or @c nil.  @c
+LANGUAGE is a two-letter symbol of language name code defined by ISO
+639 (e.g. ja, zh) or @c nil.
+
+@c FONT-SPEC is to specify properties of a font.  @c FOUNDRY to @c
+REGISTRY are symbols corresponding to #Mfoundry to #Mregistry property
+of a font.  See @ref m17nFont for the meaning of each property.
+
+@c FLT-NAME is a name of Font Layout Table (@ref mdbFLT).
+
+@subsection fontset-example EXAMPLE
+
+This is an example of @c PER_SCRIPT.
+
+@verbatim
+(han
+  (ja
+    ((jisx0208.1983-0)))
+  (zh
+    ((gb2312.1980-0)))
+  (nil
+    ((big5-0))))
+@endverbatim
+
+It instructs the font selector to use a font of registry
+"jisx0208.1983-0" for a "han" character (i.e. a character whose
+#Mscript property is 'han') if the character has #Mlanguage text
+property "ja" in an M-text and the character is in the repertories of
+such fonts.  Otherwise, try a font of registry "gb2312.1980-0" or
+"big5-0".  If that "han" character does not have #Mlanguage text
+property, try all three fonts.
+
+See the function mdraw_text () for the detail of how a font is
+selected.
+*/
+/***ja
+
+@section mdbIM •§•Û•◊•√•»•·•Ω•√•…
+
+@subsection im-description ¿‚Ã¿
+
+m17n •È•§•÷•È•Í§œ°¢m17n •«°º•ø•Ÿ°º•π§´§È∆∞≈™§À•Ì°º•…§«§≠§Î∆˛Œœ•·•Ω•√•…
+•…•È•§•–§ÚƒÛ∂°§∑§∆§§§Î°£(@ref m17nInputMethod ª≤æ»°£ @latexonly
+(P.\pageref{group__m17nInputMethod}) @endlatexonly).
+
+§≥§≥§«§œ∆˛Œœ•·•Ω•√•…ƒÍµ¡§Œ•«°º•ø•’•©°º•ﬁ•√•»§Ú¿‚Ã¿§π§Î°£
+
+@subsection im-format  ∏À°§»∞’Ã£
+
+∞ ≤º§Œ•«°º•ø•’•©°º•ﬁ•√•»§À§Ë§√§∆∆˛Œœ•·•Ω•√•…§¨ƒÍµ¡§µ§Ï§Î°£•…•È•§•–§œ•’•°
+•§•Î§‰•π•»•Í°º•‡§´§ÈƒÍµ¡§Ú•Ì°º•…§∑°¢•◊•Ì•—•∆•£•Í•π•»§Œ∑¡º∞§À —¥π§π§Î°£
+
+@verbatim
+INPUT-METHOD ::= TITLE MAP-LIST MACRO-LIST ? MODULE-LIST ? STATE-LIST
+
+TITLE ::= '(' 'title' MTEXT ')'
+@endverbatim
+
+@c MTEXT §œ§≥§Œ∆˛Œœ•·•Ω•√•…§¨Õ≠∏˙§ ∫›•π•Ø•Í°º•ÛæÂ§À…Ωº®§µ§Ï§Î•∆•≠•π•»§«§¢§Î °£
+
+@verbatim 
+MAP-LIST ::= '(' 'map' MAP * ')'
+
+MAP ::= '(' MAP-NAME RULE * ')'
+
+MAP-NAME ::= SYMBOL
+
+RULE ::= '(' KEYSEQ MAP-ACTION * ')'
+
+KEYSEQ ::= MTEXT | '(' [ SYMBOL | INTEGER ] * ')'
+@endverbatim
+
+@c MAP-NAME ƒÍµ¡√Ê§Œ @c SYMBOL §œ°¢ @c t §¢§Î§§§œ @c nil §«§¢§√§∆§œ§ 
+§È§ §§°£
+
+@c KEYSEQ ƒÍµ¡√Ê§Œ @c MTEXT §œ°¢•≠°º•‹°º•…§´§È¿∏¿Æ§«§≠§Î ∏ª˙§«πΩ¿Æ§µ§Ï
+§Î°£§π§ §Ô§¡ @c MTEXT §œƒÃæÔASCII  ∏ª˙§Œ§ﬂ§Ú¥ﬁ§‡°£§∑§´§∑°¢∆˛Œœ•·•Ω•√•…
+§¨§ø§»§®§–¿æ•Ë°º•Ì•√•—Õ—•≠°º•‹°º•…§Úª»§¶§≥§»§Ú¡€ƒÍ§∑§ø§‚§Œ§«§¢§Ï§–°¢@c
+MTEXT §œ Latin-1  ∏ª˙§Ú¥ﬁ§Û§«§‚§Ë§§°£
+
+@c KEYSEQ ƒÍµ¡√Ê§Œ @c SYMBOL §œ°¢¥ÿøÙ minput_event_to_key () §ŒÃ·§Í√Õ
+§«§ §Ø§∆§œ§ §È§ §§°£
+
+@c KEYSEQ ƒÍµ¡√Ê§Œ @c INTEGER §œ°¢Õ≠∏˙§  ∏ª˙•≥°º•…§«§ §Ø§∆§œ§ §È§ §§°£
+
+@verbatim
+MAP-ACTION ::= ACTION
+
+ACTION ::= INSERT | DELETE | SELECT | MOVE | MARK |
+           | SHOW | HIDE | PUSHBACK | UNDO | SHIFT | CALL
+	   | SET | IF | '(' MACRO-NAME ')'
+
+PREDEFINED-SYMBOL ::=
+    '@0' | '@1' | '@2' | '@3' | '@4' |
+    '@5' | '@6' | '@7' | '@8' | '@9' |
+    '@<' | '@=' | '@>' | '@-' | '@+' | '@[' | '@]'
+@endverbatim
+@verbatim
+MACRO-LIST ::= '(' 'macro' MACRO * ')'
+
+MACRO ::= '(' MACRO-NAME MACRO-ACTION * ')'
+
+MACRO-NAME ::= SYMBOL
+
+MACRO-ACTION ::= ACTION
+@endverbatim
+@verbatim
+MODULE-LIST ::= '(' 'module' MODULE * ')'
+
+MODULE ::= '(' MODULE-NAME FUNCTION * ')'
+
+MODULE-NAME ::= SYMBOL
+
+FUNCTION ::= SYMBOL
+@endverbatim
+
+≥∆ @c MODULE §œ≥∞…Ù•‚•∏•Â°º•Î (∆∞≈™•È•§•÷•È•Í) §ŒÃæ¡∞§»§Ω§Œ•‚•∏•Â°º•Î
+§¨∏¯≥´§π§Î¥ÿøÙÃæ§Ú¿Î∏¿§π§Î°£@c FUNCTION §¨ "init" §»§§§¶Ãæ¡∞§«§¢§Ï§–°¢
+§≥§Œ∆˛Œœ•·•Ω•√•…Õ—§Œ∆˛Œœ•≥•Û•∆•Ø•π•»§¨¿∏¿Æ§µ§Ï§Î∫›§À§Œ§ﬂ°¢•«•’•©•Î•»§Œ
+∞˙øÙ (@c CALL §Œ¿·ª≤æ») §»§»§‚§À∏∆§–§Ï§Î°£ @c FUNCTION §¨ "fini" §»§§
+§¶Ãæ¡∞§Úª˝§∆§–, ∆˛Œœ•≥•Û•∆•Ø•π•»§¨«À≤ı§µ§Ï§Î∫›§À§Œ§ﬂ°¢•«•’•©•Î•»§Œ∞˙øÙ
+§»§»§‚§À∏∆§–§Ï§Î°£
+
+@verbatim
+STATE-LIST ::= '(' 'state' STATE * ')'
+
+STATE ::= '(' STATE-NAME BRANCH * ')'
+
+STATE-NAME ::= SYMBOL
+
+BRANCH ::= '(' MAP-NAME BRANCH-ACTION * ')'
+	   | '(' nil BRANCH-ACTION * ')'
+	   | '(' t BRANCH-ACTION * ')'
+@endverbatim
+
+@c BRANCH §Œ∫«ΩÈ§Œ∑¡º∞§«§œ°¢@c MAP-NAME §œ @c MAP §À∏Ω§Ô§Ï§Î§‚§Œ§«§ §Ø
+§∆§œ§ §È§ §§°£§≥§ŒæÏπÁ°¢@c MAP-NAME §Œ @c KEYSEQ §Œ∞Ï§ƒ§ÀπÁ√◊§π§Î•≠°º
+ŒÛ§¨•ø•§•◊§µ§Ï§Ï§–°¢ @c BRANCH-ACTION §¨º¬π‘§µ§Ï§Î°£
+
+@c BRANCH §Œ∆Û§ƒÃ‹§Œ∑¡º∞§«§œ°¢§Ω§Œª˛≈¿§Œæı¬÷§Œ§§§∫§Ï§Œ @c BRANCH §À§‚
+πÁ√◊§∑§ §§•≠°ºŒÛ§¨•ø•§•◊§µ§Ï§Ï§–°¢@c BRANCH-ACTION§¨º¬π‘§µ§Ï§Î°£
+
+@c BRANCH §Œª∞§ƒÃ‹§Œ∑¡º∞§«§œ°¢§π§Ÿ§∆§Œ•≠°º§ÚΩËÕ˝§∑§ø∏Â§«§Ω§Œæı¬÷§À∞‹∆∞
+§∑§øæÏπÁ§À @c BRANCH-ACTION §¨º¬π‘§µ§Ï§Î°£§‚§∑ΩÈ¥¸æı¬÷§«§¢§Ï§–°¢∆˛Œœ•·
+•Ω•√•…§Œ∆˛Œœ•≥•Û•∆•Ø•π•»§Ú¿∏¿Æ§∑§øƒæ∏Â§À @c BRANCH-ACTION §Úº¬π‘§π§Î°£
+
+@verbatim
+BRANCH-ACTION ::= ACTION
+@endverbatim
+
+∆˛Œœ•·•Ω•√•…§œº°§Œ∆Û§ƒ§Œ•∑•Û•‹•Î§Œ•Í•π•»§Úª˝§ƒ°£
+
+<ul>
+<li> •ﬁ°º•´•Í•π•»
+
+•ﬁ°º•´§œ preediting •∆•≠•π•»√Ê§«§Œ ∏ª˙∞Ã√÷§Úº®§π•∑•Û•‹•Î§«§¢§Î°£@c
+MARK •¢•Ø•∑•Á•Û§œ•ﬁ°º•´§Ú§¢§Î∞Ã√÷§À¿ﬂƒÍ§π§Î°£@c MOVE §» @c DELETE •¢•Ø
+•∑•Á•Û§œ•ﬁ°º•´§Œ∞Ã√÷§Úª≤æ»§π§Î°£
+
+<li>  —øÙ•Í•π•»
+
+ —øÙ§œ¿∞øÙ§Œ√Õ§Úª˝§ƒ•∑•Û•‹•Î§«§¢§Î°£√Õ§œ@c SET •¢•Ø•∑•Á•Û§À§Ë§√§∆¿ﬂƒÍ
+§µ§Ï°¢@c SET, @c INSERT, @c IF §Àª≤æ»§µ§Ï§Î°£§π§Ÿ§∆§Œ —øÙ§ŒΩÈ¥¸√Õ§œ 0 
+§«§¢§Î°£
+
+</ul>
+
+@c PREDEFINED-SYMBOL §œ•ﬁ°º•´§»§∑§∆Õ—§§§È§Ï§øæÏπÁ∆√ Ã§ ∞’Ã£§Úª˝§ƒ°£
+
+<ul>
+<li> @c @@0, @c @@1, @c @@2, @c @@3, @c @@4, @c @@5, @c @@6, @c @@7, @c @@8, @c @@9
+
+§Ω§Ï§æ§Ï£∞»÷Ã‹§´§È£π»÷Ã‹§Œ∞Ã√÷
+
+<li> @c @@<, @c @@=, @c @@>
+
+∫«ΩÈ§Œ°¢∫£§Œ°¢∫«∏Â§Œ∞Ã√÷
+
+<li> @c @@-, @c @@+
+
+¡∞§Œ°¢º°§Œ∞Ã√÷
+
+<li> @c @@[, @c @@]
+
+∏ı ‰•Í•π•»§¨ —≤Ω§π§Î∫›§Œ¡∞§»º°§Œ∞Ã√÷
+</ul>
+
+@c PREDEFINED-SYMBOL §œ @c SELECT •¢•Ø•∑•Á•Û√Ê§«∏ı ‰§Œ•§•Û•«•√•Ø•π§»§∑
+§∆Õ—§§§È§Ï§ø∫›∆√ Ã§ ∞’Ã£§Úª˝§ƒ°£
+
+<ul>
+<li> @c @@<, @c @@=, @c @@>
+
+∏Ω∫ﬂ§Œ∏ı ‰•∞•Î°º•◊√Ê§«§Œ∫«ΩÈ§Œ°¢∫£§Œ°¢∫«∏Â§Œ∏ı ‰
+
+<li> @c @@-
+
+¡∞∏ı ‰°£∫£§Œ∏ı ‰§¨∫£§Œ∏ı ‰•∞•Î°º•◊√Ê§«§Œ∫«ΩÈ§Œ§‚§Œ§«§¢§Ï§–°¢¡∞§Œ∏ı ‰•∞
+•Î°º•◊§Œ∫«∏Â§Œ∏ı ‰°£
+
+<li> @c @@+
+
+º°∏ı ‰°£∫£§Œ∏ı ‰§¨∫£§Œ∏ı ‰•∞•Î°º•◊√Ê§«§Œ∫«∏Â§Œ§‚§Œ§«§¢§Ï§–°¢º°§Œ∏ı ‰•∞
+•Î°º•◊§Œ∫«ΩÈ§Œ∏ı ‰°£
+
+<li> @c @@[, @c @@]
+
+§Ω§Ï§æ§Ï¡∞§»∏Â§Œ∏ı ‰•∞•Î°º•◊√Ê§«°¢∫£§Œ∏ı ‰§»∆±§∏∏ı ‰•§•Û•«•√•Ø•π§Úª˝§ƒ
+§‚§Œ°£
+</ul>
+
+≥∆•¢•Ø•∑•Á•Û§Œ∞˙øÙ§»ø∂…Ò§§§œ∞ ≤º§ŒƒÃ§Í°£
+
+@verbatim
+INSERT ::= '(' 'insert' MTEXT ')'
+           | MTEXT
+	   | INTEGER
+           | '(' 'insert' SYMBOL ')'
+           | '(' 'insert' '(' CANDIDATES * ')' ')'
+           | '(' CANDIDATES * ')' 
+
+CANDIDATES ::= MTEXT | '(' MTEXT * ')'
+@endverbatim
+
+¬Ë∞Ï°¢¬Ë∆Û§Œ∑¡º∞§œ @c MTEXT §Ú∏Ω∫ﬂ§Œ∞Ã√÷§Œ¡∞§À¡ﬁ∆˛§π§Î°£
+
+¬Ëª∞§Œ∑¡º∞§œ°¢ ∏ª˙ @c INTEGER §Ú∏Ω∫ﬂ§Œ∞Ã√÷§Œ¡∞§À¡ﬁ∆˛§π§Î°£
+
+¬ËªÕ§Œ∑¡º∞§œ°¢@c SYMBOL §Ú —øÙ§»§∑§∆∞∑§§°¢§Ω§Œ√Õ§¨¿µ§∑§§ ∏ª˙•≥°º•…§«
+§¢§Ï§–∏Ω∫ﬂ§Œ∞Ã√÷§Œ¡∞§À¡ﬁ∆˛§π§Î°£
+
+¬Ë∏ﬁ°¢¬Ëœª§Œ∑¡º∞§«§œ°¢@c CANDIDATES §œ∏ı ‰•∞•Î°º•◊§Ú…Ω§∑°¢@c
+CANDIDATES §Œ≥∆Õ◊¡«§¨∏ı ‰§Ú…Ω§π°£§ƒ§ﬁ§Í@c CANDIDATES §¨ M-text §«§¢§Ï
+§–°¢∏ı ‰§œ§Ω§ŒM-text √Ê§Œ ∏ª˙§«§¢§Í°¢@c CANDIDATES §¨ M-text §Œ•Í•π•»
+§«§¢§Ï§–°¢∏ı ‰§œ§Ω§Ï§È§Œ M-text §«§¢§Î°£
+
+§≥§Ï§È§Œ∑¡º∞§œ∏Ω∫ﬂ§Œ∞Ã√÷§Œƒæ¡∞§À∫«ΩÈ§Œ∏ı ‰§Ú¡ﬁ∆˛§π§Î°£¡ﬁ∆˛§µ§Ï§ø ∏ª˙ŒÛ
+§À§œ°¢∏ı ‰§Œ•Í•π•»§»∏Ω∫ﬂ¡™¬Ú§µ§Ï§∆§§§Î∏ı ‰§Úªÿ§πæ Û§¨…’≤√§µ§Ï§∆§§§Î°£
+
+¡ﬁ∆˛§À§Ë§√§∆•ﬁ°º•´§Œ∞Ã√÷§œº´∆∞≈™§À —ππ§µ§Ï§Î°£
+
+@verbatim
+DELETE ::= '(' 'delete' SYMBOL ')'
+           | '(' 'delete' INTEGER ')'
+@endverbatim
+
+¬Ë∞Ï§Œ∑¡º∞§œ @c SYMBOL §Ú•ﬁ°º•´§»§∑§∆°¢•ﬁ°º•´§»∏Ω∫ﬂ§Œ∞Ã√÷§Œ¥÷§Œ ∏ª˙§Ú
+∫ÔΩ¸§π§Î°£
+
+¬Ë∆Û§Œ∑¡º∞§œ @c INTEGER §Ú ∏ª˙∞Ã√÷§»§∑§∆°¢§Ω§Œ ∏ª˙∞Ã√÷§»∏Ω∫ﬂ§Œ∞Ã√÷§Œ¥÷
+§Œ ∏ª˙§Ú∫ÔΩ¸§π§Î°£
+
+∫ÔΩ¸§À§Ë§√§∆•ﬁ°º•´§Œ∞Ã√÷§œº´∆∞≈™§À —ππ§µ§Ï§Î°£
+
+@verbatim
+SELECT ::= '(' 'select' PREDEFINED-SYMBOL ')'
+           | '(' 'select' INTEGER ')'
+@endverbatim
+
+§≥§Œ•¢•Ø•∑•Á•Û§œ§ﬁ§∫°¢∏Ω∫ﬂ§Œ∞Ã√÷§Œƒæ¡∞§Œ ∏ª˙§¨°¢∏ı ‰•Í•π•»§¨…’≤√§µ§Ï§∆
+§§§Î ∏ª˙ŒÛ§À¬∞§π§´§…§¶§´§Úƒ¥§Ÿ§Î°£§Ω§¶§«§¢§Ï§–°¢§Ω§Œ ∏ª˙ŒÛ§Ú∞˙øÙ§À§Ë§√
+§∆ªÿƒÍ§µ§Ï§ø∏ı ‰§À∆˛§Ï¥π§®§Î°£
+
+¬Ë∞Ï§Œ∑¡º∞§«§œ @c PREDEFINED-SYMBOL §Ú¡∞Ω“§Œ∏ı ‰•§•Û•«•√•Ø•π§»§∑§∆∞∑§§°¢
+§Ω§Ï§À§Ë§√§∆∏ı ‰•Í•π•»√Ê§Œø∑§∑§§∏ı ‰§¨ªÿƒÍ§µ§Ï§Î°£
+
+¬Ë∆Û§Œ∑¡º∞§«§œ @c INTEGER §œ∏ı ‰•§•Û•«•√•Ø•π§«§¢§Í°¢∏ı ‰•Í•π•»√Ê§Œø∑§∑
+§§∏ı ‰§ÚªÿƒÍ§π§Î°£
+
+@verbatim
+SHOW ::= '(show)'
+@endverbatim
+
+§≥§Œ•¢•Ø•∑•Á•Û§œ°¢∆˛Œœ•·•Ω•√•…•…•È•§•–§À∏Ω∫ﬂ§Œ∞Ã√÷§Œ¡∞§À§¢§Î ∏ª˙ŒÛ§À…’
+≤√§µ§Ï§∆§§§Î∏ı ‰•Í•π•»§Úº®§π§Ë§¶§Àªÿº®§π§Î°£
+
+@verbatim
+HIDE ::= '(hide)'
+@endverbatim
+
+§≥§Œ•¢•Ø•∑•Á•Û§œ°¢∆˛Œœ•·•Ω•√•…•…•È•§•–§À∏Ω∫ﬂº®§µ§Ï§∆§§§Î∏ı ‰•Í•π•»§Ú±£
+§π§Ë§¶§Àªÿº®§π§Î°£
+
+@verbatim
+MOVE ::= '(' 'move' SYMBOL ')'
+         | '(' 'move' INTEGER ')'
+@endverbatim
+
+¬Ë∞Ï§Œ∑¡º∞§œ @c SYMBOL §Ú•ﬁ°º•´§»§∑§∆°¢§Ω§Ï§Úø∑§∑§§∏Ω∫ﬂ§Œ∞Ã√÷§»§π§Î°£
+
+¬Ë∆Û§Œ∑¡º∞§œ @c INTEGER §Ú ∏ª˙∞Ã√÷§»§∑§∆°¢§Ω§Œ∞Ã√÷§Úø∑§∑§§∏Ω∫ﬂ§Œ∞Ã√÷§»
+§π§Î°£
+
+@verbatim
+MARK ::= '(' 'mark' SYMBOL ')'
+@endverbatim
+
+§≥§Œ•¢•Ø•∑•Á•Û§œ @c SYMBOL §Ú•ﬁ°º•´§»§∑§∆°¢§Ω§Ï§Ú∏Ω∫ﬂ§Œ∞Ã√÷§À¿ﬂƒÍ§π§Î°£
+@c SYMBOL §œ @c PREDEFINED-SYMBOL §«§¢§√§∆§œ§ §È§ §§°£
+
+
+@verbatim
+PUSHBACK :: = '(pushback INTEGER)'
+@endverbatim
+
+§≥§Œ•¢•Ø•∑•Á•Û§œ∫«ø∑§Œ•≠°º•§•Ÿ•Û•»§Ú•§•Ÿ•Û•»•≠•Â°º§ÀÃ·§π°£
+
+@verbatim
+UNDO :: = '(undo)'
+@endverbatim
+
+§≥§Œ•¢•Ø•∑•Á•Û§œ∫«∏Â§Œ•≠°º•§•Ÿ•Û•»§ÚºË§Íæ√§π°£
+
+@verbatim
+SHIFT :: = '(' 'shift' STATE-NAME ')'
+@endverbatim
+
+§≥§Œ•¢•Ø•∑•Á•Û§œ∏Ω∫ﬂ§Œæı¬÷§Ú @c STATE-NAME §À∞‹∆∞§µ§ª§Î°£ @c
+STATE-NAME §œ @c STATE-LIST §À∏Ω§Ô§Ï§Î§‚§Œ§«§ §Ø§∆§œ§ §È§ §§°£
+
+@verbatim
+CALL ::= '(' 'call' MODULE-NAME FUNCTION ARG * ')'
+
+ARG ::= INTEGER | SYMBOL | MTEXT | PLIST
+@endverbatim
+
+§≥§Œ•¢•Ø•∑•Á•Û§œ≥∞…Ù•‚•∏•Â°º•Î @c MODULE-NAME §Œ¥ÿøÙ @c FUNCTION §Ú∏∆
+§÷°£@c MODULE-NAME §» @c FUNCTION §œ @c MODULE-LIST §À∏Ω§Ô§Ï§Î§‚§Œ§«§ 
+§Ø§∆§œ§ §È§ §§°£
+
+¥ÿøÙ§œ (#MPlist *) ∑ø§Œ∞˙øÙ§»§»§‚§À∏∆§–§Ï§Î°£∫«ΩÈ§ŒÕ◊¡«§Œ•≠°º§œ #Mt §«
+§¢§Í°¢§Ω§Œ√Õ§œ#MInputContext ∑ø§Œ•™•÷•∏•ß•Ø•»§ÿ§Œ•›•§•Û•ø§«§¢§Î°£¬Ë∆Û
+§ŒÕ◊¡«§Œ•≠°º§œ#Msymbol §«§¢§Í°¢√Õ§œ∏Ω∫ﬂ§Œæı¬÷Ãæ§«§¢§Î°£ @c ARGs §œª∞§ƒ
+Ã‹∞ πﬂ§ŒÕ◊¡«§Œ√Õ§»§∑§∆Õ—§§§È§Ï§Î°£§Ω§Ï§È§ŒÕ◊¡«§Œ•≠°º§œº´∆∞≈™§À∑ËƒÍ§µ§Ï
+§Î°£@c ARG §¨¿∞øÙ√Õ§ §È§–¬–±˛§π§Î•≠°º§œ #Minteger §«§¢§Í°¢@c ARG §¨•∑
+•Û•‹•Î§ §È§–°¢¬–±˛§π§Î•≠°º§œ #Msymbol°¢§ §…§Œ§Ë§¶§À°£
+
+¥ÿøÙ§œ NULL §Ú ÷§π§´°¢§ﬁ§ø§œπ‘§¶§Ÿ§≠•¢•Ø•∑•Á•Û§Œ•Í•π•»§Ú…Ω§π (#MPlist
+*) ∑ø§Œ√Õ§Ú ÷§µ§ §Ø§∆§œ§ §È§ §§°£
+
+@verbatim
+SET ::= '(' OPERAND SYMBOL1 [ INTEGER | SYMBOL2 ] ')'
+
+OPERAND ::= 'set' | 'add' | 'sub' | 'mul' | 'div'
+@endverbatim
+
+§≥§Œ•¢•Ø•∑•Á•Û§œ @c SYMBOL1 §» @c SYMBOL2 §Ú —øÙ§»§∑§∆°¢@c SYMBOL1 §Œ
+√Õ§Ú∞ ≤º§Œ§Ë§¶§À¿ﬂƒÍ§π§Î°£
+
+@c OPERAND §¨ 'set' § §È§–°¢@c SYMBOL1 §Œ√Õ§œ @c INTEGER §ﬁ§ø§œ @c
+SYMBOL2 §À¿ﬂƒÍ§µ§Ï§Î°£
+
+@c OPERAND §¨ 'add' § §È§–°¢@c SYMBOL1 §Œ√Õ§Ú @c INTEGER §ﬁ§ø§œ @c
+SYMBOL2 §Œ√Õ§¿§±¡˝§‰§π°£
+
+@c OPERAND §¨ 'sub' § §È§–°¢@c SYMBOL1 §Œ√Õ§Ú @c INTEGER §ﬁ§ø§œ @c
+SYMBOL2 §Œ√Õ§¿§±∏∫§È§π°£
+
+@c OPERAND §¨ 'mul' § §È§–°¢@c SYMBOL1 §Œ√Õ§À @c INTEGER §ﬁ§ø§œ @c
+SYMBOL2 §Œ√Õ§Ú≥›§±§Î°£
+
+@c OPERAND §¨ 'div' § §È§–°¢@c SYMBOL1 §Œ√Õ§Ú @c INTEGER §ﬁ§ø§œ @c
+SYMBOL2 §Œ√Õ§«≥‰§Î°£
+
+@verbatim
+IF ::= '(' 'if' CONDITION ACTION-LIST1 ACTION-LIST2 * ')'
+
+CONDITION ::= '(' OPERAND VAL1 VAL2 ')'
+
+ACTION-LIST1 ::= '(' ACTION * ')'
+
+ACTION-LIST2 ::= '(' ACTION * ')'
+
+OPERAND ::= '=' '<' '>'
+
+VAL1 ::= [ INTEGER1 | SYMBOL1 ]
+
+VAL2 ::= [ INTEGER2 | SYMBOL2 ]
+@endverbatim
+
+§≥§Œ•¢•Ø•∑•Á•Û§œ°¢ @c CONDITION §¨øø§«§¢§Ï§– @c ACTION-LIST1 §Úº¬π‘§∑°¢
+§Ω§¶§«§ §±§Ï§– @c ACTION-LIST2 §Ú (§‚§∑§¢§Ï§–) º¬π‘§π§Î°£
+
+@c SYMBOL1 §» @c SYMBOL2 §œ —øÙ§»§∑§∆∞∑§Ô§Ï§Î°£
+
+@ifnot FOR-MAN
+
+@subsection im-seealso SEE ALSO
+
+@ref mim-list "Input Methods provided by the m17n database",
+@ref mdbGeneral "mdbGeneral(5)"
+*/
+/***en
+
+@section mdbIM Input Method
+
+@subsection im-description DESCRIPTION
+
+The m17n library provides a driver for input methods that are
+dynamically loadable from the m17n database (see @ref m17nInputMethod
+@latexonly (P.\pageref{group__m17nInputMethod}) @endlatexonly).
+
+This section describes the data format that defines those input
+methods.
+
+@subsection im-format SYNTAX and SEMANTICS
+
+The following data format defines an input method.  The driver loads
+a definition from a file, a stream, etc.  A definitions is converted
+into the form of plist in the driver.
+
+@verbatim
+INPUT-METHOD ::= TITLE MAP-LIST MACRO-LIST ? MODULE-LIST ? STATE-LIST
+
+TITLE ::= '(' 'title' MTEXT ')'
+@endverbatim
+
+@c MTEXT is a text displayed on the screen when this input method is
+active.
+
+@verbatim
+MAP-LIST ::= '(' 'map' MAP * ')'
+
+MAP ::= '(' MAP-NAME RULE * ')'
+
+MAP-NAME ::= SYMBOL
+
+RULE ::= '(' KEYSEQ MAP-ACTION * ')'
+
+KEYSEQ ::= MTEXT | '(' [ SYMBOL | INTEGER ] * ')'
+@endverbatim
+
+@c SYMBOL in the definitions of @c MAP-NAME must not be @c t nor @c
+nil.
+
+@c MTEXT in the definition of @c KEYSEQ consists of characters that
+can be generated by a keyboard.  Therefore @c MTEXT usually contains
+only ASCII characters.  However, if the input method is intended to be
+used, for instance, with a West European keyboard, @c MTEXT may
+contain Latin-1 characters.
+
+@c SYMBOL in the definition of @c KEYSEQ must be the return value of
+the minput_event_to_key () function.
+
+@c INTEGER in the definition of @c KEYSEQ must be a valid character
+code.
+
+@verbatim
+MAP-ACTION ::= ACTION
+
+ACTION ::= INSERT | DELETE | SELECT | MOVE | MARK |
+           | SHOW | HIDE | PUSHBACK | UNDO | SHIFT | CALL
+	   | SET | IF | '(' MACRO-NAME ')'
+
+PREDEFINED-SYMBOL ::=
+    '@0' | '@1' | '@2' | '@3' | '@4' |
+    '@5' | '@6' | '@7' | '@8' | '@9' |
+    '@<' | '@=' | '@>' | '@-' | '@+' | '@[' | '@]'
+@endverbatim
+@verbatim
+MACRO-LIST ::= '(' 'macro' MACRO * ')'
+
+MACRO ::= '(' MACRO-NAME MACRO-ACTION * ')'
+
+MACRO-NAME ::= SYMBOL
+
+MACRO-ACTION ::= ACTION
+@endverbatim
+@verbatim
+MODULE-LIST ::= '(' 'module' MODULE * ')'
+
+MODULE ::= '(' MODULE-NAME FUNCTION * ')'
+
+MODULE-NAME ::= SYMBOL
+
+FUNCTION ::= SYMBOL
+@endverbatim
+
+Each @c MODULE declares the name of external module (i.e. dynamic
+library) and function names exported by the module.  If a @c FUNCTION has
+name "init", it is called with only the default arguments (see the
+section about @c CALL) when an input context is created for the input
+method.  If a @c FUNCTION has name "fini", it is called with only the
+default arguments when an input context is destroyed.
+
+@verbatim
+STATE-LIST ::= '(' 'state' STATE * ')'
+
+STATE ::= '(' STATE-NAME BRANCH * ')'
+
+STATE-NAME ::= SYMBOL
+
+BRANCH ::= '(' MAP-NAME BRANCH-ACTION * ')'
+	   | '(' nil BRANCH-ACTION * ')'
+	   | '(' t BRANCH-ACTION * ')'
+@endverbatim
+
+In the first form of @c BRANCH, @c MAP-NAME must be an item that appears
+in @c MAP.  In this case, if a key sequence matching one of @c
+KEYSEQs of @c MAP-NAME is typed, @c BRANCH-ACTIONs are executed.
+
+In the second form of @c BRANCH, @c BRANCH-ACTIONs are executed if a
+key sequence that doesn't match any of @c Branch's of the current
+state is typed.
+
+In the third form of @c BRANCH, @c BRANCH-ACTIONs are executed if we
+shift to the current state after handling all typed keys.  If the
+current state is the initial state, @c BRANCH-ACTIONs are executed
+just after an input context of the input method is created.
+
+@verbatim
+BRANCH-ACTION ::= ACTION
+@endverbatim
+
+An input method has the following two lists of symbols.
+
+<ul>
+<li> marker list
+
+A marker is a symbol indicating a character position in the preediting
+text.  The @c MARK action assigns a position to a marker.  The
+position of a marker is referred by the @c MOVE and the @c DELETE actions.
+
+<li> variable list
+
+A variable is a symbol associated with an integer value.  The value of
+a variable is set by the @c SET action, and is referred by the @c SET,
+the @c INSERT, and the @c IF actions.  All variables are implicitly
+initialized to zero.
+
+</ul>
+
+Each @c PREDEFINED-SYMBOL has a special meaning when used as a marker.
+
+<ul>
+<li> @c @@0, @c @@1, @c @@2, @c @@3, @c @@4, @c @@5, @c @@6, @c @@7, @c @@8, @c @@9
+
+The 0th, 1st, 2nd, ... 9th position respectively.
+
+<li> @c @@<, @c @@=, @c @@>
+
+The first, the current, and the last position.
+
+<li> @c @@-, @c @@+
+
+The previous and the next position.
+
+<li> @c @@[, @c @@]
+
+The previous and the next position where a candidate list changes.
+</ul>
+
+Some of the @c PREDEFINED-SYMBOL has a special meaning when used as a candidate
+index in the @c SELECT action.
+
+<ul>
+
+<li> @c @@<, @c @@=, @c @@>
+
+The first, the current, and the last candidate of the current candidate group.
+
+<li> @c @@-
+
+The previous candidate.  If the current candidate is the first one in
+the current candidate group, then it means the last candidate in the
+previous candidate group.
+
+<li> @c @@+
+
+The next candidate.  If the current candidate is the last one in the
+current candidate group, then it means the first candidate in the next
+candidate group.
+
+<li> @c @@[, @c @@]
+
+The candidate in the previous and the next candidate group having the same
+candidate index as the current one.
+</ul>
+
+The arguments and the behavior of each action are listed below.
+
+@verbatim
+INSERT ::= '(' 'insert' MTEXT ')'
+           | MTEXT
+	   | INTEGER
+           | '(' 'insert' SYMBOL ')'
+           | '(' 'insert' '(' CANDIDATES * ')' ')'
+           | '(' CANDIDATES * ')' 
+
+CANDIDATES ::= MTEXT | '(' MTEXT * ')'
+@endverbatim
+
+The first and second forms insert @c MTEXT before the current position.
+
+The third form inserts the character @c INTEGER before the current
+position.
+
+The fourth form treats @c SYMBOL as a variable, and inserts its value
+(if it is a valid character code) before the current position.
+
+In the fifth and sixth forms, each @c CANDIDATES represents a
+candidate group, and each element of @c CANDIDATES represents a
+candidate, i.e. if @c CANDIDATES is an M-text, the candidates are the
+characters in the M-text; if @c CANDIDATES is a list of M-texts, the
+candidates are the M-texts in the list.
+
+These forms insert the first candidate before the current position.
+The inserted string is associated with the list of candidates and
+the information indicating the currently selected candidate.
+
+The marker positions affected by the insertion are automatically relocated.
+
+@verbatim
+DELETE ::= '(' 'delete' SYMBOL ')'
+           | '(' 'delete' INTEGER ')'
+@endverbatim
+
+The first form treats @c SYMBOL as a marker, and deletes characters
+between the current position and the marker position.
+
+The second form treats @c INTEGER as a character position, and deletes
+characters between the current position and the character position.
+
+The marker positions affected by the deletion are automatically relocated.
+
+@verbatim
+SELECT ::= '(' 'select' PREDEFINED-SYMBOL ')'
+           | '(' 'select' INTEGER ')'
+@endverbatim
+
+This action first checks if the character just before the current position
+belongs to a string that is associated with a candidate list.  If it is,
+the action replaces that string with a candidate specified by the
+argument.
+
+The first form treats @c PREDEFINED-SYMBOL as a candidate index (as
+described above) that specifies a new candidate in the candidate list.
+
+The second form treats @c INTEGER as a candidate index that specifies a
+new candidate in the candidate list.
+
+@verbatim
+SHOW ::= '(show)'
+@endverbatim
+
+This actions instructs the input method driver to display a candidate
+list associated with the string before the current position.
+
+@verbatim
+HIDE ::= '(hide)'
+@endverbatim
+
+This action instructs the input method driver to hide the currently
+displayed candidate list.
+
+@verbatim
+MOVE ::= '(' 'move' SYMBOL ')'
+         | '(' 'move' INTEGER ')'
+@endverbatim
+
+The first form treats @c SYMBOL as a marker, and makes the marker
+position be the new current position.
+
+The second form treats @c INTEGER as a character position, and makes
+that position be the new current position.
+
+@verbatim
+MARK ::= '(' 'mark' SYMBOL ')'
+@endverbatim
+
+This action treats @c SYMBOL as a marker, and sets its position to the
+current position.  @c SYMBOL must not be a @c PREDEFINED-SYMBOL.
+
+
+@verbatim
+PUSHBACK :: = '(pushback INTEGER)'
+@endverbatim
+
+This action pushes back the latest @c INTEGER number of key events to the event queue.
+
+@verbatim
+UNDO :: = '(undo)'
+@endverbatim
+
+This action cancels the last key event.
+
+@verbatim
+SHIFT :: = '(' 'shift' STATE-NAME ')'
+@endverbatim
+
+This action shifts the current state to @c STATE-NAME.  @c
+STATE-NAME must appear in @c STATE-LIST.
+
+@verbatim
+CALL ::= '(' 'call' MODULE-NAME FUNCTION ARG * ')'
+
+ARG ::= INTEGER | SYMBOL | MTEXT | PLIST
+@endverbatim
+
+This action calls the function @c FUNCTION of external module @c
+MODULE-NAME.  @c MODULE-NAME and @c FUNCTION must appear in @c
+MODULE-LIST.
+
+The function is called with an argument of the type (#MPlist *).  The
+key of the first element is #Mt and its value is a pointer to an
+object of the type #MInputContext.  The key of the second element is
+#Msymbol and its value is the current state name.  @c ARGs are used as
+the value of the third and later elements.  Their keys are determined
+automatically; if an @c ARG is an integer, the corresponding key is
+#Minteger; if an @c ARG is a symbol, the corresponding key is
+#Msymbol, etc.
+
+The function must return NULL or a value of the type (#MPlist *) that
+represents a list of actions to take.
+
+@verbatim
+SET ::= '(' OPERAND SYMBOL1 [ INTEGER | SYMBOL2 ] ')'
+
+OPERAND ::= 'set' | 'add' | 'sub' | 'mul' | 'div'
+@endverbatim
+
+This action treats @c SYMBOL1 and @c SYMBOL2 as variables and sets the
+value of @c SYMBOL1 as below.
+
+If @c OPERAND is 'set', it sets the value of @c SYMBOL1 to @c INTEGER or the
+value of @c SYMBOL2.
+
+If @c OPERAND is 'add', it increments the value of @c SYMBOL1 by @c INTEGER
+or the value of @c SYMBOL2.
+
+If @c OPERAND is 'sub', it decrements the value of @c SYMBOL1 by @c INTEGER
+or the value of @c SYMBOL2.
+
+If @c OPERAND is 'mul', it multiplies the value of @c SYMBOL1 by @c INTEGER
+or the value of @c SYMBOL2.
+
+If @c OPERAND is 'div', it divides the value of @c SYMBOL1 by @c INTEGER or
+the value of @c SYMBOL2.
+
+@verbatim
+IF ::= '(' CONDITION ACTION-LIST1 ACTION-LIST2 * ')'
+
+CONDITION ::= OPERAND VAL1 VAL2
+
+ACTION-LIST1 ::= '(' ACTION * ')'
+
+ACTION-LIST2 ::= '(' ACTION * ')'
+
+OPERAND ::= '=' '<' '>'
+
+VAL1 ::= [ INTEGER1 | SYMBOL1 ]
+
+VAL2 ::= [ INTEGER2 | SYMBOL2 ]
+@endverbatim
+
+This action performs actions in @c ACTION-LIST1 if @c CONDITION is
+true, and performs @c ACTION-LIST2 (if any) otherwise.
+
+@c SYMBOL1 and @c SYMBOL2 are treated as variables.
+
+@ifnot FOR-MAN
+
+@subsection im-example1 EXAMPLE 1
+
+This is a very simple example for inputting Latin characters with
+diacritical marks (acute and cedilla).  For instance, when you type:
+@verbatim
+    Comme'die-Franc,ais, chic,,
+@endverbatim
+you will get this:
+@if FOR-HTML
+@verbatim
+    Comm√©die-Fran√ßais, chic,
+@endverbatim
+@endif
+@if FOR-LATEX
+@latexonly
+\hskip5mm\texttt{\footnotesize Comm\'{e}die-Fran\c{c}ais, chic,}
+@endlatexonly
+@endif
+
+The definition of the input method is very simple as below, and it is
+quite straight forward to extend it to cover all Latin characters.
+
+@if FOR-HTML
+@verbatim
+(title "latin-postfix")
+(map
+ (trans
+  ("a'" ?√°) ("e'" ?√©) ("i'" ?√≠) ("o'" ?√≥) ("u'" ?√∫) ("c," ?√ß)
+  ("A'" ?√Å) ("E'" ?√â) ("I'" ?√ç) ("O'" ?√ì) ("U'" ?√ö) ("C," ?√á)
+  ("a''" "a'") ("e''" "e'") ("i''" "i'") ("o''" "o'") ("u''" "u'")
+  ("c,," "c,")
+  ("A''" "A'") ("E''" "E'") ("I''" "I'") ("O''" "O'") ("U''" "U'")
+  ("C,," "C,")))
+(state
+ (init
+  (trans)))
+@endverbatim
+@endif
+@if FOR-LATEX
+@latexonly
+\texttt{\footnotesize
+\hskip2mm(title "latin-postfix")\\
+\hskip2mm(map\\
+\hskip4mm (trans\\
+\hskip6mm  ("a'" ?\'{a}) ("e'" ?\'{e}) ("i'" ?\'{i}) ("o'" ?\'{o})
+("u'" ?\'{u}) ("c," ?\c{c})\\
+\hskip6mm  ("A'" ?\'{A}) ("E'" ?\'{E}) ("I'" ?\'{I}) ("O'" ?\'{O})
+("U'" ?\'{U}) ("C," ?\c{C})\\
+\hskip6mm  ("a''" "a'") ("e''" "e'") ("i''" "i'") ("o''" "o'") ("u''" "u'")\\
+\hskip6mm  ("c,," "c,")\\
+\hskip6mm  ("A''" "A'") ("E''" "E'") ("I''" "I'") ("O''" "O'") ("U''" "U'")\\
+\hskip6mm  ("C,," "C,")))\\
+\hskip2mm(state\\
+\hskip4mm (init\\
+\hskip6mm  (trans)))}
+@endlatexonly
+@endif
+
+@subsection im-example2 EXAMPLE 2
+
+This example is for inputting Unicode characters by typing C-u
+(Control-u) followed by four hexadecimal numbers.  For instance, when
+you type ("^u" means Control-u):
+@verbatim
+    ^u2190^u2191^u2192^u2193
+@endverbatim
+you will get this (Unicode arrow symbols):
+@verbatim
+    ‚Üê‚Üë‚Üí‚Üì
+@endverbatim
+
+The definition utilizes @c SET and @c IF commands as below:
+@verbatim
+(title "UNICODE")
+(map
+ (starter
+  ((C-U) "U+"))
+ (hex
+  ("0" ?0) ("1" ?1) ... ("9" ?9) ("a" ?A) ("b" ?B) ... ("f" ?F)))
+(state
+ (init
+  (starter (set code 0) (set count 0) (shift unicode)))
+ (unicode
+  (hex (set this @-)
+       (< this ?A
+	  ((sub this 48))
+	  ((sub this 55)))
+       (mul code 16) (add code this)
+       (add count 1)
+       (= count 4
+	  ((delete @<) (insert code) (shift init))))))
+@endverbatim
+
+@subsection im-example3 EXAMPLE 3
+
+This example is for inputting Chinese characters by typing PinYin key
+sequence.
+@if FOR-HTML
+For instance, when you type:
+@verbatim
+    nihaobei2jing2
+@endverbatim
+you will get:
+@verbatim
+    ‰Ω†Â•ΩÂåó‰∫¨
+@endverbatim
+
+The definition utilizes @c CANDIDATE and @c SELECT commands as below.
+Note that this is just an example, and it ignores such important key
+as Backspace.
+
+@verbatim
+(title "Êãº")
+
+(map
+ ;; The initial character of Pinyin.
+ (starter
+  ("a") ("b") ... ("h") ("j") ... ("t") ("w") ("x") ("y") ("z"))
+
+ ;; Big table of Pinyin vs the corresponding Chinese characters.
+ (pinyin
+  ...
+  ("bei" ("Ë¢´ÂåóÂ§áËÉåÊÇ≤ËæàÊùØÂÄçË¥ùÁ¢ë" ...))
+  ("hao" ("Â•ΩÂè∑ÊØ´Ë±™Êµ©ËÄóÁöìÂöéÊòäÈÉù" ...))
+  ("jing" ("Áªè‰∫¨Á≤æÂ¢ÉË≠¶Á´üÈùôÊÉäÊôØÊï¨" ...))
+  ("ni" ("‰Ω†Âë¢Â∞ºÊ≥•ÈÄÜÂÄ™ÂåøÊãüËÖªÂ¶Æ" ...))
+  ...)
+ ;; Typing 1, 2, ..., 0 selects the 0th, 1st, ..., 9th candidate.
+ (choose
+  ("1" (select 0)) ("2" (select 1)) ... ("9" (select 8)) ("0" (select 9))))
+
+(state
+ (init
+  ;; When an initial character of Pinyin is typed, re-handle it in
+  ;; "main" state.  Anything else is just produced as is.
+  (starter (show) (pushback 1) (shift main)))
+
+ (main
+  ;; When a complete Pinyin sequence is typed, shift to "select" state
+  ;; to allow users to select one from the candidates.
+  (pinyin (shift select))
+
+  ;; When anything else is typed, produce the current candidate (if
+  ;; any), and re-handle the last input in "init" state.
+  (nil (hide) (shift init)))
+
+ (select
+  ;; When a number is typed, select the corresponding canidate,
+  ;; produce it, and shift to "init" state.
+  (choose (hide) (shift init))
+
+  ;; When anything else is typed, produce the current candidate,
+  ;; and re-handle the last input in "init" state.
+  (nil (hide) (shift init))))
+@endverbatim
+
+@elseif FOR-LATEX
+@latexonly
+\begin{center}
+\fbox{This example is readable only in the documentation of HTML version.}
+\end{center}
+@endlatexonly
+@endif
+
+@endif
+
+@subsection im-seealso SEE ALSO
+
+@ref mim-list "Input Methods provided by the m17n database",
+@ref mdbGeneral "mdbGeneral(5)"
+*/
