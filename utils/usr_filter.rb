@@ -33,17 +33,24 @@ while gets
    
      when /^\/\*\s.*\*\//	# /* comment */ type comment
 	if doxy == 1		
-	buf.push($_.gsub!(/\*\//, " ").gsub!(/\/\*/, "//")) # should be included only in the example code
+	  # should be included only in the example code
+	  ## We used to do the following substituion as a workaround of
+	  ## a Doxygen bug.
+ 	  ## buf.push($_.gsub!(/\*\//, " ").gsub!(/\/\*/, "//"))
+	  buf.push($_)
 	end
 
      when /\/\*\s.*\*\//	# code + /* comment */ type comment
 	if doxy == 1		
-	buf.push($_.gsub!(/\*\//, " ").gsub!(/\/\*/, "//")) # should be included in the example code
+	  # should be included in the example code
+	  ## See the above comment.
+	  ## buf.push($_.gsub!(/\*\//, " ").gsub!(/\/\*/, "//"))
+	  buf.push($_) # should be included in the example code
 	else
           if doxy == 0 
-    	  commentblock(buf)
-    	  buf = []
-	  print $_.gsub!(/\/\*\s.*\*\//," ")	            # should be omiited in code
+	    commentblock(buf)
+ 	    buf = []
+ 	    print $_.gsub!(/\/\*\s.*\*\//," ") # should be omiited in code
 	  end
 	end
 
