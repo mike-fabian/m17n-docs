@@ -24,16 +24,16 @@ while gets
   gsub!(/\$[A-Z_]+/) {|m| m.delete!("$").reverse.downcase!.concat(" b@").reverse}
 
   if example == 1
-    case $_ 
+     case $_ 
       when /#endif/
         buf.push($_.gsub!(/#endif/, "@endcode"))
-        doxy = 0
 	example = 0
       else	
-           buf.push($_)
+        buf.push($_)
     end
 
-    else
+    else  # when example == 0
+
     case  $_
 
      when /^\s*$/
@@ -44,6 +44,17 @@ while gets
      when /\/\*=\*\// 
     	commentblock(buf)
     	buf = []
+
+     when /#endif/
+#	if doxy == 1
+#           buf.push($_.gsub!(/#endif/, "@endcode"))
+#	else
+           commentblock(buf)
+    	   buf = []
+	   print $_.gsub!(/\/\*\s.*\*\//," ") # should be omiited in code
+#	end
+        doxy = 0
+
    
 #     when /^\/\*\s.*\*\//	# /* comment */ type comment
 #	if doxy == 1		
@@ -54,19 +65,19 @@ while gets
 #	  buf.push($_)
 #	end
 
-#     when /\/\*\s.*\*\//	# code + /* comment */ type comment
+      when /\/\*\s.*\*\//	# code + /* comment */ type comment
 #	if doxy == 1		
 #	  # should be included in the example code
 #	  ## See the above comment.
 #	  ## buf.push($_.gsub!(/\*\//, " ").gsub!(/\/\*/, "//"))
 #	  buf.push($_) # should be included in the example code
 #	else
-#          if doxy == 0 
-#	    commentblock(buf)
-# 	    buf = []
-# 	    print $_.gsub!(/\/\*\s.*\*\//," ") # should be omiited in code
+          if doxy == 0 
+	    commentblock(buf)
+ 	    buf = []
+ 	    print $_.gsub!(/\/\*\s.*\*\//," ") # should be omiited in code
 #	  end
-#	end
+	end
 
      when /\/\*{2,3}ja.*\*\//	#japanese one liner
      when /\/\*\*en.*\*\//	#one liner
@@ -86,8 +97,8 @@ while gets
 	doxy = 1
 
      when /EXAMPLE_CODE/ 
+	#start example code lines
         buf.push($_.gsub!(/#if EXAMPLE_CODE/, "\n \n @par Example:\n @code"))
-	doxy = 1
 	example = 1
 
      when /\*\//
