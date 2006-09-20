@@ -34,29 +34,18 @@ while gets
 
     else  # when example == 0
 
-    case  $_
+     case  $_
 
-     when /^\s*$/
-	if doxy == 1 
-           buf.push($_)
-	   end
+      when /^\s*$/                         
+	 if doxy == 1 			    # empty line in doxygen comment
+            buf.push($_)
+	    end
 
-     when /\/\*=\*\// 
-    	commentblock(buf)
+      when /\/\*=\*\//                      #/*=*/ (flush)
+     	commentblock(buf)
     	buf = []
 
-     when /#endif/
-#	if doxy == 1
-#           buf.push($_.gsub!(/#endif/, "@endcode"))
-#	else
-           commentblock(buf)
-    	   buf = []
-	   print $_.gsub!(/\/\*\s.*\*\//," ") # should be omiited in code
-#	end
-        doxy = 0
-
-   
-#     when /^\/\*\s.*\*\//	# /* comment */ type comment
+      when /^\/\*\s.*\*\//	# /* comment */ type comment 
 #	if doxy == 1		
 #	  # should be included only in the example code
 #	  ## We used to do the following substituion as a workaround of
