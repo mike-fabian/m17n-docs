@@ -50,7 +50,7 @@ main (int argc, char **argv)
     printf ("<li> %s (extra-name:%s, only for inclusion)\n", file, argv[4]);
 #endif
   printf ("@verbatim\n");
-  mconv_encode_stream (msymbol ("euc-jp"), mt, stdout);
+  mconv_encode_stream (msymbol ("utf-8"), mt, stdout);
   printf ("\n@endverbatim\n");
 
   M17N_FINI ();

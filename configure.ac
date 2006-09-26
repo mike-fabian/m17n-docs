@@ -1,10 +1,11 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(m17n-docs, 1.3.0, bugs-m17n-lib@m17n.org)
-AM_INIT_AUTOMAKE(m17n-docs, 1.3.0)
+AC_INIT(m17n-docs, 1.3.4, bugs-m17n-lib@m17n.org)
+AM_INIT_AUTOMAKE(m17n-docs, 1.3.4)
 
 AM_MAINTAINER_MODE
 
 # Checks for programs.
+AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_AWK
 
@@ -44,6 +45,10 @@ else :
 fi
 AC_SUBST(M17NDB)
 
+PKG_CHECK_MODULES(M17N, m17n-shell)
+AC_SUBST(M17N_CFLAGS)
+AC_SUBST(M17N_LIBS)
+
 AC_CHECK_PROG(HAVEDOXYGEN, doxygen, yes, no)
 AC_CHECK_PROG(RUBY, ruby, yes, no)
 AC_CHECK_PROG(LATEX, latex, yes, no)
@@ -72,7 +77,7 @@ fi
 
 fi
 
-AC_CONFIG_FILES(Makefile)
+AC_CONFIG_FILES([Makefile utils/Makefile])
 AC_OUTPUT
 
 # Print configuration message.

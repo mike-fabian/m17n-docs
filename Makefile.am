@@ -23,6 +23,8 @@
 
 ## Process this file with Automake to create Makefile.in
 
+SUBDIRS = utils
+
 pkgdata_DATA = \
 	usr/html/index.html \
 	usr/latex/m17n-lib.dvi usr/latex/m17n-lib.ps \
@@ -224,7 +226,8 @@ doxyfile-man%.usr: doxyfile-man%
 data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
 	utils/exprog.sh ${EXAMPLE_PROGS} > $@
 
-data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.dir utils/dbdata.awk utils/dbdata.sh
+data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.dir utils/dbdata.awk utils/dbdata.sh utils/imdoc.c
+	(cd utils; make)
 	@AWK@ -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
@@ -252,7 +255,7 @@ data/m17n-db.txt: @M17NDB@/m17n-db.in
 	cd `dirname $@`; rm -f *_8c* *_8h* *_8txt* dirs.tex dir_* files.tex
 
 %/latex/m17n-lib.dvi: %/latex/refman.tex styles/m17n-lib.sty utils/latex.sh
-	utils/latex.sh `dirname $@` latex
+	-utils/latex.sh `dirname $@` latex
 
 %/latex/m17n-lib.ps: %/latex/m17n-lib.dvi utils/dvips.sh
 	utils/dvips.sh `dirname $@` dvips
