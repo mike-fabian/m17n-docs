@@ -153,6 +153,7 @@ end
 ### ファイル分け
 
 def documentfunc(title, func_text, short_text)
+  residue = []
   func_text.grep(/^\.SS/){|i| 
  #自分とその後ろ
     func_rest =  func_text[func_text.index(i) ..func_text.size]  
@@ -172,12 +173,12 @@ def documentfunc(title, func_text, short_text)
       if  short_text.find{|i| i.index(ffname)}
           brief =  short_text[short_text.index(short_text.find{|i| i.index(ffname)}) + 2]
           documentfunc2(fname, title, func_desc, brief)
-#        else
-#	  print "  Cannot find short desc for "
-#          print ffname
+        else  # obsolete function の場合
+          residue.push(func_desc)
        end
     end
    }
+ return residue
 end
 
 def documentfunc2 (fname, title, func_desc, brief)
@@ -468,20 +469,26 @@ Dir.open(".").each{|filename|
         short_text = text[sfunctionstart .. text.size - 1] 
        end
 
-   if lfunctionstart = text.index(text.find{|i| i == $fdheader})
-      if lfunctionend = text.index(text[lfunctionstart+1 .. text.size].find{|i| i =~ /^\.SH/})
+    if lfunctionstart = text.index(text.find{|i| i == $fdheader})
+       if lfunctionend = text.index(text[lfunctionstart+1 .. text.size].find{|i| i =~ /^\.SH/})
          func_text = text[lfunctionstart .. lfunctionend - 1] 
          group_text = text[0 .. lfunctionstart - 1] + text[lfunctionend ..text.size]
-       else 
+        else 
          func_text = text[lfunctionstart .. text.size]
          group_text = text[0 .. lfunctionstart - 1]
-      end
+       end
       else 
        func_text = [] 
        group_text = text  
-   end
+    end
 
-  documentfunc(title, func_text, short_text)
+  residue = documentfunc(title, func_text, short_text)
+
+  if residue == []
+     else 
+     group_text = group_text + [".SH \"Function Documentation\"\n.PP\n"] + residue
+  end
+
   else
   
   group_text = text
