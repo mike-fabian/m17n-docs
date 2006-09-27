@@ -154,21 +154,41 @@ end
 
 def documentfunc(title, func_text, short_text)
   func_text.grep(/^\.SS/){|i| 
- #自分より後ろだけ
-      func_rest =  func_text[func_text.index(i)..func_text.size] 
-      documentfunc2(i, title, func_rest, short_text)}
+ #自分とその後ろ
+    func_rest =  func_text[func_text.index(i) ..func_text.size]  
+    if funclast = func_rest.index(func_rest[1 .. func_rest.size].find{|m| m =~ /^\.SS/})
+        func_desc = func_rest[0 .. funclast - 1] 
+       else
+        func_desc = func_rest
+       end
+
+    print "\n"
+    print"----\n"
+    print i
+    print "\n"
+    print func_desc
+
+
+ #fname: func_textの最初の行中の関数名 
+   i =~ /\s([a-z0-9_]+)\s\(/
+   if $1 == nil
+     else 
+      fname = $1
+      ffname = "\\fB".concat($1.concat("\\fP"))
+  #short_textの関数名の２行後がbrief。
+      if  short_text.find{|i| i.index(ffname)}
+          brief =  short_text[short_text.index(short_text.find{|i| i.index(ffname)}) + 2]
+          documentfunc2(fname, title, func_desc, brief)
+#        else
+#	  print "  Cannot find short desc for "
+#          print ffname
+       end
+    end
+   }
 end
 
-def documentfunc2 (dstart, title, func_text, short_text)
- #func_textの最初の行中の関数名
+def documentfunc2 (fname, title, func_desc, brief)
 
-   dstart =~ /\s([a-z0-9_]+)\s\(/
-   return if $1 == nil
-   fname = $1
-
-   ffname = "\\fB".concat($1.concat("\\fP"))
- #short_textの関数名の２行後がbrief。
-   brief =  short_text[short_text.index(short_text.find{|i| i.index(ffname)}) + 2]
  #関数ごとのファイルを作る。
    file = open($doxywork+fname+$manext, "w")
    file.puts("@function")
@@ -185,18 +205,20 @@ def documentfunc2 (dstart, title, func_text, short_text)
      else file.print("\n") 
    end
  #ロング
-   file.puts(func_text[0])
-   for line in func_text[1 .. func_text.size]
-     break if /.SS/ =~ line
-     file.puts(line)
-   end  
+   file.puts(func_desc)
+#   for line in func_desc[1 .. func_desc.size]
+#     break if /.SS/ =~ line
+#     file.puts(line)
+#   end  
    file.flush
+
    end
 
 ####rewriting each man file
 ### rewriting a man file for a function
 
 def frewrite(text)
+
 # let the library name appear in the header 
   buf = [text[0].gsub!(/\" \"/, "\" \"\" \"")]
 
@@ -210,16 +232,16 @@ def frewrite(text)
   end
 
   synopsys = text.find{|line| line =~ /\.SS/} 
-  buf.push("\n\n.SH SYNOPSIS").push(formatsynopsys(synopsys)).push("\n")
+      buf.push("\n\n.SH SYNOPSIS").push(formatsynopsys(synopsys)).push("\n")
 
-  description = text[text.index(synopsys)+2..text.size]
-  if 
-    description == []
-    print title, ": No description found\n"
-    else
-    descriptiontext = womanrewrite(desrewrite(description))
-    buf.push("\n.SH DESCRIPTION\n").push(descriptiontext)
-  end
+      description = text[text.index(synopsys)+2..text.size]
+    if       
+       description == []
+       print title, ": No description found\n"
+   else       
+       descriptiontext = womanrewrite(desrewrite(description))
+       buf.push("\n.SH DESCRIPTION\n").push(descriptiontext)
+   end
  return buf
 end
 
@@ -439,6 +461,8 @@ Dir.open(".").each{|filename|
         next
      end   
 
+     print "RUBY DIVIDING: ", filename, "\n"
+
      file = open(filename,"r") 
      text = file.readlines
      title = text[0]
@@ -464,8 +488,7 @@ Dir.open(".").each{|filename|
        group_text = text  
    end
 
-   documentfunc(title, func_text, short_text)
-
+  documentfunc(title, func_text, short_text)
   else
   
   group_text = text
@@ -495,7 +518,7 @@ unless FileTest.directory? filename
         next 
         end
 
-     print "PROCESSING: ", filename, "\n"
+     print "RUBY REWRINTING: ", filename, "\n"
 
      if /@function/ =~ text[0]  
         buf = frewrite(text[1..text.size])
