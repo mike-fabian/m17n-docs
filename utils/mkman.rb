@@ -162,13 +162,6 @@ def documentfunc(title, func_text, short_text)
         func_desc = func_rest
        end
 
-    print "\n"
-    print"----\n"
-    print i
-    print "\n"
-    print func_desc
-
-
  #fname: func_textの最初の行中の関数名 
    i =~ /\s([a-z0-9_]+)\s\(/
    if $1 == nil
