@@ -1,5 +1,5 @@
 #! /usr/local/bin/ruby
-# Usage: mkman.rb SRCDIR DSTDIR
+# Usage: mkman.rb SRCDIR DSTDIR			-*- coding: euc-japan; -*-
 
 #実行すると/tmp/doxymanをつかってファイルを分け、
 #もとのdirectoryにかきなおす。
