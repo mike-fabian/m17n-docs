@@ -243,6 +243,7 @@ data/m17n-db.txt: @M17NDB@/m17n-db.in
 			utils/%_filter.rb m17n-lib.css
 	rm -f `dirname $@`/*.html
 	${DOXYGEN} $<
+	cp images/icon-*.png `dirname $@`
 	cd `dirname $@`; rm -f *_8c* *_8h* *_8txt* dirs.html dir_* files.html
 	echo 'code { font-weight: bold }' >> `dirname $@`/doxygen.css
 
