@@ -335,9 +335,9 @@ release: dist
 	cd usr/html; for f in *; do \
 	  case $$f in *8c*);; *8h*);; *8txt*);; dirs.html);; dir_*);; files.html);; *) cp $$f ${WEBDIR}/m17n-docs;; esac; \
 	done
-	[ -d ${WEBDIR}-ja/m17n-docs ] || mkdir ${WEBDIR}-ja/m17n-docs
+	[ -d ${WEBDIR}-ja2/m17n-docs ] || mkdir ${WEBDIR}-ja2/m17n-docs
 	cd ja/html; for f in *; do \
-	  case $$f in *8c*);; *8h*);; *8txt*);; dirs.html);; dir_*);; files.html);; *) cp $$f ${WEBDIR}-ja/m17n-docs;; esac; \
+	  case $$f in *8c*);; *8h*);; *8txt*);; dirs.html);; dir_*);; files.html);; *) cp $$f ${WEBDIR}-ja2/m17n-docs;; esac; \
 	done
 	cp ${distdir}.tar.gz ${WEBDIR}/download
 
