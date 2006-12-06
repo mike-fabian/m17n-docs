@@ -1,10 +1,10 @@
 /** @addtogroup SampleGroup
-    @brief 
+    @brief brief group document
 
     long group document
     @{ */
 
-/** @brief 
+/** @brief brief structure document
 
     loong structure document */
 
@@ -22,7 +22,7 @@ struct SampleStructure2
  void SampleField2;
 } ;
 
-/** @brief 
+/** @brief brief function document
 
     long function document */
 
