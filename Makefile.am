@@ -92,7 +92,7 @@ SRCALL = \
 	mainpage.txt \
 	${MAN3} \
 	data/m17n-config.txt data/m17n-db.txt data/exprog.txt \
-	data/dbformat.txt data/dbdata.txt fdl.txt
+	data/dbformat.txt data/dbdata.txt data/dbtutorial.txt fdl.txt
 
 DBDATA = $(shell echo @M17NDB@/*.{dir,mim,flt,fst,tbl})
 DBIMAGE = $(shell echo images/*.png images/*.eps)
@@ -231,7 +231,10 @@ data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.dir utils/dbdata.awk utils/db
 	@AWK@ -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
-	utils/dbformat.sh ${DBFORMAT}/*.txt > $@
+	utils/dbformat.sh ${DBFORMAT} > $@
+
+data/dbtutorial.txt: ${DBFORMAT} utils/dbtutorial.sh
+	utils/dbtutorial.sh ${DBFORMAT} > $@
 
 data/m17n-config.txt: @M17NLIB@/m17n-config.in
 	sed -n -e '/\/\*\*\*/,/\*\// p' < $< > $@

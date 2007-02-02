@@ -10,9 +10,10 @@ database.
 <ul>
 EOF
 
-for f in $*; do
+for f in $1/*.txt; do
   case $f in
   *.ja.txt) ;;
+  *-tut.txt) ;;
   *) cat $f | grep '@page' | sed -e 's/@page mdb\([^ ]*\)/<li> @ref mdb\1 "\1" --/';;
   esac
 done
@@ -31,8 +32,9 @@ cat <<EOF
 <ul>
 EOF
 
-for f in $*; do
+for f in $1/*.txt; do
   case $f in
+  *-tut.txt) ;;
   *.ja.txt) cat $f | grep '@page' | sed -e 's/@page mdb\([^ ]*\)/<li> @ref mdb\1 "\1" --/';;
   *) ;;
   esac
@@ -43,10 +45,16 @@ cat <<EOF
 */
 EOF
 
-cat $* | \
+
+for f in $1/*.txt; do
+  case $f in
+  *-tut.txt) ;;
+  *) cat $f | \
 sed -n -e '/\/\*\*\*/,/\*\// p' | \
 sed -e 's/@section/@subsection/' \
-    -e 's/@page/@section/'
+    -e 's/@page/@section/';;
+  esac
+done
 
 # Local Variables:
 # coding: euc-jp
