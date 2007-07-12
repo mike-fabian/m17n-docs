@@ -161,11 +161,48 @@ main (int argc, char **argv)
     }
   else
     {
-      printf ("@verbatim\n");
-      mconv_encode_stream (msymbol ("utf-8"), mt, stdout);
+      int len = mtext_len (mt), i, c;
+      
+      for (i = 0; i < len; i++)
+	{
+	  c = mtext_ref_char (mt, i);
+	  if (c >= 0x100)
+	    break;
+	}
+      if (i < len)
+	printf ("@htmlonly\n<div class=\"fragment\"><pre class=\"fragment\">\n");
+      else
+	printf ("@verbatim\n");
+      mconv_encode_stream (Mutf8, mt, stdout);
       if (mtext_ref_char (mt, mtext_len (mt) - 1) != '\n')
 	printf ("\n");
-      printf ("@endverbatim\n");
+      if (i < len)
+	{
+	  MConverter *converter = mconv_stream_converter (Mutf8, stdout);
+	  int from;
+
+	  printf ("</pre></div><p>\n@endhtmlonly\n");
+	  printf ("@latexonly\n\\begin{verbatim}\n");
+	  if (i > 0)
+	    mconv_encode_range (converter, mt, 0, i);
+	  for (from = i; i < len; i++)
+	    {
+	      c = mtext_ref_char (mt, i);
+	      if (c >= 0x100)
+		{
+		  if (i > from)
+		    mconv_encode_range (converter, mt, from, i);
+		  printf ("U+%04X", c);
+		  from = i + 1;
+		}
+	    }
+	  if (i > from)
+	    mconv_encode_range (converter, mt, from, i);
+	  printf ("\\end{verbatim}\n@endlatexonly\n");
+	  mconv_free_converter (converter);
+	}
+      else
+	printf ("@endverbatim\n");
     }
 
   M17N_FINI ();

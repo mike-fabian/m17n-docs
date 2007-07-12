@@ -94,7 +94,7 @@ SRCALL = \
 	data/m17n-config.txt data/m17n-db.txt data/exprog.txt \
 	data/dbformat.txt data/dbdata.txt data/dbtutorial.txt fdl.txt
 
-DBDATA = $(shell echo @M17NDB@/*.{dir,mim,flt,fst,tbl})
+DBDATA = $(shell echo @M17NDB@/*.{dir,fst,tbl} @M17NDB@/MIM/*.mim @M17NDB@/FLT/*.flt @M17NDB@/LANGDATA/LANGUAGE.tbl)
 DBIMAGE = $(shell echo images/*.png images/*.eps)
 
 HTML_USR_TARGET = usr/html/index.html usr/html/parrot.png

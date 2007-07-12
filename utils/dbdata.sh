@@ -7,36 +7,43 @@ FILE=$1
 while shift 1; do
     IM=`grep '^(input-method' $FILE`
     if test -n "$IM"; then
-	if false; then
-	sed -n -e '/^(input-method/s/(input-method \([^ ]*\) \([^ )]*\)\( \([^)]*\)\)*)/\1 \2 \4/p' $FILE | (read LANG NAME EXTRA
+	if grep -q '^;;;' $FILE; then
+	    sed -n -e '/^(input-method/s/(input-method \([^ ]*\) \([^ )]*\)\( \([^)]*\)\)*)/\1 \2 \4/p' $FILE | (read LNG NAME EXTRA
 	    if test -z "NAME"; then
 		NAME=$EXTRA
 	    fi
-	    if test "$LANG" = "t"; then
-		LANG=generic
+	    if test "$LNG" = "t"; then
+		LNG=generic
 	    fi
 	    if test "$NAME" = "nil"; then
-		echo "<li> $FILE (extra-name:$EXTRA, only for inclusion)"
+		HEADER="<li> $FILE (extra-name:$EXTRA, only for inclusion)"
+		HEADER2=""
 	    else
-		base=`basename $FILE`
+		title=`sed -n -e '/^(title/s/(title \("[^"]*"\).*$/\1/p' $FILE`
+		file=`basename $FILE`
+		base=`basename $file .mim`
 		dir=`dirname $FILE`
-		icon="$dir/icons/$base"
+		dir=`dirname $dir`
+		icon="$dir/icons/$base.png"
 		if [ -f "$icon" ] ; then
-		    [ -f "images/icon-$base" ] || cp "$icon" "images/icon-$base"
+		    [ -f "images/icon-$base.png" ] || cp "$icon" "images/icon-$base.png"
 		fi
-		echo "<li> $FILE (language:$LANG name:$NAME @htmlonly"
-		echo "<img src=\"icon-$base\" style=\"vertical-align:middle;\">"
-		echo "@endhtmlonly"
-		echo ")"
-	    fi)
-	if grep -q '^;;;' $FILE; then
+		HEADER="<li> $base (language:$LNG name:$NAME @htmlonly"
+		if test -n "$title"; then
+		    HEADER="$HEADER title:$title"
+		fi
+		HEADER2="<img src=\"icon-$base.png\" style=\"vertical-align:middle;\">"
+		HEADER3="@endhtmlonly"
+		HEADER4=")"
+	    fi
+	    echo "$HEADER"
+	    if test -n "$HEADER2"; then
+		echo "$HEADER2"; echo "$HEADER3"; echo "$HEADER4"
+	    fi
 	    echo
-            sed -n -e '/^;;;/ p' $FILE | sed -e '/^[^;]/ s/$/<br>/' -e '/^;;;/ s/^;;; *//' | sed -e 's,^||,<tr><td align="center">,' -e 's,||$,</td></tr>,' -e 's,|,</td><td align="center">,g'
+            sed -n -e '/^;;;/ p' $FILE | sed -e '/^[^;]/ s/$/<br>/' -e '/^;;;/ s/^;;; *//' | sed -e 's,^||,<tr><td align="center">,' -e 's,||$,</td></tr>,' -e 's,|,</td><td align="center">,g')
 	else
 	    M17NDIR=/usr/share/m17n $IMDOC $FILE "$IM"
-	fi
-	else
-	    M17NDIR=/usr/share/m17n $IMDOC $FILE
 	fi
     else
 	echo
