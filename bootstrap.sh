@@ -6,6 +6,8 @@ automake -a
 echo "Running autoconf..."
 autoconf
 echo "The remaining steps to install this packge are:"
-echo "  % ./configure --enable-maintainer-mode"
+echo "  % ./configure"
 echo "  % make"
 echo "  % make install"
+echo "If you are going to maintain it, call ./configure with the arg:"
+echo "  --enable-maintainer-mode"
