@@ -60,7 +60,7 @@ install-pkgdataDATA: $(pkgdata_DATA)
 if MAINTAINER_MODE
 
 PROJECT_NAME_EN = "The m17n Library"
-PROJECT_NAME_JA = "m17n ¥é¥¤¥Ö¥é¥ê"
+PROJECT_NAME_JA = "m17n ãƒ©ã‚¤ãƒ–ãƒ©ãƒª"
 PROJECT_VERSION = @PACKAGE_VERSION@
 
 DOXYGEN = doxygen
@@ -350,5 +350,5 @@ release: dist
 endif
 
 # Local Variables:
-# coding: euc-jp
+# coding: utf-8
 # End:

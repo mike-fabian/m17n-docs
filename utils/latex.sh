@@ -1,5 +1,5 @@
 #!/bin/sh
-#							-*- coding: euc-jp; -*-
+#							-*- coding: utf-8; -*-
 # $1: target directory (usr/latex, ja/latex, or dev/latex)
 # $2: latex commnad (latex, platex, or pdflatex)
 
@@ -11,12 +11,15 @@ cd $1
 LATEX=$2
 if [ $USR_JA_DEV = "ja" ] ; then
   LATEX=platex
+  if [ -d /usr/local/teTeX/bin ] ; then
+    PATH=/usr/local/teTeX/bin:$PATH
+  fi
   SOURCE=m17n-lib-ja
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
-      -e '/m17n ¥é¥¤¥Ö¥é¥ê ¥â¥¸¥å¡¼¥ëº÷°ú/,/pages/ d' \
-      -e '/m17n ¥é¥¤¥Ö¥é¥ê ¥Õ¥¡¥¤¥ë/,/textprop_8c/ d' \
-      -e '/m17n ¥é¥¤¥Ö¥é¥ê Directory Documentation/,/dir_000001/ d' \
-      -e 's/m17n ¥é¥¤¥Ö¥é¥ê ¥Ú¡¼¥¸/Appendix/' \
+      -e '/m17n ãƒ©ã‚¤ãƒ–ãƒ©ãƒª ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ç´¢å¼•/,/pages/ d' \
+      -e '/m17n ãƒ©ã‚¤ãƒ–ãƒ©ãƒª ãƒ•ã‚¡ã‚¤ãƒ«/,/textprop_8c/ d' \
+      -e '/m17n ãƒ©ã‚¤ãƒ–ãƒ©ãƒª Directory Documentation/,/dir_000001/ d' \
+      -e 's/m17n ãƒ©ã‚¤ãƒ–ãƒ©ãƒª ãƒšãƒ¼ã‚¸/Appendix/' \
     < refman.tex > ${SOURCE}.tex
 elif [ $USR_JA_DEV = "dev" ] ; then
   SOURCE=m17n-lib-dev
@@ -36,9 +39,9 @@ else
     < refman.tex > ${SOURCE}.tex
 fi
 ${LATEX} ${SOURCE}.tex
-if [ "${USR_JA_DEV}" = "ja" ] ; then
-  nkf -e < ${SOURCE}.idx > temp.idx; mv temp.idx ${SOURCE}.idx
-fi
-makeindex ${SOURCE}.idx
+#if [ "${USR_JA_DEV}" = "ja" ] ; then
+#  nkf -e < ${SOURCE}.idx > temp.idx; mv temp.idx ${SOURCE}.idx
+#fi
+/usr/bin/makeindex ${SOURCE}.idx
 ${LATEX} ${SOURCE}.tex
 ${LATEX} ${SOURCE}.tex
