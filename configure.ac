@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(m17n-docs, 1.4.0, bugs-m17n-lib@m17n.org)
-AM_INIT_AUTOMAKE(m17n-docs, 1.4.0)
+AC_INIT(m17n-docs, 1.5.0, bugs-m17n-lib@m17n.org)
+AM_INIT_AUTOMAKE(m17n-docs, 1.5.0)
 
 AM_MAINTAINER_MODE
 
@@ -13,7 +13,7 @@ if test $USE_MAINTAINER_MODE = yes; then
 
 # Checks for source program files.
 AC_ARG_WITH(m17nlib,
-  [  --with-m17n-lib=DIR     directory of m17n-lib source files],
+  [  --with-m17nlib=DIR     directory of m17n-lib source files],
   M17NLIB="$withval")
 
 if test "x$M17NLIB" = "x"; then
@@ -30,7 +30,7 @@ AC_SUBST(M17NLIB)
 
 # Checks for the m17n database files.
 AC_ARG_WITH(m17ndb,
-  [  --with-m17n-db=DIR     directory of m17n-db source files],
+  [  --with-m17ndb=DIR     directory of m17n-db source files],
   M17NDB="$withval")
 
 if test "x$M17NDB" = "x"; then

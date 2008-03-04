@@ -81,6 +81,7 @@ MAN1 =	data/m17n-config.txt data/m17n-db.txt ${EXAMPLE_PROGS}
 
 MAN3 =	@M17NLIB@/src/m17n-core.h \
 	@M17NLIB@/src/m17n.h \
+	@M17NLIB@/src/m17n-flt.h \
 	@M17NLIB@/src/m17n-gui.h \
 	@M17NLIB@/src/m17n-X.h \
 	@M17NLIB@/src/m17n-misc.h \
