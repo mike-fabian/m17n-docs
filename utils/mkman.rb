@@ -16,9 +16,14 @@ $srcdir=$currentdir+$*[1]+"/"
 $dstdir=$currentdir+$*[2]+"/"
 $doxywork = $currentdir+"doxywork/"
 $sampledir="sample/man3/"
+
+# fixed text
+
 $headfile = $currentdir+"manhead"
+$footfile = $currentdir+"manfoot"
 
 headbuf = open($headfile, "r").readlines
+footbuf = open($footfile, "r").readlines
 
 #
 # Extra information about header strings Doxygen generates in a man file.
@@ -268,8 +273,9 @@ def desrewrite(text)
 
   text.each_with_index{|line,i|
 
-### TEST 6/24
-  line.gsub!(/^\.RS 4/,"")
+### TEST 2008/3/3
+  line.gsub!(/\.RS 4/,"\n.RS 4")
+#  line.gsub!(/^\.RE/,"")
 
 ### letting verbatim end in place Part2
   if line =~ /^\.nf/
@@ -294,13 +300,16 @@ def desrewrite(text)
      returndescribed = true
   end 
   line.gsub!(/^\\fBReturn value:\\fP/,"\n.SH RETURN VALUE\n.PP")
+  line.gsub!(/^\\fBReturn value:\s\\fP/,"\n.SH RETURN VALUE\n.PP")
   if line =~ /Errors:/  
      errordescribed = true
   end
   line.gsub!(/^\\fBErrors:\\fP/,"\n.SH ERRORS\n.PP")
   line.gsub!(/^\\fBSee Also:\\fP/,"\n.SH \"SEE ALSO\"\n.PP")
+#  line.gsub!(/^\\fBSee Also:/,"\n.SH \"SEE ALSO\"\n.PP\n\\fB")
+  line.gsub!(/^\\fBExample:\\fP/,"\n.SH Example:\n.PP\n")
 
-  line.gsub!(/^\\fB(.+)[^\)]\\fP/){"\n.SS " << $1}
+ #test 2008/3/4 is there other headers?   line.gsub!(/^\\fB(.+)[^\)]\\fP/){"\n.SS " << $1}
  # [^\)] in the pattern is added to avoid the first function in see also section. 
 
 #removing indentation
@@ -370,21 +379,16 @@ def orewrite(text)
   end  end  end
 
   text.each_with_index{|line,i|
-             line.gsub!(/More.../,"")
-     
-     ### let verbatim end in place
-        line.gsub!(/^.nf/,".NF")
 
-     ### test1/16/2004   changes the type of list, and indentation
-        if line =~ /^.IP/
-           line = ".TP"
-	   text[i+2] = ""
-	   end
+     ###  changes the type of list, and indentation
+     #   if line =~ /^.IP/
+     #      line = ".TP"
+     #	   text[i+2] = ""
+     #	   end
 
-        if line =~ /^.TP/
-	   text[i+2] = ""
-	   end
-     ### end of test1/20/2004
+    #    if line =~ /^.TP/
+    #	   text[i+2] = ""
+    #	   end
 
      # let the library name appear in the header 
               if line =~ /^.TH/
@@ -404,17 +408,21 @@ def orewrite(text)
              end
 
      #removing extra "-"
-             if text[i - 1] =~ /^.SH\sNAME/
-                if line =~ /\\-/
-	          unless line =~ /\\-\s./
-                  line.chop!.chop!.chop!.chop!
-                  end
-               end
-             end
+#            if text[i - 1] =~ /^.SH\sNAME/
+#               if line =~ /\\-/
+#	          unless line =~ /\\-\s./
+#                  line.chop!.chop!.chop!.chop!
+#                  end
+#               end
+#             end
 
      #removing author section
              line.gsub!(/^\.SH\s\"AUTHOR\"/,"")
              line.gsub!(/Generated automatically by Doxygen for m17n_test from the source code\./,"")
+
+             line.gsub!(/^\\fBSee Also:\\fP/,"\n\\fBSEE ALSO\\fp\n")
+             line.gsub!(/^\\fBReturn value:\\fP/,"\n\\fBRETURN VALUE\\fp\n")
+             line.gsub!(/More.../,"")
 
              line.gsub!(/\\fP\s+,/,"\\fP,")
              line.gsub!(/\\fP\s+\./,"\\fP.")
@@ -528,6 +536,7 @@ unless FileTest.directory? filename
      filetowrite = open($dstdir+filename,"w")
      filetowrite.puts(headbuf)
      filetowrite.puts(buf)
+     filetowrite.puts(footbuf)
      filetowrite.flush
 end
 }
