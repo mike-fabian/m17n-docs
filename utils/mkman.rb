@@ -226,8 +226,8 @@ def frewrite(text)
   buf.push(".ad l\n.nh\n.SH NAME\n")
 #  if @brief is given  
   if text[1] =~ /\"\\fI(.+)\\fP\"/
-     buf.push(title.concat(" \- ").concat($1))
-     else buf.push(title)
+     buf.push(title.concat(" \\- ").concat($1))
+     else buf.push(title.concat(" \\- "))
   end
 
   synopsys = text.find{|line| line =~ /\.SS/} 
