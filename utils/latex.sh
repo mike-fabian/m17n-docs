@@ -16,8 +16,9 @@ if [ $USR_JA_DEV = "ja" ] ; then
   fi
   SOURCE=m17n-lib-ja
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
-      -e '/m17n ライブラリ モジュール索引/,/pages/ d' \
-      -e '/m17n ライブラリ ファイル/,/textprop_8c/ d' \
+      -e '/モジュール索引/,/modules/ d' \
+      -e '/ファイル索引}/,/files/ d' \
+      -e '/ファイル}/,/textprop_8c/ d' \
       -e '/m17n ライブラリ Directory Documentation/,/dir_000001/ d' \
       -e 's/m17n ライブラリ ページ/Appendix/' \
     < refman.tex > ${SOURCE}.tex
@@ -32,8 +33,8 @@ elif [ $USR_JA_DEV = "dev" ] ; then
 else
   SOURCE=m17n-lib
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
-      -e '/The m17n Library Module Index/,/pages/ d' \
-      -e '/The m17n Library File Documentation/,/textprop_8c/ d' \
+      -e '/Module Index/,/modules/ d' \
+      -e '/File Documentation/,/textprop_8c/ d' \
       -e '/The m17n Library Directory Documentation/,/dir_000001/ d' \
       -e 's/The m17n Library Page Documentation/Appendix/' \
     < refman.tex > ${SOURCE}.tex

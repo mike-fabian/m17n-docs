@@ -134,6 +134,43 @@ html: usr-html ja-html dev-html
 latex: usr-latex ja-latex dev-latex
 man: usr-man
 
+doxyfile: Makefile
+	${DOXYGEN} -g - | \
+	  sed -e '/^PROJECT_NAME / s/=.*/= %PROJECT_NAME%/' \
+	      -e '/^PROJECT_NUMBER / s/=.*/= %PROJECT_NUMBER%/' \
+	      -e '/^OUTPUT_DIRECTORY / s/=.*/= %USR_JA_DEV%/' \
+	      -e '/^OUTPUT_LANGUAGE / s/=.*/= %OUTPUT_LANGUAGE%/' \
+	      -e '/^OPTIMIZE_OUTPUT_FOR_C / s/=.*/= YES/' \
+	      -e '/^EXTRAXT_ALL / s/=.*/= YES/' \
+	      -e '/^SHOW_INCLUDE_FILES / s/=.*/= NO/' \
+	      -e '/^SHOW_MEMBER_DOCS / s/=.*/= NO/' \
+	      -e '/^ENABLED_SECTIONS / s/=.*/= %ENABLED_SECTIONS%/' \
+	      -e '/^SHOW_USED_FILES / s/=.*/= NO/' \
+	      -e '/^INPUT / s/=.*/= %INPUT%/' \
+	      -e '/^INPUT_ENCODING / s/=.*/= %INPUT_ENCODING%/' \
+	      -e '/^FILE_PATTERNS / s/=.*/= *.c *.txt/' \
+	      -e '/^EXCLUDE_PATTERNS / s/=.*/= link*.c/' \
+	      -e '/^EXAMPLE_PATH / s/=.*/= data-%USR_JA_DEV%/' \
+	      -e '/^IMAGE_PATH / s/=.*/= image/' \
+	      -e '/^INPUT_FILTER / s/=.*/= utils\/%USR_JA_DEV%_filter.sh/' \
+	      -e '/^VERBATIM_HEADERS / s/=.*/= NO/' \
+	      -e '/^ALPHABETICAL_INDEX / s/=.*/= YES/' \
+	      -e '/^IGNORE_PREFIX / s/=.*/= m M/' \
+	      -e '/^GENERATE_HTML / s/=.*/= %GENERATE_HTML%/' \
+	      -e '/^HTML_HEADER / s/=.*/= header.%USR_JA_DEV%.html/' \
+	      -e '/^HTML_FOOTER / s/=.*/= footer.%USR_JA_DEV%.html/' \
+	      -e '/^DISABLE_INDEX / s/=.*/= NO/' \
+	      -e '/^ENUM_VALUES_PER_LINE / s/=.*/= 1/' \
+	      -e '/^GENERATE_LATEX / s/=.*/= %GENERATE_LATEX%/' \
+	      -e '/^EXTRA_PACKAGES / s/=.*/= m17n-lib times/' \
+	      -e '/^PDF_HYPERLINKS / s/=.*/= NO/' \
+	      -e '/^USE_PDFLATEX / s/=.*/= NO/' \
+	      -e '/^GENERATE_MAN / s/=.*/= %GENERATE_MAN%/' \
+	      -e '/^MAN_EXTENSION / s/=.*/= %MAN_EXTENSION%/' \
+	      -e '/^PREDEFINED / s/=.*/= FOR_DOXYGEN/' \
+	      -e '/^GENERATE_TAGFILE / s/=.*/= m17n.tag/' \
+	      > $@
+
 doxyfile-html: doxyfile ${SRCALL}
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
 	    -e 's|%INPUT%|${SRCALL}|' \
@@ -184,6 +221,7 @@ doxyfile-latex.dev: doxyfile-latex
 
 doxyfile-latex.ja: doxyfile-latex
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_JA}|' \
+	    -e 's|INPUT_ENCODING.*= UTF-8|INPUT_ENCODING = EUC-JP|' \
 	    -e 's/%USR_JA_DEV%/ja/g' \
 	    -e 's/%OUTPUT_LANGUAGE%/Japanese/' \
 	  < $< >$@
