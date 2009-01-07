@@ -211,8 +211,8 @@ m17n ライブラリは以下の外部ライブラリを利用しています。必須ではありま
 /***en @section contact Contact us: 
 
 Global IT Security Group\n
-National Information Technology Research Institute\n
-Institute of Advanced Industrial Science and Technology
+Information Technology Research Institute\n
+National Institute of Advanced Industrial Science and Technology
 
 Web: http://www.m17n.org/m17n-lib/
 
