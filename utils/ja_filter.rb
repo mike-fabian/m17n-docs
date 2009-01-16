@@ -14,10 +14,10 @@ def commentblock(buf)
 
 while gets
 
-  gsub!("@seealso", "@par ÂèÇÁÖß:")
-  gsub!("@errors", "@par „Ç®„É©„Éº:")
-  gsub!("@returns", "@par Êàª„ÇäÂÄ§:")
-  gsub!("@return", "@par Êàª„ÇäÂÄ§:")
+  gsub!("@seealso", "@par ª≤æ»:")
+  gsub!("@errors", "@par •®•È°º:")
+  gsub!("@returns", "@par Ã·§Í√Õ:")
+  gsub!("@return", "@par Ã·§Í√Õ:")
  #let doxygen find functions
   gsub!(/[a-zA-Z_]\s\(\)/) {|m| m.delete!(" ")}
  #make variables in function descriptions shown in bold
@@ -85,7 +85,7 @@ while gets
 
      when /EXAMPLE_CODE/ 
 	#start example code lines
-        buf.push($_.gsub!(/#if EXAMPLE_CODE/, "\n \n @par ‰æãÔºö \n @code"))
+        buf.push($_.gsub!(/#if EXAMPLE_CODE/, "\n \n @par Œ„°ß \n @code"))
 	example = 1
 
      when /\*\//
@@ -110,5 +110,5 @@ end
 commentblock(buf)
 
 # Local Variables:
-# coding: utf-8
+# coding: euc-jp
 # End:

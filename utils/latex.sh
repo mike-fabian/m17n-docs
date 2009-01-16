@@ -15,12 +15,11 @@ if [ $USR_JA_DEV = "ja" ] ; then
     PATH=/usr/local/teTeX/bin:$PATH
   fi
   SOURCE=m17n-lib-ja
+  echo '\appendix' > app.tex
+  sed -n -e '/コンパイル/,/GFDL/ p' < refman.tex >> app.tex
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
-      -e '/モジュール索引/,/modules/ d' \
-      -e '/ファイル索引}/,/files/ d' \
-      -e '/ファイル}/,/textprop_8c/ d' \
-      -e '/m17n ライブラリ Directory Documentation/,/dir_000001/ d' \
-      -e 's/m17n ライブラリ ページ/Appendix/' \
+      -e '/コンパイル/,/GFDL/ d' \
+      -e '/structMInputXIMArgIM/ r app.tex' \
     < refman.tex > ${SOURCE}.tex
 elif [ $USR_JA_DEV = "dev" ] ; then
   SOURCE=m17n-lib-dev
@@ -32,11 +31,11 @@ elif [ $USR_JA_DEV = "dev" ] ; then
     < refman.tex > ${SOURCE}.tex
 else
   SOURCE=m17n-lib
+  echo '\appendix' > app.tex
+  sed -n -e '/Print compile/,/GFDL/ p' < refman.tex >> app.tex
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
-      -e '/Module Index/,/modules/ d' \
-      -e '/File Documentation/,/textprop_8c/ d' \
-      -e '/The m17n Library Directory Documentation/,/dir_000001/ d' \
-      -e 's/The m17n Library Page Documentation/Appendix/' \
+      -e '/Print compile/,/GFDL/ d' \
+      -e '/structMInputXIMArgIM/ r app.tex' \
     < refman.tex > ${SOURCE}.tex
 fi
 ${LATEX} ${SOURCE}.tex

@@ -17,6 +17,8 @@ invalid_file (char *filename)
   exit (1);
 }
 
+#define INHIBIT_TITLE
+
 int
 main (int argc, char **argv)
 {
@@ -103,10 +105,16 @@ main (int argc, char **argv)
 	{
 	  MText *title = mplist_value (plist);
 	  
+#ifndef INHIBIT_TITLE
 	  printf ("@htmlonly\n title:\"");
+#else
+	  printf ("@htmlonly\n");
+#endif
 	  plist = mplist_next (plist);
+#ifndef INHIBIT_TITLE
 	  mconv_encode_stream (Mutf8, title, stdout);
 	  printf ("\"");
+#endif
 	  if (mplist_key (plist) != Mnil)
 	    {
 	      MText *icon = mplist_value (plist);

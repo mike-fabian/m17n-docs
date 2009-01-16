@@ -147,11 +147,10 @@ doxyfile: Makefile
 	      -e '/^ENABLED_SECTIONS / s/=.*/= %ENABLED_SECTIONS%/' \
 	      -e '/^SHOW_USED_FILES / s/=.*/= NO/' \
 	      -e '/^INPUT / s/=.*/= %INPUT%/' \
-	      -e '/^INPUT_ENCODING / s/=.*/= %INPUT_ENCODING%/' \
 	      -e '/^FILE_PATTERNS / s/=.*/= *.c *.txt/' \
-	      -e '/^EXCLUDE_PATTERNS / s/=.*/= link*.c/' \
+	      -e '/^EXCLUDE_PATTERNS / s/=.*/= link*.c font-ft.c/' \
 	      -e '/^EXAMPLE_PATH / s/=.*/= data-%USR_JA_DEV%/' \
-	      -e '/^IMAGE_PATH / s/=.*/= image/' \
+	      -e '/^IMAGE_PATH / s/=.*/= images/' \
 	      -e '/^INPUT_FILTER / s/=.*/= utils\/%USR_JA_DEV%_filter.sh/' \
 	      -e '/^VERBATIM_HEADERS / s/=.*/= NO/' \
 	      -e '/^ALPHABETICAL_INDEX / s/=.*/= YES/' \
@@ -159,12 +158,13 @@ doxyfile: Makefile
 	      -e '/^GENERATE_HTML / s/=.*/= %GENERATE_HTML%/' \
 	      -e '/^HTML_HEADER / s/=.*/= header.%USR_JA_DEV%.html/' \
 	      -e '/^HTML_FOOTER / s/=.*/= footer.%USR_JA_DEV%.html/' \
-	      -e '/^DISABLE_INDEX / s/=.*/= NO/' \
+	      -e '/^DISABLE_INDEX / s/=.*/= YES/' \
 	      -e '/^ENUM_VALUES_PER_LINE / s/=.*/= 1/' \
 	      -e '/^GENERATE_LATEX / s/=.*/= %GENERATE_LATEX%/' \
 	      -e '/^EXTRA_PACKAGES / s/=.*/= m17n-lib times/' \
 	      -e '/^PDF_HYPERLINKS / s/=.*/= NO/' \
 	      -e '/^USE_PDFLATEX / s/=.*/= NO/' \
+	      -e '/^LATEX_HIDE_INDICES / s/=.*/= YES/' \
 	      -e '/^GENERATE_MAN / s/=.*/= %GENERATE_MAN%/' \
 	      -e '/^MAN_EXTENSION / s/=.*/= %MAN_EXTENSION%/' \
 	      -e '/^PREDEFINED / s/=.*/= FOR_DOXYGEN/' \
@@ -221,7 +221,6 @@ doxyfile-latex.dev: doxyfile-latex
 
 doxyfile-latex.ja: doxyfile-latex
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_JA}|' \
-	    -e 's|INPUT_ENCODING.*= UTF-8|INPUT_ENCODING = EUC-JP|' \
 	    -e 's/%USR_JA_DEV%/ja/g' \
 	    -e 's/%OUTPUT_LANGUAGE%/Japanese/' \
 	  < $< >$@
@@ -339,10 +338,12 @@ man/man1/%: usr/man/man1/% sample/man3/SampleGroup.3 utils/mkman.rb
 	rm -rf doxywork man/man1/*
 	ruby utils/mkman.rb 1 usr/man/man1 man/man1
 
-man/man3/%: usr/man/man3/% sample/man3/SampleGroup.3 utils/mkman.rb 
+man/man3/%: usr/man/man3/% sample/man3/SampleGroup.3 utils/mkman.rb  \
+		utils/reform-man3.sh utils/reform-man3.awk
 	$(mkinstalldirs) man/man3
 	rm -rf doxywork man/man3/*
 	ruby utils/mkman.rb 3m17n usr/man/man3m17n man/man3
+	utils/reform-man3.sh man/man3
 
 man/man5/%: usr/man/man5/% sample/man3/SampleGroup.3 utils/mkman.rb 
 	$(mkinstalldirs) man/man5
@@ -354,7 +355,7 @@ man/ja/man1/%: ja/man/man1/% sample/man3/SampleGroup.3 utils/mkman.rb
 	rm -rf doxywork man/ja/man1/*
 	ruby utils/mkman.rb 1 ja/man/man1 man/ja/man1
 
-man/ja/man3/%: ja/man/man3/% sample/man3/SampleGroup.3 utils/mkman.rb 
+man/ja/man3/%: ja/man/man3/% sample/man3/SampleGroup.3 utils/mkman.rb
 	$(mkinstalldirs) man/ja/man3
 	rm -rf doxywork man/ja/man3/*
 	ruby utils/mkman.rb 3m17n ja/man/man3 man/ja/man3
