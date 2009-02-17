@@ -26,8 +26,8 @@ BEGIN {
     to = match($0, "<\/filename>");
     TAIL = substr($0, to + RLENGTH);
     FILE = sprintf("%s%s", SUBDIR[KEY], substr($0, from+10, to - (from+10)));
-    system(sprintf("cd %s; ls %s|sed -f %s", M17NDB, FILE, SEDFILE));
-    if (length(TAIL) > 0)
+    system(sprintf("ls %s/%s|sed -f %s", M17NDB, FILE, SEDFILE));
+    if (length(TAIL) > 0 && ! match(TAIL, "^[ \t]*$"))
 	print TAIL;
     next;
 }
