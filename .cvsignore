@@ -13,4 +13,5 @@ dev
 ja
 warning
 *.tar.gz
-
+data
+temp

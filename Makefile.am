@@ -95,7 +95,7 @@ SRCALL = \
 	data/m17n-config.txt data/m17n-db.txt data/exprog.txt \
 	data/dbformat.txt data/dbdata.txt data/dbtutorial.txt fdl.txt
 
-DBDATA = $(shell echo @M17NDB@/*.{dir,fst,tbl} @M17NDB@/MIM/*.mim @M17NDB@/FLT/*.flt @M17NDB@/LANGDATA/LANGUAGE.tbl)
+DBDATA = $(shell echo @M17NDB@/*.{fst,tbl} @M17NDB@/MIM/*.mimx @M17NDB@/FLT/*.flt @M17NDB@/LANGDATA/LANGUAGE.tbl)
 DBIMAGE = $(shell echo images/*.png images/*.eps)
 
 HTML_USR_TARGET = usr/html/index.html usr/html/parrot.png
@@ -264,9 +264,10 @@ doxyfile-man%.usr: doxyfile-man%
 data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
 	utils/exprog.sh ${EXAMPLE_PROGS} > $@
 
-data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.dir utils/dbdata.awk utils/dbdata.sh utils/imdoc.c
-	(cd utils; make)
-	@AWK@ -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
+data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.xml utils/expand-mdb.awk
+	[ -d data ] || mkdir data
+	SEDFILE=`pwd`/utils/expand-mdb.sed; \
+	  @AWK@ -v SEDFILE=$$SEDFILE -v M17NDB=@M17NDB@ -f utils/expand-mdb.awk @M17NDB@/mdb.xml > data/expanded-mdb.xml
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
 	utils/dbformat.sh ${DBFORMAT} > $@
