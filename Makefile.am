@@ -265,7 +265,6 @@ data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
 	utils/exprog.sh ${EXAMPLE_PROGS} > $@
 
 data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.xml utils/expand-mdb.awk
-	[ -d data ] || mkdir data
 	SEDFILE=`pwd`/utils/expand-mdb.sed; \
 	  @AWK@ -v SEDFILE=$$SEDFILE -v M17NDB=@M17NDB@ -f utils/expand-mdb.awk @M17NDB@/mdb.xml > data/expanded-mdb.xml
 
