@@ -19,13 +19,11 @@ BEGIN {
 }
 
 /<filename>[^<]*<\/filename>/ {
-    from = match($0, "<filename>");
-    HEAD = substr($0, 1, from - 1)
-    if (length(HEAD) > 1 && ! match(HEAD, "^[ \t]*$"))
-	printf "%s\n", substr($0, 1, from - 1);
-    to = match($0, "<\/filename>");
-    TAIL = substr($0, to + RLENGTH);
-    FILE = sprintf("%s%s", SUBDIR[KEY], substr($0, from+10, to - (from+10)));
+    from = match($0, "<filename>[^<]*</filename>");
+    to = from + RLENGTH;
+    printf "%s\n", substr($0, 1, to - 1);
+    TAIL = substr($0, to);
+    FILE = sprintf("%s%s", SUBDIR[KEY], substr($0, from + 10, to - from - 21));
     system(sprintf("ls %s/%s | sed -f %s", M17NDB, FILE, SEDFILE));
     if (length(TAIL) > 0 && ! match(TAIL, "^[ \t]*$"))
 	print TAIL;
