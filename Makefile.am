@@ -264,11 +264,9 @@ doxyfile-man%.usr: doxyfile-man%
 data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
 	utils/exprog.sh ${EXAMPLE_PROGS} > $@
 
-data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.xml utils/expand-mdb.awk \
-			utils/expand-mdb.sed
+data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.xml utils/expand-mdb.awk
 	[ -d data ] || mkdir data
-	SEDFILE=utils/expand-mdb.sed; \
-	  @AWK@ -v SEDFILE=$$SEDFILE -v M17NDB=@M17NDB@ -f utils/expand-mdb.awk @M17NDB@/mdb.xml > data/expanded-mdb.xml
+	@AWK@ -v M17NDB=@M17NDB@ -f utils/expand-mdb.awk @M17NDB@/mdb.xml > data/expanded-mdb.xml
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
 	utils/dbformat.sh ${DBFORMAT} > $@

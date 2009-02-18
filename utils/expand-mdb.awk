@@ -4,16 +4,14 @@ BEGIN {
     SUBDIR["language-name-*"] = "LANGDATA/";
     SUBDIR["standard-language-iso639"] = "LANGDATA/";
     KEY="";
+    XINCLUDEFMT="<xi:include xmlns:xi=\"http://www.w3.org/2001/XInclude\" parse=\"xml\" href=\"%s\"/>\n";
 }
 
 /^<item / {
     match($0, "key0=\"[^\"]*");
-    KEY=substr($0, RSTART + 6, RLENGTH - 6);
-    if (match($0, "key1=\"[^\"]*") > 0) {
-	KEY = sprintf("%s-%s", KEY, substr($0, RSTART + 6, RLENGTH - 6));
-	if (match($0, "key2=\"[^\"]*") > 0)
-	    KEY = sprintf("%s-%s", KEY, substr($0, RSTART + 6, RLENGTH - 6));
-    }
+    KEY = substr($0, RSTART + 6, RLENGTH - 6);
+    for (i = 1; i < 4 && match($0, sprintf("key%d=\"[^\"]*", i)) > 0; i++)
+	KEY=KEY"-"substr($0, RSTART + 6, RLENGTH - 6);
     print;
     next;
 }
@@ -21,10 +19,17 @@ BEGIN {
 /<filename>[^<]*<\/filename>/ {
     from = match($0, "<filename>[^<]*</filename>");
     to = from + RLENGTH;
-    printf "%s\n", substr($0, 1, to - 1);
+    printf "%s", substr($0, 1, from - 1);
     TAIL = substr($0, to);
-    FILE = sprintf("%s%s", SUBDIR[KEY], substr($0, from + 10, to - from - 21));
-    system(sprintf("ls %s/%s | sed -f %s", M17NDB, FILE, SEDFILE));
+    FILE = substr($0, from + 10, to - from - 21);
+    COMMAND = "cd "M17NDB"/"SUBDIR[KEY]"; ls "FILE;
+    COMMAND | getline LINE;
+    print "<filename>"LINE"</filename>";
+    printf XINCLUDEFMT, M17NDB"/"SUBDIR[KEY]LINE;
+    while (COMMAND | getline LINE) {
+	print "<filename>"LINE"</filename>";
+	printf XINCLUDEFMT, M17NDB"/"SUBDIR[KEY]LINE;
+    }
     if (length(TAIL) > 0 && ! match(TAIL, "^[ \t]*$"))
 	print TAIL;
     next;
