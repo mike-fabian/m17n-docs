@@ -41,8 +41,7 @@
 &lt;/li&gt;
 	    </xsl:when>
 	    <xsl:otherwise>
-&lt;li&gt;
-   <xsl:value-of select="."/><xsl:text></xsl:text>
+&lt;li&gt;   <xsl:value-of select="."/><xsl:text></xsl:text>
    <xsl:value-of select="parent::mdb:source/parent::mdb:item/mdb:description"/>
 &lt;/li&gt;
 	      </xsl:otherwise>
