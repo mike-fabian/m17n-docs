@@ -267,6 +267,7 @@ data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
 data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.xml utils/expand-mdb.awk
 	[ -d data ] || mkdir data
 	@AWK@ -v M17NDB=@M17NDB@ -f utils/expand-mdb.awk @M17NDB@/mdb.xml > data/expanded-mdb.xml
+	xsltproc -xinclude utils/description-en.xsl data/expanded-mdb.xml > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
 	utils/dbformat.sh ${DBFORMAT} > $@
