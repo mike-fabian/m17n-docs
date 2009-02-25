@@ -39,7 +39,9 @@
 		  <xsl:text>)@verbatim</xsl:text>
 		  <xsl:choose>
 		    <xsl:when  test="following-sibling::mim:input-method[1]/comment()">
-		      <xsl:value-of select="following-sibling::mim:input-method[1]/comment()"/>
+		      <xsl:for-each select="following-sibling::mim:input-method[1]/comment()">
+			<xsl:value-of select="."/><xsl:text></xsl:text>
+		      </xsl:for-each>
 		    </xsl:when>
 		    <xsl:otherwise>
 		      <xsl:value-of select="following-sibling::mim:input-method[1]/mim:description"/>

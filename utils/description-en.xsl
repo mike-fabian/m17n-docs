@@ -37,7 +37,9 @@
    <xsl:text> icon:&lt;img src="</xsl:text>
    <xsl:value-of select="substring-before(., '.mimx')"/><xsl:text>.png" border="1" style="vertical-align:middle;"&gt; @endhtmlonly)@verbatim</xsl:text>
    <xsl:choose><xsl:when  test="following-sibling::mim:input-method[1]/comment()">
-   <xsl:value-of select="following-sibling::mim:input-method[1]/comment()"/>
+   <xsl:for-each select="following-sibling::mim:input-method[1]/comment()">
+<xsl:value-of select="."/><xsl:text></xsl:text>
+   </xsl:for-each>
    </xsl:when>
    <xsl:otherwise>
    <xsl:value-of select="following-sibling::mim:input-method[1]/mim:description"/>
