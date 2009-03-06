@@ -89,11 +89,15 @@ MAN3 =	@M17NLIB@/src/m17n-core.h \
 
 MAN5 = ${DBFORMAT}
 
-SRCALL = \
+SRC_COMMON = \
 	mainpage.txt \
 	${MAN3} \
 	data/m17n-config.txt data/m17n-db.txt data/exprog.txt \
-	data/dbformat.txt data/dbdata.txt data/dbtutorial.txt fdl.txt
+	data/dbformat.txt data/dbtutorial.txt fdl.txt
+
+SRC_EN = ${SRC_COMMON} data/dbdata-en.txt
+SRC_JA = ${SRC_COMMON} data/dbdata-ja.txt
+SRCALL = ${SRC_COMMON} data/dbdata-en.txt data/dbdata-ja.txt
 
 DBDATA = $(shell echo @M17NDB@/*.{fst,tbl} @M17NDB@/MIM/*.mimx @M17NDB@/FLT/*.flt @M17NDB@/LANGDATA/LANGUAGE.tbl)
 DBIMAGE = $(shell echo images/*.png images/*.eps)
@@ -171,61 +175,65 @@ doxyfile: Makefile
 	      -e '/^GENERATE_TAGFILE / s/=.*/= m17n.tag/' \
 	      > $@
 
-doxyfile-html: doxyfile ${SRCALL}
+doxyfile-html: doxyfile
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
-	    -e 's|%INPUT%|${SRCALL}|' \
 	    -e 's|%GENERATE_HTML%|YES|' \
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|NO|' \
 	    -e 's|%ENABLED_SECTIONS%|FOR-HTML|' \
 	  < $< >$@
 
-doxyfile-html.usr: doxyfile-html
+doxyfile-html.usr: doxyfile-html ${SRC_EN}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
+	    -e 's|%INPUT%|${SRC_EN}|' \
 	    -e 's/%USR_JA_DEV%/usr/g' \
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
 	  < $< >$@
 
-doxyfile-html.dev: doxyfile-html
+doxyfile-html.dev: doxyfile-html ${SRC_EN}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
+	    -e 's|%INPUT%|${SRC_EN}|' \
 	    -e 's/%USR_JA_DEV%/dev/g' \
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
 	  < $< >$@
 
-doxyfile-html.ja: doxyfile-html
+doxyfile-html.ja: doxyfile-html ${SRC_JA}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_JA}|' \
+	    -e 's|%INPUT%|${SRC_JA}|' \
 	    -e 's/%USR_JA_DEV%/ja/g' \
 	    -e 's/%OUTPUT_LANGUAGE%/Japanese/' \
 	  < $< >$@
 
-doxyfile-latex: doxyfile ${SRCALL}
+doxyfile-latex: doxyfile
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
-	    -e 's|%INPUT%|${SRCALL}|' \
 	    -e 's|%GENERATE_HTML%|NO|' \
 	    -e 's|%GENERATE_LATEX%|YES|' \
 	    -e 's|%GENERATE_MAN%|NO|' \
 	    -e 's|%ENABLED_SECTIONS%|FOR-LATEX|' \
 	  < $< >$@
 
-doxyfile-latex.usr: doxyfile-latex
+doxyfile-latex.usr: doxyfile-latex ${SRC_EN}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
+	    -e 's|%INPUT%|${SRC_EN}|' \
 	    -e 's/%USR_JA_DEV%/usr/g' \
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
 	  < $< >$@
 
-doxyfile-latex.dev: doxyfile-latex
+doxyfile-latex.dev: doxyfile-latex ${SRC_EN}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_EN}|' \
+	    -e 's|%INPUT%|${SRC_EN}|' \
 	    -e 's/%USR_JA_DEV%/dev/g' \
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
 	  < $< >$@
 
-doxyfile-latex.ja: doxyfile-latex
+doxyfile-latex.ja: doxyfile-latex ${SRC_JA}
 	sed -e 's|%PROJECT_NAME%|${PROJECT_NAME_JA}|' \
+	    -e 's|%INPUT%|${SRC_EN}|' \
 	    -e 's/%USR_JA_DEV%/ja/g' \
 	    -e 's/%OUTPUT_LANGUAGE%/Japanese/' \
 	  < $< >$@
 
-doxyfile-man1: doxyfile ${SRCALL}
+doxyfile-man1: doxyfile ${MAN1}
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
 	    -e 's|%INPUT%|${MAN1}|' \
 	    -e 's|%GENERATE_HTML%|NO|' \
@@ -235,7 +243,7 @@ doxyfile-man1: doxyfile ${SRCALL}
 	    -e 's|%ENABLED_SECTIONS%|FOR-MAN|' \
 	  < $< >$@
 
-doxyfile-man3: doxyfile ${SRCALL}
+doxyfile-man3: doxyfile ${MAN3}
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
 	    -e 's|%INPUT%|${MAN3}|' \
 	    -e 's|%GENERATE_HTML%|NO|' \
@@ -245,7 +253,7 @@ doxyfile-man3: doxyfile ${SRCALL}
 	    -e 's|%ENABLED_SECTIONS%|FOR-MAN|' \
 	  < $< >$@
 
-doxyfile-man5: doxyfile ${SRCALL}
+doxyfile-man5: doxyfile ${MAN5}
 	sed -e 's|%PROJECT_NUMBER%|@PACKAGE_VERSION@|' \
 	    -e 's|%INPUT%|${MAN5}|' \
 	    -e 's|%GENERATE_HTML%|NO|' \
@@ -264,10 +272,23 @@ doxyfile-man%.usr: doxyfile-man%
 data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
 	utils/exprog.sh ${EXAMPLE_PROGS} > $@
 
-data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.xml utils/expand-mdb.awk
+data/dbdata-en.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.xml utils/expand-mdb.awk \
+			utils/description-en.xsl
 	[ -d data ] || mkdir data
 	@AWK@ -v M17NDB=@M17NDB@ -f utils/expand-mdb.awk @M17NDB@/mdb.xml > data/expanded-mdb.xml
 	xsltproc -xinclude utils/description-en.xsl data/expanded-mdb.xml > $@
+	ICONS=`sed -n 's/.*icon:<img src="icon-\([^"]*\)".*$$/\1/p' < $@`; \
+	  for f in $${ICONS}; do \
+	    SRC="@M17NDB@/icons/$$f";\
+	    DST="images/icon-$$f"; \
+	    [ ! -f $${SRC} -o -f $${DST} ] || cp $${SRC} $${DST}; \
+	  done
+
+data/dbdata-ja.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.xml utils/expand-mdb.awk \
+			utils/description-ja.xsl
+	[ -d data ] || mkdir data
+	@AWK@ -v M17NDB=@M17NDB@ -f utils/expand-mdb.awk @M17NDB@/mdb.xml > data/expanded-mdb.xml
+	xsltproc -xinclude utils/description-ja.xsl data/expanded-mdb.xml > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
 	utils/dbformat.sh ${DBFORMAT} > $@
