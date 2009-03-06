@@ -36,7 +36,7 @@
 	          <xsl:value-of select="following-sibling::mim:input-method[1]/mim:tags/mim:language"/>
 		  <xsl:text> name:</xsl:text>
 		  <xsl:value-of select="following-sibling::mim:input-method[1]/mim:tags/mim:name"/>
-		  <xsl:text>)@verbatim</xsl:text>
+		  <xsl:text>)</xsl:text>
 		  <xsl:choose>
 		    <xsl:when  test="following-sibling::mim:input-method[1]/comment()">
 		      <xsl:for-each select="following-sibling::mim:input-method[1]/comment()">
@@ -44,14 +44,16 @@
 		      </xsl:for-each>
 		    </xsl:when>
 		    <xsl:otherwise>
+		      <xsl:text>@verbatim</xsl:text>
 		      <xsl:value-of select="following-sibling::mim:input-method[1]/mim:description"/>
+		      <xsl:text>@endverbatim</xsl:text>
 		    </xsl:otherwise>
 		  </xsl:choose>
-		  <xsl:text> @endverbatim</xsl:text>
+		  <xsl:text></xsl:text>
 	      </li>
 	    </xsl:when>
 	    <xsl:otherwise>
-	      <li><xsl:value-of select="."/><xsl:text></xsl:text>
+	      <li><xsl:value-of select="."/><xsl:text></xsl:text>
 		<xsl:value-of select="parent::mdb:source/parent::mdb:item/mdb:description"/>
 	      </li>
 	      </xsl:otherwise>

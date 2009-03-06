@@ -32,20 +32,23 @@
    <xsl:value-of select="following-sibling::mim:input-method[1]/mim:tags/mim:language"/>
    <xsl:text> name:</xsl:text>
    <xsl:value-of select="following-sibling::mim:input-method[1]/mim:tags/mim:name"/>
-   <xsl:text>@htmlonly title:</xsl:text>
+   <xsl:text> @htmlonly title:</xsl:text>
    <xsl:value-of select="following-sibling::mim:input-method[1]/mim:title"/>
    <xsl:text> icon:&lt;img src="</xsl:text>
-   <xsl:text>icon-</xsl:text><xsl:value-of select="substring-before(., '.mimx')"/><xsl:text>.png" border="1" style="vertical-align:middle;"&gt; @endhtmlonly)@verbatim</xsl:text>
-   <xsl:choose><xsl:when  test="following-sibling::mim:input-method[1]/comment()">
+   <xsl:text>icon-</xsl:text><xsl:value-of select="substring-before(., '.mimx')"/><xsl:text>.png" border="1" style="vertical-align:middle;"&gt; @endhtmlonly )</xsl:text>
+   <xsl:choose>
+     <xsl:when  test="following-sibling::mim:input-method[1]/comment()">
    <xsl:for-each select="following-sibling::mim:input-method[1]/comment()">
-<xsl:value-of select="."/><xsl:text></xsl:text>
+     <xsl:value-of select="."/><xsl:text></xsl:text>
    </xsl:for-each>
    </xsl:when>
    <xsl:otherwise>
+     <xsl:text>@verbatim</xsl:text>
    <xsl:value-of select="following-sibling::mim:input-method[1]/mim:description"/>
+     <xsl:text>@endverbatim</xsl:text>
    </xsl:otherwise>
    </xsl:choose>
-   <xsl:text> @endverbatim</xsl:text>
+   <xsl:text> </xsl:text>
 &lt;/li&gt;
 	    </xsl:when>
 	    <xsl:otherwise>
