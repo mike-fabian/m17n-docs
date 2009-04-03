@@ -44,7 +44,7 @@
 		      </xsl:for-each>
 		    </xsl:when>
 		    <xsl:otherwise>
-		      <xsl:text>@verbatim</xsl:text>
+		      <xsl:text>@verbatim</xsl:text>
 		      <xsl:value-of select="following-sibling::mim:input-method[1]/mim:description"/>
 		      <xsl:text>@endverbatim</xsl:text>
 		    </xsl:otherwise>
