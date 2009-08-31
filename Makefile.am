@@ -95,8 +95,8 @@ SRCALL = \
 	data/m17n-config.txt data/m17n-db.txt data/exprog.txt \
 	data/dbformat.txt data/dbdata.txt data/dbtutorial.txt fdl.txt
 
-DBDATA = $(shell echo @M17NDB@/*.{dir,fst,tbl} @M17NDB@/MIM/*.mim @M17NDB@/FLT/*.flt @M17NDB@/LANGDATA/LANGUAGE.tbl)
-DBIMAGE = $(shell echo images/*.png images/*.eps)
+DBDATA = $(shell ls @M17NDB@/*.{dir,fst,tbl} @M17NDB@/MIM/*.mim @M17NDB@/FLT/*.flt @M17NDB@/LANGDATA/LANGUAGE.tbl)
+DBIMAGE = $(shell ls images/*.png images/*.eps)
 
 HTML_USR_TARGET = usr/html/index.html usr/html/parrot.png
 HTML_JA_TARGET = ja/html/index.html ja/html/parrot.png
@@ -141,7 +141,7 @@ doxyfile: Makefile
 	      -e '/^OUTPUT_DIRECTORY / s/=.*/= %USR_JA_DEV%/' \
 	      -e '/^OUTPUT_LANGUAGE / s/=.*/= %OUTPUT_LANGUAGE%/' \
 	      -e '/^OPTIMIZE_OUTPUT_FOR_C / s/=.*/= YES/' \
-	      -e '/^EXTRAXT_ALL / s/=.*/= YES/' \
+	      -e '/^EXTRACT_ALL / s/=.*/= NO/' \
 	      -e '/^SHOW_INCLUDE_FILES / s/=.*/= NO/' \
 	      -e '/^SHOW_MEMBER_DOCS / s/=.*/= NO/' \
 	      -e '/^ENABLED_SECTIONS / s/=.*/= %ENABLED_SECTIONS%/' \
@@ -156,9 +156,8 @@ doxyfile: Makefile
 	      -e '/^ALPHABETICAL_INDEX / s/=.*/= YES/' \
 	      -e '/^IGNORE_PREFIX / s/=.*/= m M/' \
 	      -e '/^GENERATE_HTML / s/=.*/= %GENERATE_HTML%/' \
-	      -e '/^HTML_HEADER / s/=.*/= header.%USR_JA_DEV%.html/' \
 	      -e '/^HTML_FOOTER / s/=.*/= footer.%USR_JA_DEV%.html/' \
-	      -e '/^DISABLE_INDEX / s/=.*/= YES/' \
+	      -e '/^DISABLE_INDEX / s/=.*/= NO/' \
 	      -e '/^ENUM_VALUES_PER_LINE / s/=.*/= 1/' \
 	      -e '/^GENERATE_LATEX / s/=.*/= %GENERATE_LATEX%/' \
 	      -e '/^EXTRA_PACKAGES / s/=.*/= m17n-lib times/' \
@@ -285,7 +284,7 @@ data/m17n-db.txt: @M17NDB@/m17n-db.in
 	rm -f `dirname $@`/*.html
 	${DOXYGEN} $<
 	cp images/icon-*.png `dirname $@`
-	cd `dirname $@`; rm -f *_8c* *_8h* *_8txt* dirs.html dir_* files.html
+#	cd `dirname $@`; rm -f *_8c* *_8h* *_8txt* dirs.html dir_* files.html
 	echo 'code { font-weight: bold }' >> `dirname $@`/doxygen.css
 
 %/html/parrot.png: parrot.png
@@ -333,22 +332,26 @@ sample/man3/SampleGroup.3: sample.c
 	${DOXYGEN} doxytemp
 	rm -rf doxytemp
 
-man/man1/%: usr/man/man1/% sample/man3/SampleGroup.3 utils/mkman.rb 
+man/man1/%: usr/man/man1/% sample/man3/SampleGroup.3 utils/mkman.rb \
+		utils/reform-man.sh
 	$(mkinstalldirs) man/man1
 	rm -rf doxywork man/man1/*
 	ruby utils/mkman.rb 1 usr/man/man1 man/man1
+	utils/reform-man.sh man/man1/*.1
 
-man/man3/%: usr/man/man3/% sample/man3/SampleGroup.3 utils/mkman.rb  \
-		utils/reform-man3.sh utils/reform-man3.awk
+man/man3/%: usr/man/man3/% sample/man3/SampleGroup.3 utils/mkman.rb \
+		utils/reform-man.sh
 	$(mkinstalldirs) man/man3
 	rm -rf doxywork man/man3/*
 	ruby utils/mkman.rb 3m17n usr/man/man3m17n man/man3
-	utils/reform-man3.sh man/man3
+	utils/reform-man.sh man/man3/*.3m17n
 
-man/man5/%: usr/man/man5/% sample/man3/SampleGroup.3 utils/mkman.rb 
+man/man5/%: usr/man/man5/% sample/man3/SampleGroup.3 utils/mkman.rb \
+		utils/reform-man.sh
 	$(mkinstalldirs) man/man5
 	rm -rf doxywork man/man5/*
 	ruby utils/mkman.rb 5 usr/man/man5 man/man5
+	utils/reform-man.sh man/man5/*.5
 
 man/ja/man1/%: ja/man/man1/% sample/man3/SampleGroup.3 utils/mkman.rb 
 	$(mkinstalldirs) man/ja/man1
@@ -365,7 +368,7 @@ man/ja/man5/%: ja/man/man5/% sample/man3/SampleGroup.3 utils/mkman.rb
 	rm -rf doxywork man/ja/man5/*
 	ruby utils/mkman.rb 5 ja/man/man5 man/ja/man5
 
-CLEANFILES=doxyfile-* ${TARGET} *.tar.gz warning *~
+CLEANFILES=doxyfile* ${TARGET} *.tar.gz warning *~
 
 clean-local:
 	rm -rf usr dev ja man doxywork

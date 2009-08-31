@@ -3,8 +3,8 @@
 IMDOC=`pwd`/utils/imdoc
 
 set `ls $1/$2`
-FILE=$1
-while shift 1; do
+while [ $# -ge 1 ] ; do
+    FILE=$1
     IM=`grep '^(input-method' $FILE`
     if test -n "$IM"; then
 	if grep -q '^;;;' $FILE; then
@@ -50,5 +50,5 @@ while shift 1; do
 	echo
 	sed -n -e '/^;;;/ p' $FILE | sed -e '/^[^;]/ s/$/<br>/' -e '/^;;;/ s/^;;; *//'
     fi
-    FILE=$1
+    shift
 done

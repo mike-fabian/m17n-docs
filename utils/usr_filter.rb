@@ -45,6 +45,11 @@ while gets
      	commentblock(buf)
     	buf = []
 
+      when /\/\* @[{}] \*\//	# /* comment */ type comment 
+     	commentblock(buf)
+    	buf = []
+        print($_)
+
       when /^\/\*\s.*\*\//	# /* comment */ type comment 
 #	if doxy == 1		
 #	  # should be included only in the example code

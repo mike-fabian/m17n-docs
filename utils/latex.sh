@@ -31,7 +31,7 @@ elif [ $USR_JA_DEV = "dev" ] ; then
     < refman.tex > ${SOURCE}.tex
 else
   SOURCE=m17n-lib
-  echo '\appendix' > app.tex
+  echo '\\appendix' > app.tex
   sed -n -e '/Print compile/,/GFDL/ p' < refman.tex >> app.tex
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
       -e '/Print compile/,/GFDL/ d' \

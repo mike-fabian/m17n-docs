@@ -122,11 +122,17 @@ main (int argc, char **argv)
 					   NULL, NULL, NULL);
 	      char *base;
 	      char cmd[1024];
+	      int result;
 
 	      base = basename (strdup (iconfile));
 	      sprintf (cmd, "convert -resize 50%% %s images/icon-%s",
 		       iconfile, base);
-	      system (cmd);
+	      result = system (cmd);
+	      if (result != 0)
+		{
+		  fprintf (stderr, "Command fail: %s", cmd);
+		  exit (1);
+		}
 	      printf (" icon:<img src=\"icon-%s\" border=\"1\" style=\"vertical-align:middle;\">\n", base);
 	    }
 	  else
