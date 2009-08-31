@@ -149,7 +149,6 @@ doxyfile: Makefile
 	      -e '/^INPUT / s/=.*/= %INPUT%/' \
 	      -e '/^FILE_PATTERNS / s/=.*/= *.c *.txt/' \
 	      -e '/^EXCLUDE_PATTERNS / s/=.*/= link*.c font-ft.c/' \
-	      -e '/^EXAMPLE_PATH / s/=.*/= data-%USR_JA_DEV%/' \
 	      -e '/^IMAGE_PATH / s/=.*/= images/' \
 	      -e '/^INPUT_FILTER / s/=.*/= utils\/%USR_JA_DEV%_filter.sh/' \
 	      -e '/^VERBATIM_HEADERS / s/=.*/= NO/' \
@@ -168,6 +167,7 @@ doxyfile: Makefile
 	      -e '/^MAN_EXTENSION / s/=.*/= %MAN_EXTENSION%/' \
 	      -e '/^PREDEFINED / s/=.*/= FOR_DOXYGEN/' \
 	      -e '/^GENERATE_TAGFILE / s/=.*/= m17n.tag/' \
+	      -e '/^TYPEDEF_HIDES_STRUCT / s/=.*/= YES/' \
 	      > $@
 
 doxyfile-html: doxyfile ${SRCALL}
