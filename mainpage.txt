@@ -101,7 +101,7 @@ The m17n library utilizes these external libraries.  They are not
 mandatory but many functions of the m17n library depend on them.
 
 <ul>
-<li> m17n-db -- http://www.m17n.org/m17n-lib/download/m17n-db-1.5.0.tar.gz
+<li> m17n-db -- http://www.m17n.org/m17n-lib-en/download/m17n-db-1.5.0.tar.gz
 
      Provide various information to the m17n library.
 
@@ -160,7 +160,7 @@ m17n ライブラリは以下の外部ライブラリを利用しています。必須ではありま
 せんが、m17n ライブラリの幾つかの関数はこれらに依存しています。
 
 <ul>
-<li> m17n-db -- http://www.m17n.org/m17n-lib/download/m17n-db-1.5.0.tar.gz
+<li> m17n-db -- http://www.m17n.org/m17n-lib-ja/download/m17n-db-1.5.0.tar.gz
 
      m17n ライブラリに種々の情報を提供します。
 
@@ -214,11 +214,11 @@ Global IT Security Group\n
 Information Technology Research Institute\n
 National Institute of Advanced Industrial Science and Technology
 
-Web: http://www.m17n.org/m17n-lib/
+Web: http://www.m17n.org/m17n-lib-en/
 
-Bug report: m17n-lib-bug@m17n.org
+Bug report: m17n-lib-bug-XXXX@m17n.org (Replace XXXX with current year in 4 digits.)
 
-Mailing lists: http://www.m17n.org/m17n-lib/mailinglist.html
+Mailing lists: http://www.m17n.org/m17n-lib-en/mailinglist.html
 
 */
 /***ja @section contact 連絡先:
@@ -227,9 +227,9 @@ Mailing lists: http://www.m17n.org/m17n-lib/mailinglist.html
 情報技術研究部門\n
 グローバル IT セキュリティグループ
 
-Web: http://www.m17n.org/m17n-lib/
+Web: http://www.m17n.org/m17n-lib-ja/
 
-バグレポート: m17n-lib-bug@m17n.org
+バグレポート: m17n-lib-bug-XXXX@m17n.org (XXXXの部分には現在の年（西暦）を4桁で入れてください。)
 
 メイリングリスト: http://www.m17n.org/m17n-lib-ja/mailinglist.htm
 
