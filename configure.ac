@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(m17n-docs, 1.5.2, bugs-m17n-lib@m17n.org)
+AC_INIT(m17n-docs, 1.5.5, bugs-m17n-lib@m17n.org)
 AM_INIT_AUTOMAKE([-Wno-portability])
 
 AM_MAINTAINER_MODE
@@ -90,8 +90,7 @@ eval dir=${datadir}
 AC_MSG_NOTICE([-------------------------------------------])
 AC_MSG_NOTICE([Install documentations in these directories])
 AC_MSG_NOTICE([-------------------------------------------])
-AC_MSG_NOTICE([  m17n-lib.dvi:  ${dir}/m17n/docs])
-AC_MSG_NOTICE([  m17n-lib.ps:   ${dir}/m17n/docs])
+AC_MSG_NOTICE([  m17n-lib.pdf:  ${dir}/m17n/docs])
 AC_MSG_NOTICE([  html files:    ${dir}/m17n/docs/html])
 eval dir=${mandir}
 AC_MSG_NOTICE([  man files:     ${dir}])

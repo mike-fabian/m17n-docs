@@ -26,13 +26,13 @@ while [ $# -ge 1 ] ; do
 		dir=`dirname $dir`
 		icon="$dir/icons/$base.png"
 		if [ -f "$icon" ] ; then
-		    [ -f "images/icon-$base.png" ] || cp "$icon" "images/icon-$base.png"
+		    [ -f "images/icon-$base.png" ] || convert -resize 50% "$icon" "images/icon-$base.png"
 		fi
 		HEADER="<li> $base (language:$LNG name:$NAME @htmlonly"
 #		if test -n "$title"; then
 #		    HEADER="$HEADER title:$title"
 #		fi
-		HEADER2="<img src=\"icon-$base.png\" style=\"vertical-align:middle;\">"
+		HEADER2="<img src=\"icon-$base.png\" border=\"1\" style=\"vertical-align:middle;\">"
 		HEADER3="@endhtmlonly"
 		HEADER4=")"
 	    fi
@@ -41,7 +41,14 @@ while [ $# -ge 1 ] ; do
 		echo "$HEADER2"; echo "$HEADER3"; echo "$HEADER4"
 	    fi
 	    echo
-	    sed -n -e '/^;;;/ p' $FILE | sed -e '/^[^;]/ s/$/<br>/' -e '/^;;;/ s/^;;; *//' | sed -e 's,^||,<tr><td align="center">,' -e 's,||$,</td></tr>,' -e 's,|,</td><td align="center">,g'
+	    echo "@htmlonly"
+	    echo "<pre class=\"fragment\"><div class=\"fragment\">"
+	    echo "@endhtmlonly"
+	    sed -n -e '/^;;; *@/ s/;;; *\(.*\)/\1/p' \
+		-e '/^;;; *[^ @]/ s,;;; *\(.*\),\1@n,p' $FILE
+	    echo "@htmlonly"
+	    echo "</div></pre>"
+	    echo "@endhtmlonly"
 	    )
 	else
 	    M17NDIR=/usr/share/m17n $IMDOC $FILE "$IM"

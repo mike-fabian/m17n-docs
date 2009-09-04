@@ -1,5 +1,5 @@
 # Makefile.am -- Makefile for the m17n library documentation.
-# Copyright (C) 2003, 2004, 2005, 2006
+# Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009
 #   National Institute of Advanced Industrial Science and Technology (AIST)
 #   Registration Number H15PRO112
 
@@ -27,22 +27,21 @@ SUBDIRS = utils
 
 pkgdata_DATA = \
 	usr/html/index.html \
-	usr/latex/m17n-lib.dvi usr/latex/m17n-lib.ps \
+	usr/latex/m17n-lib.ps \
 	man/man1/m17n-config.1 \
 	man/man3/m17nIntro.3m17n \
 	man/man5/mdbGeneral.5
 
 pkgdatadir = $(datadir)/m17n/docs
 
-EXTRA_DIST = usr/html usr/latex/m17n-lib.dvi usr/latex/m17n-lib.ps \
-	man/man1 man/man3 man/man5 \
-	ja/html ja/latex/m17n-lib-ja.dvi ja/latex/m17n-lib-ja.ps
+EXTRA_DIST = usr/html ja/html \
+	usr/latex ja/latex \
+	man/man1 man/man3 man/man5
 
 install-pkgdataDATA: $(pkgdata_DATA)
 	$(mkinstalldirs) $(pkgdatadir)/html
 	$(mkinstalldirs) $(mandir)/man1 $(mandir)/man3 $(mandir)/man5
-	$(INSTALL_DATA) usr/latex/m17n-lib.dvi $(pkgdatadir)/m17n-lib.dvi
-	$(INSTALL_DATA) usr/latex/m17n-lib.ps $(pkgdatadir)/m17n-lib.ps
+	$(INSTALL_DATA) usr/latex/m17n-lib.pdf $(pkgdatadir)/m17n-lib.pdf
 	cd usr/html; \
 	  for f in *.html *.png; do \
 	    $(INSTALL_DATA) $$f $(pkgdatadir)/html/$$f; \
@@ -107,9 +106,9 @@ usr-html html-usr: ${HTML_USR_TARGET}
 ja-html html-ja: ${HTML_JA_TARGET}
 dev-html html-dev: ${HTML_DEV_TARGET}
 
-LATEX_USR_TARGET = usr/latex/m17n-lib.dvi usr/latex/m17n-lib.ps
-LATEX_JA_TARGET = ja/latex/m17n-lib.dvi ja/latex/m17n-lib.ps
-LATEX_DEV_TARGET = dev/latex/m17n-lib.dvi dev/latex/m17n-lib.ps
+LATEX_USR_TARGET = usr/latex/m17n-lib.dvi usr/latex/m17n-lib.pdf
+LATEX_JA_TARGET = ja/latex/m17n-lib.dvi ja/latex/m17n-lib.pdf
+LATEX_DEV_TARGET = dev/latex/m17n-lib.dvi dev/latex/m17n-lib.pdf
 LATEX_TARGET = ${LATEX_USR_TARGET} ${LATEX_JA_TARGET} ${LATEX_DEV_TARGET}
 
 usr-latex latex-usr: ${LATEX_USR_TARGET}
@@ -140,8 +139,9 @@ doxyfile: Makefile
 	      -e '/^PROJECT_NUMBER / s/=.*/= %PROJECT_NUMBER%/' \
 	      -e '/^OUTPUT_DIRECTORY / s/=.*/= %USR_JA_DEV%/' \
 	      -e '/^OUTPUT_LANGUAGE / s/=.*/= %OUTPUT_LANGUAGE%/' \
+	      -e '/^FULL_PATH_NAMES / s/=.*/= NO/' \
 	      -e '/^OPTIMIZE_OUTPUT_FOR_C / s/=.*/= YES/' \
-	      -e '/^EXTRACT_ALL / s/=.*/= NO/' \
+	      -e '/^EXTRACT_ALL / s/=.*/= YES/' \
 	      -e '/^SHOW_INCLUDE_FILES / s/=.*/= NO/' \
 	      -e '/^SHOW_MEMBER_DOCS / s/=.*/= NO/' \
 	      -e '/^ENABLED_SECTIONS / s/=.*/= %ENABLED_SECTIONS%/' \
@@ -168,6 +168,8 @@ doxyfile: Makefile
 	      -e '/^PREDEFINED / s/=.*/= FOR_DOXYGEN/' \
 	      -e '/^GENERATE_TAGFILE / s/=.*/= m17n.tag/' \
 	      -e '/^TYPEDEF_HIDES_STRUCT / s/=.*/= YES/' \
+	      -e '/^DOT_FONTNAME / s/=.*/=/' \
+	      -e '/^SORT_MEMBER_DOCS / s/=.*/= NO/' \
 	      > $@
 
 doxyfile-html: doxyfile ${SRCALL}
@@ -176,7 +178,7 @@ doxyfile-html: doxyfile ${SRCALL}
 	    -e 's|%GENERATE_HTML%|YES|' \
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|NO|' \
-	    -e 's|%ENABLED_SECTIONS%|FOR-HTML|' \
+	    -e 's|%ENABLED_SECTIONS%|FOR_HTML|' \
 	  < $< >$@
 
 doxyfile-html.usr: doxyfile-html
@@ -203,7 +205,7 @@ doxyfile-latex: doxyfile ${SRCALL}
 	    -e 's|%GENERATE_HTML%|NO|' \
 	    -e 's|%GENERATE_LATEX%|YES|' \
 	    -e 's|%GENERATE_MAN%|NO|' \
-	    -e 's|%ENABLED_SECTIONS%|FOR-LATEX|' \
+	    -e 's|%ENABLED_SECTIONS%|FOR_LATEX|' \
 	  < $< >$@
 
 doxyfile-latex.usr: doxyfile-latex
@@ -231,7 +233,7 @@ doxyfile-man1: doxyfile ${SRCALL}
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|YES|' \
 	    -e 's|%MAN_EXTENSION%|.1|' \
-	    -e 's|%ENABLED_SECTIONS%|FOR-MAN|' \
+	    -e 's|%ENABLED_SECTIONS%|FOR_MAN|' \
 	  < $< >$@
 
 doxyfile-man3: doxyfile ${SRCALL}
@@ -241,7 +243,7 @@ doxyfile-man3: doxyfile ${SRCALL}
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|YES|' \
 	    -e 's|%MAN_EXTENSION%|.3m17n|' \
-	    -e 's|%ENABLED_SECTIONS%|FOR-MAN|' \
+	    -e 's|%ENABLED_SECTIONS%|FOR_MAN|' \
 	  < $< >$@
 
 doxyfile-man5: doxyfile ${SRCALL}
@@ -251,7 +253,7 @@ doxyfile-man5: doxyfile ${SRCALL}
 	    -e 's|%GENERATE_LATEX%|NO|' \
 	    -e 's|%GENERATE_MAN%|YES|' \
 	    -e 's|%MAN_EXTENSION%|.5|' \
-	    -e 's|%ENABLED_SECTIONS%|FOR-MAN|' \
+	    -e 's|%ENABLED_SECTIONS%|FOR_MAN|' \
 	  < $< >$@
 
 doxyfile-man%.usr: doxyfile-man%
@@ -284,7 +286,6 @@ data/m17n-db.txt: @M17NDB@/m17n-db.in
 	rm -f `dirname $@`/*.html
 	${DOXYGEN} $<
 	cp images/icon-*.png `dirname $@`
-#	cd `dirname $@`; rm -f *_8c* *_8h* *_8txt* dirs.html dir_* files.html
 	echo 'code { font-weight: bold }' >> `dirname $@`/doxygen.css
 
 %/html/parrot.png: parrot.png
@@ -293,17 +294,16 @@ data/m17n-db.txt: @M17NDB@/m17n-db.in
 %/latex/refman.tex: doxyfile-latex.% ${SRCALL} utils/%_filter.rb
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
-	cd `dirname $@`; rm -f *_8c* *_8h* *_8txt* dirs.tex dir_* files.tex
 
 %/latex/m17n-lib.dvi: %/latex/refman.tex styles/m17n-lib.sty utils/latex.sh
-	-utils/latex.sh `dirname $@` latex
+	-utils/latex.sh `dirname $@`
 
 %/latex/m17n-lib.ps: %/latex/m17n-lib.dvi utils/dvips.sh
 	utils/dvips.sh `dirname $@` dvips
 #	emacs -batch -q -l utils/mokuji.el -f write-mokuji $@
 
-%/latex/m17n-lib.pdf: %/latex/m17n-lib.tex data-%/m17n-lib.sty utils/latex.sh
-	utils/latex.sh `dirname $@` pdflatex
+%/latex/m17n-lib.pdf: %/latex/m17n-lib.dvi
+	cd `dirname $<`; dvipdfmx `basename $<`
 
 %/man/man1/m17n-config.1: doxyfile-man1.% ${MAN1} utils/%_filter.rb
 	rm -rf `dirname $@`
@@ -368,23 +368,27 @@ man/ja/man5/%: ja/man/man5/% sample/man3/SampleGroup.3 utils/mkman.rb
 	rm -rf doxywork man/ja/man5/*
 	ruby utils/mkman.rb 5 ja/man/man5 man/ja/man5
 
-CLEANFILES=doxyfile* ${TARGET} *.tar.gz warning *~
+CLEANFILES=doxyfile* ${TARGET} data/*.txt *.tar.gz warning *~
 
 clean-local:
 	rm -rf usr dev ja man doxywork
 
+dist-tgz: distdir
+	for d in usr ja; do \
+	  (cd $(distdir)/"$$d"/latex/; \
+	   rm -f *8[ch]* *8txt* *.aux *.ttf *.ind *.dvi *.idx *.ilg *.log); \
+	done
+	tardir=$(distdir) && $(am__tar) | GZIP=$(GZIP_ENV) gzip -c >$(distdir).tar.gz
+	$(am__remove_distdir)
+
 WEBDIR = /project/web/extra/m17n-lib
 
-release: dist
+release: dist-tgz
 	[ -d ${WEBDIR}/m17n-docs ] || mkdir ${WEBDIR}/m17n-docs
 	[ -d ${WEBDIR}/download ] || mkdir ${WEBDIR}/download
-	cd usr/html; for f in *; do \
-	  case $$f in *8c*);; *8h*);; *8txt*);; dirs.html);; dir_*);; files.html);; *) cp $$f ${WEBDIR}/m17n-docs;; esac; \
-	done
+	cd usr/html; cp * ${WEBDIR}/m17n-docs
 	[ -d ${WEBDIR}-ja2/m17n-docs ] || mkdir ${WEBDIR}-ja2/m17n-docs
-	cd ja/html; for f in *; do \
-	  case $$f in *8c*);; *8h*);; *8txt*);; dirs.html);; dir_*);; files.html);; *) cp $$f ${WEBDIR}-ja2/m17n-docs;; esac; \
-	done
+	cd ja/html; cp * ${WEBDIR}-ja2/m17n-docs
 	cp ${distdir}.tar.gz ${WEBDIR}/download
 
 

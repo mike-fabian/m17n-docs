@@ -21,9 +21,7 @@ EOF
 
 for f in $1/*-tut.txt; do
   sed -n -e '/\/\*\*\*/,/\*\// p' < $f| \
-  sed -e 's/@section/@subsection/' -e 's/@page/@section/' \
-      -e 's,\[\[,<span class="fragment">,g' -e 's,\]\],</span>,g' \
-      -e 's,<<,<span class="fragment">\&lt;,g' -e 's,>>,\&gt;</span>,g'
+  sed -e 's/@section/@subsection/' -e 's/@page/@section/'
 done
 
 # Local Variables:

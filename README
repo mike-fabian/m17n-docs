@@ -15,7 +15,7 @@ The default installation path ${prefix} is "/usr/local",
 the default data installation path ${datadir} is "${prefix}/share",
 and the default man installation path ${mandir} is "${prefix}/man".
 
-o LaTeX documents (m17n-lib.dvi and m17n-lib.ps) are installed in
+o PDF documents (m17n-lib.pdf and m17n-lib-ja.pdf) are installed in
   "${datadir}/m17n/docs".
 	
 o HTML files are installed in "${datadir}/m17n/docs/html".
@@ -33,15 +33,22 @@ Note: Although this package contains Japanese translation of HTML and
 LaTeX files, they are not installed by the above procedure.  Please
 install the following files manually if you need them:
 	ja/html/*.html
-	ja/latex/m17n-lib-ja.dvi
-	ja/latex/m17n-lib-ja.ps
+	ja/latex/m17n-lib.pdf
+
+If you want to re-generate a PDF file, do this:
+	% cd usr/latex		(or cd ja/latex)
+	% latex m17n-lib	(or platex m17n-lib)
+	% makeindex m17n-lib
+	% latex m17n-lib	(or platex m17n-lib)
+	% latex m17n-lib	(or platex m17n-lib)
+	% dvipdfmx m17n-lib
 
 See the file INSTALL for more detail.
 
 ----------------------------------------------------------------------
 Copyright information
 
-Copyright (C) 2003, 2004, 2005, 2006, 2007
+Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009
   National Institute of Advanced Industrial Science and Technology (AIST)
   Registration Number H15PRO112
 
