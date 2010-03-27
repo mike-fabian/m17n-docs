@@ -279,9 +279,9 @@ data/dbdata-en.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.xml utils/expand-mdb.awk \
 	xsltproc -xinclude utils/description-en.xsl data/expanded-mdb.xml > $@
 	ICONS=`sed -n 's/.*icon:<img src="icon-\([^"]*\)".*$$/\1/p' < $@`; \
 	  for f in $${ICONS}; do \
-	    SRC="@M17NDB@/icons/$$f";\
-	    DST="images/icon-$$f"; \
-	    [ ! -f $${SRC} -o -f $${DST} ] || cp $${SRC} $${DST}; \
+	    S="@M17NDB@/icons/$$f";\
+	    D="images/icon-$$f"; \
+	    [ ! -f $${S} -o -f $${D} ] || convert -resize 50% $${S} $${D}; \
 	  done
 
 data/dbdata-ja.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.xml utils/expand-mdb.awk \
