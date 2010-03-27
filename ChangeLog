@@ -1,3 +1,7 @@
+2010-03-27  Kenichi Handa  <handa@m17n.org>
+
+	* Makefile.am (data/dbdata-en.txt): Resize icon images.
+
 2007-07-24  Kenichi Handa  <handa@m17n.org>
 
 	* utils/Makefile.am: Body surrounded by "if MAINTAINER_MODE .. endif".
