@@ -1,5 +1,7 @@
 2010-12-10  Kenichi Handa  <handa@m17n.org>
 
+	* utils/reform-man.sh: New file.
+
 	* images/ua-kbd.png, images/ua-kbd.eps: New files.
 
 	* Makefile.am (pkgdata_DATA): Change m17n-lib.ps to m17n-lib.pdf.
