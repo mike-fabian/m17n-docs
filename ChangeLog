@@ -1,12 +1,26 @@
 2010-12-10  Kenichi Handa  <handa@m17n.org>
 
+	* header.usr.html: Update copyright year.
+
+	* header.ja.html: Likewise.
+
+	* footer.usr.html: Likewise.
+
+	* footer.ja.html: Likewise.
+
+	* configure.ac: Change version to 1.6.2.
+
+	* utils/exprog.sh: Fix typo.
+
 	* utils/reform-man.sh: New file.
 
 	* images/ua-kbd.png, images/ua-kbd.eps: New files.
 
 	* Makefile.am (pkgdata_DATA): Change m17n-lib.ps to m17n-lib.pdf.
+	(MAN1): Include data/exprog.txt.
+	(all): New target.
 
-	* utils/mkman.rb (orewrite): Workaround the doxygen problem of
+	* utils/mkman.rb: (orewrite): Workaround the doxygen problem of
 	inserting ".PP" before @brief text.
 
 2007-07-24  Kenichi Handa  <handa@m17n.org>

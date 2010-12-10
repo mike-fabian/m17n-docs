@@ -462,62 +462,66 @@ Dir.mkdir $doxywork unless FileTest.directory? $doxywork
 Dir.chdir($srcdir)
 
 Dir.open(".").each{|filename|
-
-     if FileTest.directory? filename 
-	next
-     end   
-
-     if filename =~ /\.[ch]\./
-        next
-     end   
-
-     if filename =~ /\.txt\./
-        next
-     end   
-
-     print "RUBY DIVIDING: ", filename, "\n"
-
-     file = open(filename,"r") 
-     text = file.readlines
-     title = text[0]
-
-   if
-      sfunctionstart = text.index(text.find{|i| i == $flheader})
-        if sfunctionend = text.index(text[sfunctionstart+1 .. text.size].find{|i| i =~ /^\.SS|^\.SH/})
+  
+  if FileTest.directory? filename 
+    next
+  end   
+  
+  if filename =~ /\.[ch]\./
+    next
+  end   
+  
+  if filename =~ /\.txt\./
+    next
+  end   
+  
+  print "RUBY DIVIDING: ", filename, "\n"
+  
+  file = open(filename,"r") 
+  text = file.readlines
+  title = text[0]
+  
+  if filename =~ /m17nExProg.1/
+    next
+  else
+    
+    if sfunctionstart = text.index(text.find{|i| i == $flheader})
+      if sfunctionend = text.index(text[sfunctionstart+1 .. text.size].find{|i| i =~ /^\.SS|^\.SH/})
         short_text = text[sfunctionstart .. sfunctionend - 1] 
-       else
+      else
         short_text = text[sfunctionstart .. text.size - 1] 
-       end
-
-    if lfunctionstart = text.index(text.find{|i| i == $fdheader})
-       if lfunctionend = text.index(text[lfunctionstart+1 .. text.size].find{|i| i =~ /^\.SH/})
-         func_text = text[lfunctionstart .. lfunctionend - 1] 
-         group_text = text[0 .. lfunctionstart - 1] + text[lfunctionend ..text.size]
+      end
+      
+      if lfunctionstart = text.index(text.find{|i| i == $fdheader})
+        if lfunctionend = text.index(text[lfunctionstart+1 .. text.size].find{|i| i =~ /^\.SH/})
+          func_text = text[lfunctionstart .. lfunctionend - 1] 
+          group_text = text[0 .. lfunctionstart - 1] + text[lfunctionend ..text.size]
         else 
-         func_text = text[lfunctionstart .. text.size]
-         group_text = text[0 .. lfunctionstart - 1]
-       end
+          func_text = text[lfunctionstart .. text.size]
+          group_text = text[0 .. lfunctionstart - 1]
+        end
       else 
-       func_text = [] 
-       group_text = text  
+        func_text = [] 
+        group_text = text  
+      end
+      
+      residue = documentfunc(title, func_text, short_text)
+      
+      if residue == []
+      else 
+        group_text = group_text + [".SH \"Function Documentation\"\n.PP\n"] + residue
+      end
+      
+    else
+      
+      group_text = text
+      
     end
 
-  residue = documentfunc(title, func_text, short_text)
-
-  if residue == []
-     else 
-     group_text = group_text + [".SH \"Function Documentation\"\n.PP\n"] + residue
+    filetowrite = open($doxywork+filename,"w")
+    filetowrite.puts(group_text)
+    filetowrite.flush
   end
-
-  else
-  
-  group_text = text
-  
-  end
-   
-  filetowrite = open($doxywork+filename,"w")
-  filetowrite.puts(group_text)
-  filetowrite.flush
 }
 
 #############################rewriting files
