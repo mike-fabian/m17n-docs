@@ -76,7 +76,7 @@ EXAMPLE_PROGS = \
 DBFORMAT = \
 	@M17NDB@/FORMATS
 
-MAN1 =	data/m17n-config.txt data/m17n-db.txt ${EXAMPLE_PROGS}
+MAN1 =	data/m17n-config.txt data/m17n-db.txt ${EXAMPLE_PROGS} data/exprog.txt
 
 MAN3 =	@M17NLIB@/src/m17n-core.h \
 	@M17NLIB@/src/m17n.h \
@@ -124,6 +124,8 @@ MAN_TARGET = \
 usr-man man-usr: ${MAN_TARGET}
 
 TARGET = ${HTML_TARGET} ${LATEX_TARGET} ${MAN_TARGET}
+
+all: usr ja
 
 usr: usr-html usr-latex usr-man
 ja: ja-html ja-latex
