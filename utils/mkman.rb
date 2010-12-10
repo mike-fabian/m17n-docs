@@ -1,5 +1,5 @@
 #! /usr/local/bin/ruby
-# Usage: mkman.rb SRCDIR DSTDIR			-*- coding: euc-japan; -*-
+# Usage: mkman.rb SRCDIR DSTDIR			-*- coding: euc-jp; -*-
 
 #実行すると/tmp/doxymanをつかってファイルを分け、
 #もとのdirectoryにかきなおす。
@@ -416,6 +416,18 @@ def orewrite(text)
 #               end
 #             end
 
+    if text[i-2] =~ /^.SH\sNAME/ && text[i] =~ /^.PP/ && text[i+1] =~ /./
+      # Convert this line sequence:
+      #   .SH NAME
+      #   M-text \- 
+      #   .PP
+      #   M-text objects and API for them.
+      # to:
+      #   .SH NAME
+      #   M-text \- M-text objects and API for them.
+      prevline = buf.pop
+      text[i+1] = prevline.chop!.concat(text[i+1])
+    else
      #removing author section
              line.gsub!(/^\.SH\s\"AUTHOR\"/,"")
              line.gsub!(/Generated automatically by Doxygen for m17n_test from the source code\./,"")
@@ -427,8 +439,8 @@ def orewrite(text)
              line.gsub!(/\\fP\s+,/,"\\fP,")
              line.gsub!(/\\fP\s+\./,"\\fP.")
              line.gsub!(/\\fC\\fB(\w+)\\fP\\fP/){"\\fB" << $1 << "\\fP"}
-
       buf.push(line)
+    end
   }
 
   unless structures == ["\.SH \"Data Structure Documentation\"\n"]
