@@ -27,7 +27,7 @@ SUBDIRS = utils
 
 pkgdata_DATA = \
 	usr/html/index.html \
-	usr/latex/m17n-lib.ps \
+	usr/latex/m17n-lib.pdf \
 	man/man1/m17n-config.1 \
 	man/man3/m17nIntro.3m17n \
 	man/man5/mdbGeneral.5
