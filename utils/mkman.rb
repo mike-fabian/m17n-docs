@@ -210,16 +210,57 @@ def documentfunc2 (fname, title, func_desc, brief)
 #     file.puts(line)
 #   end  
    file.flush
+  file.close
+end
 
-   end
+# Extract documentation for each program and write out manuals.
+def documentprog (text)
+  header = text[0]
+  progtext = []
+  title = ""
+  brief = ""
+  text.each_with_index{|line,i|
+    if line =~ /^\.SH\s*\"(\S+) -- ([^\"]+)\"/
+      # Remember the title and short description.  It may or may not
+      # be for a program.
+      title = $1
+      brief = $2
+    elsif line =~ /^\.SS\s*"SYNOPSIS"/
+      # Only a program has "SYNOPSIS".
+      progtext.push(header.gsub("m17nExProg",title))
+      progtext.push(".ad l\n.nh\n.SH NAME\n")
+      progtext.push(title + " - " + brief)
+      progtext.push(".SH SYNOPSIS")
+    elsif line =~ /^\.PD 0/
+      # Don't write this "inter-paragraph vertical distance" command
+    elsif line =~ /Print this message./
+      # This is always the end of description for a program.
+      if progtext.length > 0
+        file = open($doxywork+title+$manext,"w")
+        file.puts(progtext)
+        file.puts(line)
+        file.close
+        progtext = []
+      end
+    elsif progtext.length > 0
+      if line =~ /^\.SS\s*(.*)/
+        # Convert ".SS ..." to ".SH ..."
+        progtext.push(".SH " + $1)
+      else
+        progtext.push(line)
+      end
+    end
+  }
+end
 
 ####rewriting each man file
 ### rewriting a man file for a function
 
 def frewrite(text)
 
-# let the library name appear in the header 
-  buf = [text[0].gsub!(/\" \"/, "\" \"\" \"")]
+  # let the library name appear in the header (for old buggy doxygen)
+  # buf = [text[0].gsub!(/\" \"/, "\" \"\" \"")]
+  buf = [text[0]]
 
   title =  text[0].split(" ")[1].chop!.reverse.chop!.reverse
 
@@ -390,10 +431,10 @@ def orewrite(text)
     #	   text[i+2] = ""
     #	   end
 
-     # let the library name appear in the header 
-              if line =~ /^.TH/
-                 line = line.gsub!(/\" \"/, "\" \"\" \"")
-     	      end
+    # let the library name appear in the header (for old buggy doxygen)
+    # if line =~ /^.TH/
+    #    line = line.gsub!(/\" \"/, "\" \"\" \"")
+    # end
 
      # finding structure documentations and merging into "structures"
              if line =~ /^\.RI\s\"struct\s\\fB(.*)\\fP\"/
@@ -482,7 +523,7 @@ Dir.open(".").each{|filename|
   title = text[0]
   
   if filename =~ /m17nExProg.1/
-    next
+    documentprog(text)
   else
     
     if sfunctionstart = text.index(text.find{|i| i == $flheader})
@@ -521,7 +562,9 @@ Dir.open(".").each{|filename|
     filetowrite = open($doxywork+filename,"w")
     filetowrite.puts(group_text)
     filetowrite.flush
+    filetowrite.close
   end
+  file.close
 }
 
 #############################rewriting files
@@ -554,5 +597,7 @@ unless FileTest.directory? filename
      filetowrite.puts(buf)
      filetowrite.puts(footbuf)
      filetowrite.flush
+  filetowrite.close
+  file.close
 end
 }
