@@ -1,3 +1,15 @@
+2010-12-13  Kenichi Handa  <handa@m17n.org>
+
+	* manhead, manfoot, mainpage.txt: Update copyright year.
+
+	* Makefile.am: Update copyright year.
+
+	* utils/mkman.rb: Call close methods on various opened files.
+	(documentprog): New function.
+	(frewrite): Don't modify ".TH" line.
+	(orewrite): Likewise.  Call documentprog for the file
+	m17nExProg.1.
+
 2010-12-10  Kenichi Handa  <handa@m17n.org>
 
 	* header.usr.html: Update copyright year.
