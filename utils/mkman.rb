@@ -466,8 +466,8 @@ def orewrite(text)
       # to:
       #   .SH NAME
       #   M-text \- M-text objects and API for them.
-      prevline = buf.pop
-      text[i+1] = prevline.chop!.concat(text[i+1])
+      prevline = buf.pop.chop!.chop!.chop!.chop!.chop!.gsub(" ","_").concat(" \\- ")
+      text[i+1] = prevline.concat(text[i+1])
     else
      #removing author section
              line.gsub!(/^\.SH\s\"AUTHOR\"/,"")
