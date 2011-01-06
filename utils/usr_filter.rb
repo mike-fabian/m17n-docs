@@ -90,6 +90,8 @@ while gets
         buf.push($_.gsub!(/\/\*+/, " "))
 	doxy = 1
 
+     when /\/\*/	#other comment
+
      when /EXAMPLE_CODE/ 
 	#start example code lines
         buf.push($_.gsub!(/#if EXAMPLE_CODE/, "\n \n @par Example:\n @code"))
