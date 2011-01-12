@@ -2,6 +2,9 @@
 
 	* Version 1.6.2 released.
 
+	* Makefile.am (release): Exclute directory in usr/html and ja/html
+	to copy to the server.
+
 	* mainpage.txt: Update copyright year.
 
 	* styles/m17n-lib.sty: Likewise.
