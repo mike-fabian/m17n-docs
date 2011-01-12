@@ -1,3 +1,23 @@
+2011-01-12  Kenichi Handa  <handa@m17n.org>
+
+	* Version 1.6.2 released.
+
+	* mainpage.txt: Update copyright year.
+
+	* styles/m17n-lib.sty: Likewise.
+
+	* manfoot: Likewise.
+
+	* manhead: Likewise.
+
+	* header.ja.html: Likewise.
+
+	* header.usr.html: Likewise.
+
+	* footer.ja.html: Likewise.
+
+	* footer.usr.html: Likewise.
+
 2011-01-05  Kenichi Handa  <handa@m17n.org>
 
 	* utils/mkman.rb (orewrite): Fix group title.
