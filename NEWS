@@ -1,8 +1,13 @@
 NEWS -- What's new in the m17n library documentation.	-*- outline -*-
-Copyright (C) 2003
+Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011
   National Institute of Advanced Industrial Science and Technology (AIST)
   Registration Number H15PRO112
 See the end for copying conditions.
+
+
+* Changes in the m17n library documentation 0.9
+
+Adjusted for m17n-lib/m17n-db 1.6.2.
 
 
 * Changes in the m17n library documentation 0.9
@@ -12,7 +17,7 @@ See the end for copying conditions.
 
 * Copyright information
 
-Copyright (C) 2003
+Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011
   National Institute of Advanced Industrial Science and Technology (AIST)
   Registration Number H15PRO112
 
