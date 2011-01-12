@@ -387,10 +387,10 @@ WEBDIR = /project/web/extra/m17n-lib
 
 release: dist-tgz
 	[ -d ${WEBDIR}/m17n-docs ] || mkdir ${WEBDIR}/m17n-docs
-	[ -d ${WEBDIR}/download ] || mkdir ${WEBDIR}/download
-	cd usr/html; cp * ${WEBDIR}/m17n-docs
+	for f in usr/html/*; do [ -d "$$f" ] || cp "$$f" ${WEBDIR}/m17n-docs; done
 	[ -d ${WEBDIR}-ja2/m17n-docs ] || mkdir ${WEBDIR}-ja2/m17n-docs
-	cd ja/html; cp * ${WEBDIR}-ja2/m17n-docs
+	for f in ja/html/*; do [ -d "$$f" ] || cp "$$f" ${WEBDIR}-ja2/m17n-docs; done
+	[ -d ${WEBDIR}/download ] || mkdir ${WEBDIR}/download
 	cp ${distdir}.tar.gz ${WEBDIR}/download
 
 
