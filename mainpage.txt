@@ -1,6 +1,6 @@
-/* -*- coding: euc-jp; -*- */
+/* -*- coding: utf-8; -*- */
 /***en @mainpage The m17n Library Documentation */
-/***ja @mainpage m17n �饤�֥�� */
+/***ja @mainpage m17n ライブラリ */
 
 /***en @section what What is the m17n library? 
 
@@ -46,42 +46,42 @@ system.
 
 </ul>
 */
-/***ja @section what m17n �饤�֥��Ȥ�? 
+/***ja @section what m17n ライブラリとは? 
 
-@e m17n�饤�֥�� �� C �����Ѥ�¿����ʸ������饤�֥��Ǥ���
+@e m17nライブラリ は C 言語用の多言語文書処理ライブラリです。
 
 <ul>
 
-<li> ��ͳ�������եȥ������Ǥ���
+<li> 自由公開ソフトウェアです。
 
-<li> GNU/Linux �� Unix �Υ��ץꥱ��������饤�֥�꤫�����ѤǤ��ޤ���
+<li> GNU/Linux と Unix のアプリケーションやライブラリから利用できます。
 
-<li> ���ץꥱ��������饤�֥��Τ��ޤ��ޤ�¦�̤ǡ�¿���첽��¸���
-�ޤ���
+<li> アプリケーションやライブラリのさまざまな側面で、多言語化を実現し
+ます。
 
 </ul> 
 
-"m17n" �Ȥ� "multilingualization" �ξ�ά���Ǥ���
+"m17n" とは "multilingualization" の省略形です。
 
-m17n �饤�֥���¿����򰷤����ᡢ�ʲ��ε�ǽ���󶡤��ޤ���
+m17n ライブラリは多言語を扱うため、以下の機能を提供します。
 
 <ul>
 
-<li> @e M-text: ¿����ƥ������ѤΥǡ�����¤������Ū�ˤ�ʸ����Ǥ��뤬��
-�ƥ����ȥץ��ѥƥ��ȸƤФ��°�����դ��Ƥ��ꡢC ��ʸ���������ˤʤ�
-�褦�߷פ���Ƥ��롣m17n �饤�֥��ǺǤ���פʥ��֥������ȡ�
+<li> @e M-text: 多言語テキスト用のデータ構造。基本的には文字列であるが、
+テキストプロパティと呼ばれる属性が付いており、C の文字列の代わりになる
+よう設計されている。m17n ライブラリで最も重要なオブジェクト。
 
-<li> M-text ���ä����갷�ä��ꤹ�뤿��δؿ���
+<li> M-text を作ったり取り扱ったりするための関数。
 
-<li> M-text �ȴ�¸�Υե����ޥåȤǥ����ɲ����줿ʸ����Ȥδ֤��Ѵ����
-���ؿ���
+<li> M-text と既存のフォーマットでコード化された文字列との間の変換を行
+う関数。
 
-<li> �����ʸ�����֡� Unicode ʸ�����٤ƤȤ���ʾ�ο����� Unicode ʸ
-����ޤळ�Ȥ��Ǥ��롣
+<li> 巨大な文字空間。 Unicode 文字すべてとそれ以上の数の非 Unicode 文
+字を含むことができる。
 
-<li> @e ʸ���ơ��֥�: ʸ����ξ�����ΨŪ���ݻ�����ǡ�����¤��
+<li> @e 文字テーブル: 文字毎の情報を効率的に保持するデータ構造。
 
-<li>  M-text �򥦥���ɥ������ƥ������ϡ�ɽ������ؿ���
+<li>  M-text をウィンドウシステム上で入力／表示する関数。
 
 </ul>
 */
@@ -90,10 +90,10 @@ m17n �饤�֥���¿����򰷤����ᡢ�ʲ��ε�ǽ���󶡤��ޤ���
 Simply include <m17n<EM></EM>.h> in your program, and link it with the m17n
 library by -lm17n.  See @ref m17nIntro for the detail.  */
 
-/***ja @section usage ������ˡ 
+/***ja @section usage 利用方法 
 
-<m17n<EM></EM>.h> ��ץ������� include ����-lm17n �� m17n �饤�֥��
-�ȥ�󥯤��Ƥ��������� @ref m17nIntro �򻲾ȡ�  */
+<m17n<EM></EM>.h> をプログラムに include し、-lm17n で m17n ライブラリ
+とリンクしてください。 @ref m17nIntro を参照。  */
 
 /***en @section extralib External libraries and data 
 
@@ -154,56 +154,56 @@ mandatory but many functions of the m17n library depend on them.
 </ul>
 
 */
-/***ja @section extralib �����饤�֥�꡿�ǡ��� 
+/***ja @section extralib 外部ライブラリ／データ 
 
-m17n �饤�֥��ϰʲ��γ����饤�֥������Ѥ��Ƥ��ޤ���ɬ�ܤǤϤ����
-���󤬡�m17n �饤�֥��δ��Ĥ��δؿ��Ϥ����˰�¸���Ƥ��ޤ���
+m17n ライブラリは以下の外部ライブラリを利用しています。必須ではありま
+せんが、m17n ライブラリの幾つかの関数はこれらに依存しています。
 
 <ul>
 <li> m17n-db -- http://www.m17n.org/m17n-lib-ja/download/m17n-db-1.5.0.tar.gz
 
-     m17n �饤�֥��˼�ξ�����󶡤��ޤ���
+     m17n ライブラリに種々の情報を提供します。
 
 <li> libxml2 -- http://xmlsoft.org/
 
-     �ؿ� mtext_serialize () �� mtext_deserialize () ���Ȥ��ޤ���
-     libxml2 �����ѤǤ��ʤ����ˤϡ������δؿ��� NULL ���֤��ޤ���
+     関数 mtext_serialize () と mtext_deserialize () が使います。
+     libxml2 が利用できない時には、これらの関数は NULL を返します。
 
 
 <li> fribidi -- http://fribidi.sourceforge.net/
 
-     BIDI �����˻Ȥ��ޤ������ѤǤ��ʤ����ϡ�m17n �饤�֥���ɽ������
-     ����� Arabic ��Hebrew �ʤɤΥ�����ץȤ������������Ǥ��ޤ���
+     BIDI 処理に使います。利用できない時は、m17n ライブラリの表示エン
+     ジンは Arabic やHebrew などのスクリプトを正しく処理できません。
 
 <li> freetype -- http://www.freetype.org/
 
-     ��������ե���Ȥν����˻Ȥ��ޤ���
+     ローカルフォントの処理に使います。
 
 <li> fontconfig -- http://nexp.cs.pdx.edu/fontconfig/
 
-     Xft �ȶ��ˡ���������ե���Ȥθ����˻Ȥ��ޤ���
+     Xft と共に、ローカルフォントの検索に使います。
 
 <li> xft -- http://freedesktop.org/Software/Xft
 
-     fontconfig �ȶ��� X �����Ф� XRender ��ĥ�����Ѥ��ƥƥ����Ȥ����
-     ����ե���Ȥ�ɽ�����뤿��˻Ȥ��ޤ���
+     fontconfig と共に X サーバの XRender 拡張を利用してテキストをロー
+     カルフォントで表示するために使います。
 
 <li> GD
-     �ƥ����Ȥ��������ե���Ȥ� bitmap/pixmap ���ɽ������Τ˻Ȥ���
-     ����
+     テキストをローカルフォントで bitmap/pixmap 上に表示するのに使いま
+     す。
 
 <li> libotf  -- http://www.m17n.org/libotf/
 
-     freetype �ȶ��� OpenType �ե���Ȥν����˻Ȥ��ޤ���
+     freetype と共に OpenType フォントの処理に使います。
 
 <li> anthy -- http://anthy.sourceforge.jp/
 
-     ���ܸ����ϥ᥽�å� ja-anthy.mim ���Ȥ��ޤ���
+     日本語入力メソッド ja-anthy.mim が使います。
 
 <li> wordcut -- http://thaiwordseg.sourceforge.net/
 
-     �ץ�������� example/linebreak.c ��ǥ�����θ�ζ����򸫤Ĥ��뤿
-     ��˻ȤäƤ��ޤ���
+     プログラム例 example/linebreak.c 中でタイ語の語の境界を見つけるた
+     めに使っています。
 
 </ul>
 */
@@ -221,21 +221,21 @@ Bug report: m17n-lib-bug-XXXX@m17n.org (Replace XXXX with current year in 4 digi
 Mailing lists: http://www.m17n.org/m17n-lib-en/mailinglist.html
 
 */
-/***ja @section contact Ϣ����:
+/***ja @section contact 連絡先:
 
-��Ω����ˡ�� ���ȵ������縦���\n
-���󵻽Ѹ�������\n
-�������Х� IT �������ƥ����롼��
+独立行政法人 産業技術総合研究所\n
+情報技術研究部門\n
+グローバル IT セキュリティグループ
 
 Web: http://www.m17n.org/m17n-lib-ja/
 
-�Х���ݡ���: m17n-lib-bug-XXXX@m17n.org (XXXX����ʬ�ˤϸ��ߤ�ǯ������ˤ�4�������Ƥ���������)
+バグレポート: m17n-lib-bug-XXXX@m17n.org (XXXXの部分には現在の年（西暦）を4桁で入れてください。)
 
-�ᥤ��󥰥ꥹ��: http://www.m17n.org/m17n-lib-ja/mailinglist.htm
+メイリングリスト: http://www.m17n.org/m17n-lib-ja/mailinglist.htm
 
 */
 /***en @section ack Acknowledgements */
-/***ja @section ack �ռ� */
+/***ja @section ack 謝辞 */
 /***
 Special thanks to:
 
