@@ -25,5 +25,5 @@ for f in $1/*-tut.txt; do
 done
 
 # Local Variables:
-# coding: euc-jp
+# coding: utf-8
 # End:
