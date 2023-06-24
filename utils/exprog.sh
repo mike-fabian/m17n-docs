@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cat <<EOF
-/* -*- coding: euc-jp; -*- */
+/* -*- coding: utf-8; -*- */
 /***en @page m17nExProg Sample Programs
 
 This section describes these example programs.  They are to demonstrate
@@ -18,10 +18,10 @@ cat <<EOF
 EOF
 
 cat <<EOF
-/***ja @page m17nExProg ¥µ¥ó¥×¥ë¥×¥í¥°¥é¥à
+/***ja @page m17nExProg ã‚µãƒ³ãƒ—ãƒ«ãƒ—ãƒ­ã‚°ãƒ©ãƒ 
 
-¤³¤³¤Ç¤Ï°Ê²¼¤Î¥µ¥ó¥×¥ë¥×¥í¥°¥é¥à¤òÀâÌÀ¤¹¤ë¡£¤³¤ì¤é¤Î¥×¥í¥°¥é¥à¤Ï m17n
-¥é¥¤¥Ö¥é¥ê¤Î»È¤¤Êý¤òÀâÌÀ¤¹¤ë¤â¤Î¤Ç¤¢¤ê¡¢¼ÂºÝ¤Î»ÈÍÑ¤ò°Õ¿Þ¤·¤¿¤â¤Î¤Ç¤Ï¤Ê¤¤¡£
+ã“ã“ã§ã¯ä»¥ä¸‹ã®ã‚µãƒ³ãƒ—ãƒ«ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’èª¬æ˜Žã™ã‚‹ã€‚ã“ã‚Œã‚‰ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã¯ m17n
+ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ä½¿ã„æ–¹ã‚’èª¬æ˜Žã™ã‚‹ã‚‚ã®ã§ã‚ã‚Šã€å®Ÿéš›ã®ä½¿ç”¨ã‚’æ„å›³ã—ãŸã‚‚ã®ã§ã¯ãªã„ã€‚
 
 <ul>
 EOF
@@ -39,5 +39,5 @@ sed -e 's/@section/@subsection/' \
     -e 's/@..page \([^ ]*\)/@section \1 \1 --/'
 
 # Local Variables:
-# coding: euc-jp
+# coding: utf-8
 # End:
