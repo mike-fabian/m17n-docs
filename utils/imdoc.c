@@ -188,7 +188,7 @@ main (int argc, char **argv)
       for (i = 0; i < len; i++)
 	{
 	  c = mtext_ref_char (mt, i);
-	  if (c >= 0x100)
+	  if (c >= 0x80)
 	    {
 	      has_non_ascii = 1;
 	      break;
@@ -206,7 +206,7 @@ main (int argc, char **argv)
 	  for (i = 0; i < len; i++)
 	    {
 	      c = mtext_ref_char (mt, i);
-	      if (c >= 0x100)
+	      if (c >= 0x80)
 		printf ("<U+%04X>", c);
 	      else
 		putchar (c);
