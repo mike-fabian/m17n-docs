@@ -34,6 +34,9 @@
 	(man/man1/%, man/man3/%, man/man5/%, man/ja/man1/%, man/ja/man3/%)
 	(man/ja/man5/%): Set LC_ALL before calling ruby.
 
+	(images/cs-kbd.eps, images/cs-kbd.png, images/cs-kbd2.eps)
+	(images/cs-kbd2.png, images/uz-kbd.png): New files.
+
 2011-01-12  Kenichi Handa  <handa@m17n.org>
 
 	* Version 1.6.2 released.
