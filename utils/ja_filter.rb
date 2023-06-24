@@ -1,4 +1,5 @@
 #! /usr/bin/ruby
+# coding: utf-8
 
 buf = [] 
 doxy = 0
@@ -14,14 +15,14 @@ def commentblock(buf)
 
 while gets
 
-  gsub!("@seealso", "@par ª≤æ»:")
-  gsub!("@errors", "@par •®•È°º:")
-  gsub!("@returns", "@par Ã·§Í√Õ:")
-  gsub!("@return", "@par Ã·§Í√Õ:")
+  $_.gsub!("@seealso", "@par ÂèÇÁÖß:")
+  $_.gsub!("@errors", "@par „Ç®„É©„Éº:")
+  $_.gsub!("@returns", "@par Êàª„ÇäÂÄ§:")
+  $_.gsub!("@return", "@par Êàª„ÇäÂÄ§:")
  #let doxygen find functions
-  gsub!(/[a-zA-Z_]\s\(\)/) {|m| m.delete!(" ")}
+  $_.gsub!(/[a-zA-Z_]\s\(\)/) {|m| m.delete!(" ")}
  #make variables in function descriptions shown in bold
-  gsub!(/\$[A-Z_]+/) {|m| m.delete!("$").reverse.downcase!.concat(" b@").reverse}
+  $_.gsub!(/\$[A-Z_]+/) {|m| m.delete!("$").reverse.downcase!.concat(" b@").reverse}
 
   if example == 1
      case $_ 
@@ -85,7 +86,7 @@ while gets
 
      when /EXAMPLE_CODE/ 
 	#start example code lines
-        buf.push($_.gsub!(/#if EXAMPLE_CODE/, "\n \n @par Œ„°ß \n @code"))
+        buf.push($_.gsub!(/#if EXAMPLE_CODE/, "\n \n @par ‰æãÔºö \n @code"))
 	example = 1
 
      when /\*\//
@@ -110,5 +111,5 @@ end
 commentblock(buf)
 
 # Local Variables:
-# coding: euc-jp
+# coding: utf-8
 # End:
