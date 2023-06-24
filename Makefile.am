@@ -127,6 +127,9 @@ TARGET = ${HTML_TARGET} ${LATEX_TARGET} ${MAN_TARGET}
 
 all: usr ja
 
+data:
+	[ -d $@ ] || mkdir $@
+
 usr: usr-html usr-latex usr-man
 ja: ja-html ja-latex
 dev: dev-html dev-latex
@@ -149,7 +152,7 @@ doxyfile: Makefile
 	      -e '/^ENABLED_SECTIONS / s/=.*/= %ENABLED_SECTIONS%/' \
 	      -e '/^SHOW_USED_FILES / s/=.*/= NO/' \
 	      -e '/^INPUT / s/=.*/= %INPUT%/' \
-	      -e '/^FILE_PATTERNS / s/=.*/= *.c *.txt/' \
+	      -e '/^FILE_PATTERNS / s/=.*/= *.c *.txt \\/' \
 	      -e '/^EXCLUDE_PATTERNS / s/=.*/= link*.c font-ft.c/' \
 	      -e '/^IMAGE_PATH / s/=.*/= images/' \
 	      -e '/^INPUT_FILTER / s/=.*/= utils\/%USR_JA_DEV%_filter.sh/' \
@@ -264,23 +267,23 @@ doxyfile-man%.usr: doxyfile-man%
 	    -e 's/%OUTPUT_LANGUAGE%/English/' \
 	  < $< >$@
 
-data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh
+data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh data
 	utils/exprog.sh ${EXAMPLE_PROGS} > $@
 
-data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.dir utils/dbdata.awk utils/dbdata.sh utils/imdoc.c
+data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.dir utils/dbdata.awk utils/dbdata.sh utils/imdoc.c data
 	(cd utils; make)
-	@AWK@ -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
+	 M17NDIR=${prefix}/m17n @AWK@ -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
 
-data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh
+data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh data
 	utils/dbformat.sh ${DBFORMAT} > $@
 
-data/dbtutorial.txt: ${DBFORMAT} utils/dbtutorial.sh
+data/dbtutorial.txt: ${DBFORMAT} utils/dbtutorial.sh data
 	utils/dbtutorial.sh ${DBFORMAT} > $@
 
-data/m17n-config.txt: @M17NLIB@/m17n-config.in
+data/m17n-config.txt: @M17NLIB@/m17n-config.in data
 	sed -n -e '/\/\*\*\*/,/\*\// p' < $< > $@
 
-data/m17n-db.txt: @M17NDB@/m17n-db.in
+data/m17n-db.txt: @M17NDB@/m17n-db.in data
 	sed -n -e '/\/\*\*\*/,/\*\// p' < $< > $@
 
 %/html/index.html: doxyfile-html.% header.%.html footer.%.html ${SRCALL} \
@@ -338,37 +341,37 @@ man/man1/%: usr/man/man1/% sample/man3/SampleGroup.3 utils/mkman.rb \
 		utils/reform-man.sh
 	$(mkinstalldirs) man/man1
 	rm -rf doxywork man/man1/*
-	ruby utils/mkman.rb 1 usr/man/man1 man/man1
+	LC_ALL=ja_JP.UTF-8 ruby utils/mkman.rb 1 usr/man/man1 man/man1
 	utils/reform-man.sh man/man1/*.1
 
 man/man3/%: usr/man/man3/% sample/man3/SampleGroup.3 utils/mkman.rb \
 		utils/reform-man.sh
 	$(mkinstalldirs) man/man3
 	rm -rf doxywork man/man3/*
-	ruby utils/mkman.rb 3m17n usr/man/man3m17n man/man3
+	LC_ALL=ja_JP.UTF-8 ruby utils/mkman.rb 3m17n usr/man/man3m17n man/man3
 	utils/reform-man.sh man/man3/*.3m17n
 
 man/man5/%: usr/man/man5/% sample/man3/SampleGroup.3 utils/mkman.rb \
 		utils/reform-man.sh
 	$(mkinstalldirs) man/man5
 	rm -rf doxywork man/man5/*
-	ruby utils/mkman.rb 5 usr/man/man5 man/man5
+	LC_ALL=ja_JP.UTF-8 ruby utils/mkman.rb 5 usr/man/man5 man/man5
 	utils/reform-man.sh man/man5/*.5
 
 man/ja/man1/%: ja/man/man1/% sample/man3/SampleGroup.3 utils/mkman.rb 
 	$(mkinstalldirs) man/ja/man1
 	rm -rf doxywork man/ja/man1/*
-	ruby utils/mkman.rb 1 ja/man/man1 man/ja/man1
+	LC_ALL=ja_JP.UTF-8 ruby utils/mkman.rb 1 ja/man/man1 man/ja/man1
 
 man/ja/man3/%: ja/man/man3/% sample/man3/SampleGroup.3 utils/mkman.rb
 	$(mkinstalldirs) man/ja/man3
 	rm -rf doxywork man/ja/man3/*
-	ruby utils/mkman.rb 3m17n ja/man/man3 man/ja/man3
+	LC_ALL=ja_JP.UTF-8 ruby utils/mkman.rb 3m17n ja/man/man3 man/ja/man3
 
 man/ja/man5/%: ja/man/man5/% sample/man3/SampleGroup.3 utils/mkman.rb 
 	$(mkinstalldirs) man/ja/man5
 	rm -rf doxywork man/ja/man5/*
-	ruby utils/mkman.rb 5 ja/man/man5 man/ja/man5
+	LC_ALL=ja_JP.UTF-8 ruby utils/mkman.rb 5 ja/man/man5 man/ja/man5
 
 CLEANFILES=doxyfile* ${TARGET} data/*.txt *.tar.gz warning *~
 
