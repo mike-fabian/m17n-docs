@@ -1,9 +1,9 @@
 #! /usr/local/bin/ruby
-# Usage: mkman.rb SRCDIR DSTDIR			-*- coding: euc-jp; -*-
+# Usage: mkman.rb SRCDIR DSTDIR			-*- coding: utf-8; -*-
 
-#¼Â¹Ô¤¹¤ë¤È/tmp/doxyman¤ò¤Ä¤«¤Ã¤Æ¥Õ¥¡¥¤¥ë¤òÊ¬¤±¡¢
-#¤â¤È¤Îdirectory¤Ë¤«¤­¤Ê¤ª¤¹¡£
-# see also ¤ÎÃæ¿È¤ò woman ¸ş¤±¤Ë½ñ¤­´¹¤¨¤ë¡£
+#å®Ÿè¡Œã™ã‚‹ã¨/tmp/doxymanã‚’ã¤ã‹ã£ã¦ãƒ•ã‚¡ã‚¤ãƒ«ã‚’åˆ†ã‘ã€
+#ã‚‚ã¨ã®directoryã«ã‹ããªãŠã™ã€‚
+# see also ã®ä¸­èº«ã‚’ woman å‘ã‘ã«æ›¸ãæ›ãˆã‚‹ã€‚
 
 $manext="."+$*[0]
 
@@ -155,12 +155,12 @@ return buf
 end
 
 ###############################
-### ¥Õ¥¡¥¤¥ëÊ¬¤±
+### ãƒ•ã‚¡ã‚¤ãƒ«åˆ†ã‘
 
 def documentfunc(title, func_text, short_text)
   residue = []
   func_text.grep(/^\.SS/){|i| 
- #¼«Ê¬¤È¤½¤Î¸å¤í
+ #è‡ªåˆ†ã¨ãã®å¾Œã‚
     func_rest =  func_text[func_text.index(i) ..func_text.size]  
     if funclast = func_rest.index(func_rest[1 .. func_rest.size].find{|m| m =~ /^\.SS/})
         func_desc = func_rest[0 .. funclast - 1] 
@@ -168,17 +168,17 @@ def documentfunc(title, func_text, short_text)
         func_desc = func_rest
        end
 
- #fname: func_text¤ÎºÇ½é¤Î¹ÔÃæ¤Î´Ø¿ôÌ¾ 
+ #fname: func_textã®æœ€åˆã®è¡Œä¸­ã®é–¢æ•°å 
    i =~ /\s([a-z0-9_]+)\s\(/
    if $1 == nil
      else 
       fname = $1
       ffname = "\\fB".concat($1.concat("\\fP"))
-  #short_text¤Î´Ø¿ôÌ¾¤Î£²¹Ô¸å¤¬brief¡£
+  #short_textã®é–¢æ•°åã®ï¼’è¡Œå¾ŒãŒbriefã€‚
       if  short_text.find{|i| i.index(ffname)}
           brief =  short_text[short_text.index(short_text.find{|i| i.index(ffname)}) + 2]
           documentfunc2(fname, title, func_desc, brief)
-        else  # obsolete function ¤Î¾ì¹ç
+        else  # obsolete function ã®å ´åˆ
           residue.push(func_desc)
        end
     end
@@ -188,10 +188,10 @@ end
 
 def documentfunc2 (fname, title, func_desc, brief)
 
- #´Ø¿ô¤´¤È¤Î¥Õ¥¡¥¤¥ë¤òºî¤ë¡£
+ #é–¢æ•°ã”ã¨ã®ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œã‚‹ã€‚
    file = open($doxywork+fname+$manext, "w")
    file.puts("@function")
- #¥Ø¥Ã¥À
+ #ãƒ˜ãƒƒãƒ€
    /^\.TH \"([^"]*)\"\s/ =~ title
    oname = $1
 ##?????   newtitle = title.gsub(oname, fname.chop.chop)
@@ -203,7 +203,7 @@ def documentfunc2 (fname, title, func_desc, brief)
       file.puts(brief) 
      else file.print("\n") 
    end
- #¥í¥ó¥°
+ #ãƒ­ãƒ³ã‚°
    file.puts(func_desc)
 #   for line in func_desc[1 .. func_desc.size]
 #     break if /.SS/ =~ line
