@@ -1,6 +1,7 @@
 #!/bin/sh
 
+[ -d tmp ] || mkdir tmp
+
 case $1 in
-*dbdata.txt) utils/ja_filter.rb $1;;
-*) utils/ja_filter.rb $1 | iconv -f EUC-JP -t UTF-8;;
+*) LC_ALL=ja_JP.UTF-8 utils/ja_filter.rb $1;;
 esac
