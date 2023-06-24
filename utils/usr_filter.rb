@@ -14,14 +14,14 @@ def commentblock(buf)
 
 while gets
 
-  gsub!("@seealso", "@par See Also:")
-  gsub!("@errors", "@par Errors:")
-  gsub!("@returns", "@par Return value:")
-  gsub!("@return", "@par Return value:")
+  $_.gsub!("@seealso", "@par See Also:")
+  $_.gsub!("@errors", "@par Errors:")
+  $_.gsub!("@returns", "@par Return value:")
+  $_.gsub!("@return", "@par Return value:")
  #let doxygen find functions
-  gsub!(/[a-zA-Z_]\s\(\)/) {|m| m.delete!(" ")}
+  $_.gsub!(/[a-zA-Z_]\s\(\)/) {|m| m.delete!(" ")}
  #make variables in function descriptions shown in bold
-  gsub!(/\$[A-Z_]+/) {|m| m.delete!("$").reverse.downcase!.concat(" b@").reverse}
+  $_.gsub!(/\$[A-Z_]+/) {|m| m.delete!("$").reverse.downcase!.concat(" b@").reverse}
 
   if example == 1
      case $_ 
