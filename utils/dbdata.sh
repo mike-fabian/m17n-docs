@@ -51,7 +51,7 @@ while [ $# -ge 1 ] ; do
 	    echo "@endhtmlonly"
 	    )
 	else
-	    M17NDIR=/usr/share/m17n $IMDOC $FILE "$IM"
+	  $IMDOC $FILE "$IM"
 	fi
     else
 	echo
