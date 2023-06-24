@@ -1,6 +1,7 @@
 #!/bin/sh
 
+[ -d tmp ] || mkdir tmp
+
 case $1 in
-*.[ch]) iconv -f EUC-JP -t UTF-8 < $1 | utils/usr_filter.rb;;
-*) utils/usr_filter.rb $1;;
+*) LC_ALL=ja_JP.UTF-8 utils/usr_filter.rb $1;;
 esac
