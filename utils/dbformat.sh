@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cat <<EOF
-/* -*- coding: euc-jp; -*- */
+/* -*- coding: utf-8; -*- */
 /***en @page m17nDBFormat Data format of the m17n database
 
 This section describes formats of these data supplied by the m17n
@@ -24,10 +24,10 @@ cat <<EOF
 EOF
 
 cat <<EOF
-/***ja @page m17nDBFormat M17N ¥Ç¡¼¥¿¥Ù¡¼¥¹¤Î¥Ç¡¼¥¿¡¦¥Õ¥©¡¼¥Þ¥Ã¥È
+/***ja @page m17nDBFormat M17N ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®ãƒ‡ãƒ¼ã‚¿ãƒ»ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ
 
-¤³¤³¤Ç¤Ï¡¢M17N ¥Ç¡¼¥¿¥Ù¡¼¥¹¤ÇÄó¶¡¤µ¤ì¤ë³Æ¥Ç¡¼¥¿¤Î¥Õ¥©¡¼¥Þ¥Ã¥È¤ò²òÀâ¤¹
-¤ë¡£
+ã“ã“ã§ã¯ã€M17N ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã§æä¾›ã•ã‚Œã‚‹å„ãƒ‡ãƒ¼ã‚¿ã®ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆã‚’è§£èª¬ã™
+ã‚‹ã€‚
 
 <ul>
 EOF
@@ -57,5 +57,5 @@ sed -e 's/@section/@subsection/' \
 done
 
 # Local Variables:
-# coding: euc-jp
+# coding: utf-8
 # End:
