@@ -1,3 +1,39 @@
+2023-06-24  K. Handa  <handa@gnu.org>
+
+	These changes are to adjust for the new vesion of doxygen and
+	ruby, and to adjust for the change of encoding of m17n-db
+	documents.
+
+	* utils/usr_filter.rb: Explicitly provide target "$_" for gsub
+	methods.
+
+	* utils/latex.sh: Do not use iconv.  Filter out newunicodechar
+	style staffs.
+
+	* utils/ja_filter.sh, usr_filter.sh: Do not use iconv to get UTF-8
+	output.
+
+	* utils/ja_filter.rb: Change encoding to utf-8.  Explicitly
+	provide target "$_" for gsub methods.
+
+	* utils/imdoc.c (main): Check char against 0x80.
+
+	* utils/dbdata.sh (IMDOC): Do not set M17NDIR here.
+
+	* mainpage.txt, data-ja/m17n-basicC.tex, data-ja/m17n-X.tex,
+	data-ja/header.tex, data-ja/conclusion.tex, data-dev/header.tex,
+	utils/dbformat.sh, utils/dbtutorial.sh, utils/exprog.sh,
+	utils/mkman: Change encoding to utf-8.
+
+	* Makefile.am (data): New target.
+	(doxyfile): Fix sed rule for FILE_PATTERNS.
+	(data/exprog.txt, data/dbdata.txt, data/dbformat.txt)
+	(data/dbtutorial.txt, data/m17n-config.txt, data/m17n-db.txt):
+	Depends on data.
+	(data/dbdata.txt): Set M17NDIR before calling awk.
+	(man/man1/%, man/man3/%, man/man5/%, man/ja/man1/%, man/ja/man3/%)
+	(man/ja/man5/%): Set LC_ALL before calling ruby.
+
 2011-01-12  Kenichi Handa  <handa@m17n.org>
 
 	* Version 1.6.2 released.
