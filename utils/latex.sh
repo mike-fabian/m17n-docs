@@ -19,17 +19,11 @@ if [ $USR_JA_DEV = "ja" ] ; then
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
       -e '/inputenc/ d' \
       -e '/コンパイル/,/include{GFDL}/ d' \
-      -e '/chapter{ファイル}/,$ d' < refman.tex > m17n-lib.tex
+      -e '/chapter{ファイル}/,$ d' \
+      -e '/newunicodechar/d' < refman.tex > m17n-lib.tex
   cat app.tex >> m17n-lib.tex
   rm -rf tmp
   mkdir tmp
-  for f in *; do 
-      case "$f" in
-	  m17nDBData.tex) ;;
-	  *.tex) mv "$f" tmp; iconv -f utf-8 -t euc-jp < "tmp/$f" > "$f";;
-	  *.sty) mv "$f" tmp; iconv -f utf-8 -t euc-jp < "tmp/$f" > "$f";;
-      esac
-  done  
   rm -rf tmp
 elif [ $USR_JA_DEV = "dev" ] ; then
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
@@ -37,6 +31,7 @@ elif [ $USR_JA_DEV = "dev" ] ; then
       -e '/The m17n Library File Documentation/,/textprop_8c/ d' \
       -e '/The m17n Library Directory Documentation/,/dir_000001/ d' \
       -e 's/The m17n Library Page Documentation/Appendix/' \
+      -e '/newunicodechar/d' \
     < refman.tex > m17n-lib.tex
 else
   echo '\\appendix' > app.tex
@@ -44,8 +39,8 @@ else
       -e '/printindex/,$ p' < refman.tex >> app.tex
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
       -e '/Print compile/,/include{GFDL}/ d' \
-      -e '/chapter{File Documentation}/,$ d' < refman.tex > m17n-lib.tex
-  cat app.tex >> m17n-lib.tex
+      -e '/chapter{File Documentation}/,$ d' \
+      -e '/newunicodechar/d' < refman.tex > m17n-lib.tex
 fi
 ${LATEX} m17n-lib.tex
 makeindex m17n-lib.idx
