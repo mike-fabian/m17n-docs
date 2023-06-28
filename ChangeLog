@@ -1,3 +1,7 @@
+2023-06-28  K. Handa  <handa@gnu.org>
+
+	* utils/mkman.rb (documentprog): Fix filtering of "--".
+
 2023-06-24  K. Handa  <handa@gnu.org>
 
 	These changes are to adjust for the new vesion of doxygen and
