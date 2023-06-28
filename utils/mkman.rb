@@ -220,7 +220,7 @@ def documentprog (text)
   title = ""
   brief = ""
   text.each_with_index{|line,i|
-    if line =~ /^\.SH\s*\"(\S+) -- ([^\"]+)\"/
+    if line =~ /^\.SH\s*\"(\S+) &ndash; ([^\"]+)\"/
       # Remember the title and short description.  It may or may not
       # be for a program.
       title = $1
