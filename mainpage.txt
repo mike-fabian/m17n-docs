@@ -1,8 +1,7 @@
 /* -*- coding: utf-8; -*- */
 /***en @mainpage The m17n Library Documentation */
 /***ja @mainpage m17n ライブラリ */
-
-/***en @section what What is the m17n library? 
+/***en @section what What is the m17n library?
 
 The @e m17n @e library is a multilingual text processing library for
 the C language.
