@@ -76,10 +76,10 @@ while gets
      when /\/\*{2,3}ja.*\*\//	#japanese one liner
      when /\/\*\*en.*\*\//	#one liner
      when /\/\*\*\*en.*\*\//	#one liner
-        buf.push($_.gsub!(/\/\*+en/, " ").gsub!(/\*\//, " ")).push("\n")
+        buf.push($_.gsub!(/\/\*+en/, " ").gsub!(/ *\*\//, "")).push("\n")
      when /\/\*\*\s.*\*\//	#one liner
      when /\/\*\*\*\s.*\*\//	#one liner
-        buf.push($_.gsub!(/\/\*+/, " ").gsub!(/\*\//, " ")).push("\n")
+        buf.push($_.gsub!(/\/\*+/, " ").gsub!(/ *\*\//, "")).push("\n")
 
      when /\/\*{1,2}\s|\/\*{2,3}ja|\/\*\*en/  #this is not for En nor users
 	doxy = -1
@@ -87,7 +87,7 @@ while gets
         buf.push($_.gsub!(/\/\*+en/, " "))
 	doxy = 1
      when /\/\*\*\*/	
-        buf.push($_.gsub!(/\/\*+/, " "))
+        buf.push($_.gsub!(/ *\/\*+/, ""))
 	doxy = 1
 
      when /\/\*/	#other comment
