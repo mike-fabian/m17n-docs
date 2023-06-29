@@ -1,3 +1,21 @@
+2023-06-29  handa  <handa.kenichi@aist.go.jp>
+
+	* utils/latex.sh: Adusted for the new doxygen output format.
+
+	* utils/usr_filter.rb: Delete trailing spaces of comments.
+
+	* utils/ja_filter.rb: Delete trailing spaces of comments.
+
+	* utils/imdoc.c (main): Handle the case "(input-method XX XX (version XX))".
+
+	* utils/dvips.sh: Fix the output file name to m17n-lib.ps.
+
+	* mainpage.txt: Delete tailing spaces.
+
+	* Makefile.am (doxyfile): Fix previous change.
+	(data/dbdata.txt): Fix the setting of M17NDIR.
+	(%/latex/m17n-lib.pdf): Use ps2pdf instead of dvipdfmx.
+
 2023-06-28  K. Handa  <handa@gnu.org>
 
 	* utils/mkman.rb (documentprog): Fix filtering of "--".
