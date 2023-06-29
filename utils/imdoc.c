@@ -80,7 +80,7 @@ main (int argc, char **argv)
   plist = mplist_next (plist);
   name = mplist_value (plist);
   plist = mplist_next (plist);
-  if (mplist_key (plist) != Mnil)
+  if (mplist_key (plist) == Msymbol)
     language = mplist_value (plist), name = Mnil;
   m17n_object_unref (plist);
 
