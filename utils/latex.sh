@@ -13,12 +13,11 @@ if [ $USR_JA_DEV = "ja" ] ; then
     PATH=/usr/local/teTeX/bin:$PATH
   fi
   echo '\\appendix' > app.tex
-  sed -n -e '/コンパイル/,/include{m17nDBFormat}/ p' \
+  sed -n -e '/コンパイル/,/input{m17nDBFormat}/ p' \
       -e '/Tutorial for writing/,/include{GFDL}/ p' \
-      -e '/printindex/,$ p' < refman.tex >> app.tex
+      -e '/% Index/,$ p' < refman.tex >> app.tex
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
-      -e '/inputenc/ d' \
-      -e '/コンパイル/,/include{GFDL}/ d' \
+      -e '/コンパイル/,/input{GFDL}/ d' \
       -e '/chapter{ファイル}/,$ d' \
       -e '/newunicodechar/d' < refman.tex > m17n-lib.tex
   cat app.tex >> m17n-lib.tex
@@ -35,13 +34,18 @@ elif [ $USR_JA_DEV = "dev" ] ; then
     < refman.tex > m17n-lib.tex
 else
   echo '\\appendix' > app.tex
-  sed -n -e '/Print compile/,/include{GFDL}/ p' \
-      -e '/printindex/,$ p' < refman.tex >> app.tex
+  sed -n -e '/Print compile/,/input{GFDL}/ p' \
+      -e '/% Index/,$ p' < refman.tex >> app.tex
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
-      -e '/Print compile/,/include{GFDL}/ d' \
+      -e '/Print compile/,/input{GFDL}/ d' \
       -e '/chapter{File Documentation}/,$ d' \
       -e '/newunicodechar/d' < refman.tex > m17n-lib.tex
+  cat app.tex >> m17n-lib.tex
 fi
+# These vietnamese charaters cause a problem in TeX.
+sed -e '/Trần Ngọc Quân/s/Trần Ngọc Quân/Tran Ngoc Quân/' < m17nDBData.tex > temp.tex
+mv temp.tex m17nDBData.tex
+
 ${LATEX} m17n-lib.tex
 makeindex m17n-lib.idx
 ${LATEX} m17n-lib.tex
