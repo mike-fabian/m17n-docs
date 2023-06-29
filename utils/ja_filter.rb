@@ -70,10 +70,10 @@ while gets
      when /\/\*{2,3}en.*\*\//	#english one liner is omitted
      when /\/\*\*ja.*\*\//	#one liner
      when /\/\*\*\*ja.*\*\//	#one liner
-        buf.push($_.gsub!(/\/\*+ja/, " ").gsub!(/\*\//, " ")).push("\n")
+        buf.push($_.gsub!(/\/\*+ja/, " ").gsub!(/ *\*\//, "")).push("\n")
      when /\/\*\*\s.*\*\//	#one liner
      when /\/\*\*\*\s.*\*\//	#one liner
-        buf.push($_.gsub!(/\/\*+/, " ").gsub!(/\*\//, " ")).push("\n")
+        buf.push($_.gsub!(/\/\*+/, " ").gsub!(/ *\*\//, "")).push("\n")
 
      when /\/\*{1,2}\s|\/\*{2,3}en|\/\*\*ja/  #this is not for Ja nor users
 	doxy = -1
@@ -91,7 +91,7 @@ while gets
 
      when /\*\//
 	if doxy == 1
-           buf.push($_.gsub!(/\*\//, " "))
+           buf.push($_.gsub!(/ *\*\//, ""))
 	end
         doxy = 0
      else 
