@@ -165,7 +165,6 @@ doxyfile: Makefile
 	      -e '/^ENUM_VALUES_PER_LINE / s/=.*/= 1/' \
 	      -e '/^GENERATE_LATEX / s/=.*/= %GENERATE_LATEX%/' \
 	      -e '/^EXTRA_PACKAGES / s/=.*/= m17n-lib times/' \
-	      -e '/^PDF_HYPERLINKS / s/=.*/= NO/' \
 	      -e '/^USE_PDFLATEX / s/=.*/= NO/' \
 	      -e '/^LATEX_HIDE_INDICES / s/=.*/= YES/' \
 	      -e '/^GENERATE_MAN / s/=.*/= %GENERATE_MAN%/' \
@@ -272,7 +271,8 @@ data/exprog.txt: ${EXAMPLE_PROGS} utils/exprog.sh data
 
 data/dbdata.txt: ${DBDATA} ${DBIMAGE} @M17NDB@/mdb.dir utils/dbdata.awk utils/dbdata.sh utils/imdoc.c data
 	(cd utils; make)
-	 M17NDIR=${prefix}/m17n @AWK@ -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
+	echo ${prefix}/share/m17n
+	 M17NDIR=${prefix}/share/m17n @AWK@ -f utils/dbdata.awk @M17NDB@/mdb.dir > $@
 
 data/dbformat.txt: ${DBFORMAT} utils/dbformat.sh data
 	utils/dbformat.sh ${DBFORMAT} > $@
@@ -307,8 +307,8 @@ data/m17n-db.txt: @M17NDB@/m17n-db.in data
 	utils/dvips.sh `dirname $@` dvips
 #	emacs -batch -q -l utils/mokuji.el -f write-mokuji $@
 
-%/latex/m17n-lib.pdf: %/latex/m17n-lib.dvi
-	cd `dirname $<`; dvipdfmx `basename $<`
+%/latex/m17n-lib.pdf: %/latex/m17n-lib.ps
+	cd `dirname $<`; ps2pdf `basename $<` `basename $@`
 
 %/man/man1/m17n-config.1: doxyfile-man1.% ${MAN1} utils/%_filter.rb
 	rm -rf `dirname $@`
