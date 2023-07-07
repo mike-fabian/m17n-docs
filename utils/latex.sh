@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #							-*- coding: utf-8; -*-
 # $1: target directory (usr/latex, ja/latex, or dev/latex)
 
@@ -12,7 +12,7 @@ if [ $USR_JA_DEV = "ja" ] ; then
   if [ -d /usr/local/teTeX/bin ] ; then
     PATH=/usr/local/teTeX/bin:$PATH
   fi
-  echo '\\appendix' > app.tex
+  echo -e '\\appendix' > app.tex
   sed -n -e '/コンパイル/,/input{m17nDBFormat}/ p' \
       -e '/Tutorial for writing/,/include{GFDL}/ p' \
       -e '/% Index/,$ p' < refman.tex >> app.tex
@@ -33,7 +33,7 @@ elif [ $USR_JA_DEV = "dev" ] ; then
       -e '/newunicodechar/d' \
     < refman.tex > m17n-lib.tex
 else
-  echo '\\appendix' > app.tex
+  echo -e '\\appendix' > app.tex
   sed -n -e '/Print compile/,/input{GFDL}/ p' \
       -e '/% Index/,$ p' < refman.tex >> app.tex
   sed -e '/documentclass/ s/a4paper/a4paper,twoside/' \
