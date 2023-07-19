@@ -100,7 +100,7 @@ The m17n library utilizes these external libraries.  They are not
 mandatory but many functions of the m17n library depend on them.
 
 <ul>
-<li> m17n-db -- http://www.m17n.org/m17n-lib-en/download/m17n-db-1.5.0.tar.gz
+<li> m17n-db -- http://download.savannah.nongnu.org/releases/m17n/m17n-db-1.8.3.tar.gz
 
      Provide various information to the m17n library.
 
@@ -159,7 +159,7 @@ m17n ライブラリは以下の外部ライブラリを利用しています。
 せんが、m17n ライブラリの幾つかの関数はこれらに依存しています。
 
 <ul>
-<li> m17n-db -- http://www.m17n.org/m17n-lib-ja/download/m17n-db-1.5.0.tar.gz
+<li> m17n-db -- http://download.savannah.nongnu.org/releases/m17n/m17n-db-1.8.3.tar.gz
 
      m17n ライブラリに種々の情報を提供します。
 
