@@ -138,7 +138,7 @@ mandatory but many functions of the m17n library depend on them.
 
 <li> libotf  -- http://www.m17n.org/libotf/
 
-     Used for handling OpenTypee fonts in combination with freetype
+     Used for handling OpenType fonts in combination with freetype
      and Xft.
 
 <li> anthy -- http://anthy.sourceforge.jp/
@@ -178,7 +178,7 @@ m17n ライブラリは以下の外部ライブラリを利用しています。
 
      ローカルフォントの処理に使います。
 
-<li> fontconfig -- http://nexp.cs.pdx.edu/fontconfig/
+<li> fontconfig -- http://www.fontconfig.org/
 
      Xft と共に、ローカルフォントの検索に使います。
 
@@ -209,15 +209,11 @@ m17n ライブラリは以下の外部ライブラリを利用しています。
 
 /***en @section contact Contact us: 
 
-Global IT Security Group\n
-Information Technology Research Institute\n
-National Institute of Advanced Industrial Science and Technology
+Web:  https://savannah.nongnu.org/projects/m17n/
 
-Web: http://www.m17n.org/m17n-lib-en/
+Bug report: https://savannah.nongnu.org/bugs/?group=m17n
 
-Bug report: m17n-lib-bug-XXXX@m17n.org (Replace XXXX with current year in 4 digits.)
-
-Mailing lists: http://www.m17n.org/m17n-lib-en/mailinglist.html
+Mailing lists: http://lists.nongnu.org/mailman/listinfo/m17n-list
 
 */
 /***ja @section contact 連絡先:
@@ -226,11 +222,11 @@ Mailing lists: http://www.m17n.org/m17n-lib-en/mailinglist.html
 情報技術研究部門\n
 グローバル IT セキュリティグループ
 
-Web: http://www.m17n.org/m17n-lib-ja/
+Web: https://savannah.nongnu.org/projects/m17n/
 
-バグレポート: m17n-lib-bug-XXXX@m17n.org (XXXXの部分には現在の年（西暦）を4桁で入れてください。)
+バグレポート: https://savannah.nongnu.org/bugs/?group=m17n
 
-メイリングリスト: http://www.m17n.org/m17n-lib-ja/mailinglist.htm
+メイリングリスト: http://lists.nongnu.org/mailman/listinfo/m17n-list
 
 */
 /***en @section ack Acknowledgements */
@@ -240,16 +236,16 @@ Special thanks to:
 
 <ul>
 
-<li> Dimitri van Heesch <dimitri@stack.nl>
+<li> Dimitri van Heesch <doxygen@gmail.com>
 
-Author of Doxygen <http://www.stack.nl/~dimitri/doxygen/>.  Without
+Author of Doxygen <https://www.doxygen.nl/>.  Without
 this tool, it would have been impossible to create this documentation.
 
 <li> Information-technology Promotion Agency (IPA), Japan
 
 Writing this documentation was partially funded by
 Information-technology Promotion Agency (IPA)
-<http://www.ipa.go.jp/about/english/index.html> in fiscal year 2001.
+<https://www.ipa.go.jp/en/index.html> in fiscal year 2001.
 
 </ul>
 */

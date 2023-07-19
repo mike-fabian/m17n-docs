@@ -1,3 +1,11 @@
+2023-07-19  Mike FABIAN  <mfabian@redhat.com>
+
+	* mainpage.txt: Fix link to fontconfig website
+	* mainpage.txt: Fix link to Information-technology Promotion Agency (IPA)
+	* mainpage.txt: Update links to website, bug report tool, and mailing list
+	* mainpage.txt: Fix links to Doxygen
+	* mainpage.txt: Fix typo
+
 2023-06-29  handa  <handa.kenichi@aist.go.jp>
 
 	* utils/latex.sh: Adusted for the new doxygen output format.
