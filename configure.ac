@@ -1,5 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-AC_INIT(m17n-docs, 1.8.3, bugs-m17n-lib@m17n.org)
+AC_INIT(m17n-docs, 1.8.4, bugs-m17n-lib@m17n.org)
 AM_INIT_AUTOMAKE([-Wno-portability])
 
 AM_MAINTAINER_MODE
