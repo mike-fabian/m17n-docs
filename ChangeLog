@@ -1,3 +1,8 @@
+2026-10-19  K. Handa <handa@gnu.org>
+
+	* Makefile.am: use pdflatex
+	* utils/latex.sh: use pdflatex and other fixes
+
 2023-09-25  Mike FABIAN  <mfabian@redhat.com>
 
 	* Version 1.8.4 released.

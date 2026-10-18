@@ -165,7 +165,7 @@ doxyfile: Makefile
 	      -e '/^ENUM_VALUES_PER_LINE / s/=.*/= 1/' \
 	      -e '/^GENERATE_LATEX / s/=.*/= %GENERATE_LATEX%/' \
 	      -e '/^EXTRA_PACKAGES / s/=.*/= m17n-lib times/' \
-	      -e '/^USE_PDFLATEX / s/=.*/= NO/' \
+	      -e '/^USE_PDFLATEX / s/=.*/= YES/' \
 	      -e '/^LATEX_HIDE_INDICES / s/=.*/= YES/' \
 	      -e '/^GENERATE_MAN / s/=.*/= %GENERATE_MAN%/' \
 	      -e '/^MAN_EXTENSION / s/=.*/= %MAN_EXTENSION%/' \
@@ -307,8 +307,8 @@ data/m17n-db.txt: @M17NDB@/m17n-db.in data
 	utils/dvips.sh `dirname $@` dvips
 #	emacs -batch -q -l utils/mokuji.el -f write-mokuji $@
 
-%/latex/m17n-lib.pdf: %/latex/m17n-lib.ps
-	cd `dirname $<`; ps2pdf `basename $<` `basename $@`
+%/latex/m17n-lib.pdf: %/latex/refman.tex styles/m17n-lib.sty utils/latex.sh
+	-utils/latex.sh `dirname $@`
 
 %/man/man1/m17n-config.1: doxyfile-man1.% ${MAN1} utils/%_filter.rb
 	rm -rf `dirname $@`
