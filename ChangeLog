@@ -1,5 +1,9 @@
 2026-10-19  K. Handa <handa@gnu.org>
 
+	* styles/m17n-lib.sty: suppress fancyhdr-related warnings
+
+2026-10-19  K. Handa <handa@gnu.org>
+
 	* Makefile.am: use pdflatex
 	* utils/latex.sh: use pdflatex and other fixes
 
