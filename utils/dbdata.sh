@@ -26,7 +26,7 @@ while [ $# -ge 1 ] ; do
 		dir=`dirname $dir`
 		icon="$dir/icons/$base.png"
 		if [ -f "$icon" ] ; then
-		    [ -f "images/icon-$base.png" ] || convert -resize 50% "$icon" "images/icon-$base.png"
+		    [ -f "images/icon-$base.png" ] || magick "$icon" -resize 50% "images/icon-$base.png"
 		fi
 		HEADER="<li> $base (language:$LNG name:$NAME @htmlonly"
 #		if test -n "$title"; then

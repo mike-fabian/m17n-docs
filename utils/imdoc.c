@@ -125,7 +125,7 @@ main (int argc, char **argv)
 	      int result;
 
 	      base = basename (strdup (iconfile));
-	      sprintf (cmd, "convert -resize 50%% %s images/icon-%s",
+	      sprintf (cmd, "magick %s -resize 50%% images/icon-%s",
 		       iconfile, base);
 	      result = system (cmd);
 	      if (result != 0)

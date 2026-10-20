@@ -1,3 +1,8 @@
+2026-10-20  Mike FABIAN  <mfabian@redhat.com>
+
+	* utils/dbdata.sh, utils/imdoc.c: use magick instead of convert to
+	avoid deprecation warnings
+
 2026-10-19  K. Handa <handa@gnu.org>
 
 	* styles/m17n-lib.sty: suppress fancyhdr-related warnings
