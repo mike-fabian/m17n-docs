@@ -585,7 +585,7 @@ unless FileTest.directory? filename
         next 
         end
 
-     print "RUBY REWRINTING: ", filename, "\n"
+     print "RUBY REWRITING: ", filename, "\n"
 
      if /@function/ =~ text[0]  
         buf = frewrite(text[1..text.size])
