@@ -87,10 +87,20 @@ def  writedocumentation(buf, text, index)
       end
  end
 
+# Doxygen writes MAN_OUTPUT filenames by sanitizing the documented
+# name.  Map the roff-escaped, C++-scoped name that appears in the
+# .RI "struct \fB...\fP" line to the sanitized filename doxygen
+# actually wrote.  Observed mappings:
+#   "::"  -> "_"
+#   "\&"  -> ""        (zero-width roff escape)
+# Other characters (including "[", "]", ".") are preserved.
+def structfilename(struct)
+  struct.gsub('\\&', '').gsub('::', '_')
+end
 
 def datastructure(struct)
 
-   text = open(struct.concat($manext),"r").readlines
+   text = open(structfilename(struct).concat($manext),"r").readlines
 
    buf = []
 
