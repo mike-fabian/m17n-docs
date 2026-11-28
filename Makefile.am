@@ -370,10 +370,6 @@ data/m17n-db.txt: @M17NDB@/m17n-db.in data
 	${DOXYGEN} $<
 	cd `dirname $@`; rm -f _*.1 *.c.1 *.txt.1
 
-%/man/man3/m17nIntro.3m17n: doxyfile-man3.% ${MAN3} %/man/man1.tag %/man/man5.tag utils/%_filter.rb
-	rm -rf `dirname $@`
-	${DOXYGEN} $<
-
 %/man/man5/mdbGeneral.5: doxyfile-man5.% ${MAN5} %/man/man3.tag utils/%_filter.rb
 	rm -rf `dirname $@`
 	${DOXYGEN} $<
@@ -398,12 +394,24 @@ man/man1/%: usr/man/man1/% sample/man3/SampleGroup.3 utils/mkman.rb \
 	LC_ALL=ja_JP.UTF-8 ruby utils/mkman.rb 1 usr/man/man1 man/man1
 	utils/reform-man.sh man/man1/*.1
 
-man/man3/%: usr/man/man3/% sample/man3/SampleGroup.3 utils/mkman.rb \
-		utils/reform-man.sh
+man/man3/.stamp: doxyfile-man3.usr ${MAN3} usr/man/man1.tag usr/man/man5.tag \
+		sample/man3/SampleGroup.3 utils/usr_filter.rb utils/mkman.rb utils/reform-man.sh
+	rm -rf doxywork man/man3
 	$(mkinstalldirs) man/man3
-	rm -rf doxywork man/man3/*
+	${DOXYGEN} doxyfile-man3.usr
 	LC_ALL=ja_JP.UTF-8 ruby utils/mkman.rb 3m17n usr/man/man3m17n man/man3
 	utils/reform-man.sh man/man3/*.3m17n
+	touch $@
+
+# The stamp owns the whole man/man3/ directory: its recipe wipes
+# and regenerates all pages at once.  This rule only needs to
+# exist so make knows how to "build" the declared target.  If a
+# single page is missing while the stamp is still present (e.g.
+# manual deletion), invalidate the stamp and rebuild it so the
+# page is recreated; otherwise leave the stamp alone so an
+# intact tree stays incremental.
+man/man3/m17nIntro.3m17n: man/man3/.stamp
+	@test -f $@ || { rm -f man/man3/.stamp; $(MAKE) man/man3/.stamp; }
 
 man/man5/%: usr/man/man5/% sample/man3/SampleGroup.3 utils/mkman.rb \
 		utils/reform-man.sh
